@@ -1,0 +1,2336 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Low Back Assessment · Conor O'Shea</title>
+<style>
+  :root {
+    --paper: #EFEAE0;
+    --paper-tint: #FBF7ED;
+    --ink: #171518;
+    --ink-soft: #3B3833;
+    --muted: #7C7468;
+    --rule: #D9D0BF;
+    --oxblood: #6D1F27;
+
+    --bg: var(--paper);
+    --fg: var(--ink);
+    --fg-soft: var(--ink-soft);
+    --card: var(--paper-tint);
+    --rule-color: var(--rule);
+    --accent: var(--oxblood);
+    --muted-fg: var(--muted);
+
+    --serif: 'Iowan Old Style', 'Palatino', 'Palatino Linotype', 'Book Antiqua', Georgia, serif;
+    --sans: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', 'Segoe UI', system-ui, sans-serif;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #14151A;
+      --fg: #EFEAE0;
+      --fg-soft: #C6BFB1;
+      --card: #1C1D22;
+      --rule-color: #2D2E33;
+      --accent: #D06A5C;
+      --muted-fg: #8C8578;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #14151A;
+    --fg: #EFEAE0;
+    --fg-soft: #C6BFB1;
+    --card: #1C1D22;
+    --rule-color: #2D2E33;
+    --accent: #D06A5C;
+    --muted-fg: #8C8578;
+  }
+  :root[data-theme="light"] {
+    --bg: var(--paper);
+    --fg: var(--ink);
+    --fg-soft: var(--ink-soft);
+    --card: var(--paper-tint);
+    --rule-color: var(--rule);
+    --accent: var(--oxblood);
+    --muted-fg: var(--muted);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { padding: 0; margin: 0; }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--sans);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  button { font: inherit; }
+
+  .wrap {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: clamp(24px, 5vw, 56px) clamp(20px, 5vw, 40px) 96px;
+  }
+
+  .masthead {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-bottom: 1px solid var(--rule-color);
+    padding-bottom: 14px;
+    margin-bottom: clamp(44px, 8vw, 72px);
+    font-family: var(--sans);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted-fg);
+  }
+  .masthead .brand strong {
+    color: var(--fg);
+    font-weight: 600;
+    letter-spacing: 0.18em;
+  }
+
+  .eyebrow {
+    font-family: var(--sans);
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted-fg);
+    margin: 0 0 24px;
+  }
+  .eyebrow strong { color: var(--accent); font-weight: 600; letter-spacing: 0.22em; }
+
+  .display {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(38px, 7vw, 60px);
+    line-height: 1.02;
+    letter-spacing: -0.012em;
+    text-wrap: balance;
+    margin: 0 0 24px;
+    color: var(--fg);
+  }
+  .lede {
+    font-family: var(--serif);
+    font-size: clamp(19px, 2.3vw, 22px);
+    line-height: 1.5;
+    color: var(--fg-soft);
+    max-width: 44ch;
+    text-wrap: pretty;
+    margin: 0 0 24px;
+  }
+  .lede + .lede { margin-top: -6px; }
+  .byline {
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--muted-fg);
+    max-width: 44ch;
+    margin: 40px 0 40px;
+    padding-top: 24px;
+    border-top: 1px solid var(--rule-color);
+  }
+  .byline strong { color: var(--fg); font-weight: 500; }
+
+  .btn {
+    appearance: none;
+    background: var(--fg);
+    color: var(--bg);
+    border: 0;
+    font-family: var(--sans);
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    padding: 16px 26px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: transform .12s ease, background-color .2s ease, opacity .2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .btn:hover { transform: translateY(-1px); }
+  .btn:active { transform: translateY(0); }
+  .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .btn:disabled { opacity: 0.35; cursor: not-allowed; }
+  .btn:disabled:hover { transform: none; }
+  .btn-arrow { font-family: var(--serif); font-size: 18px; line-height: 1; }
+  .btn-ghost {
+    background: transparent;
+    color: var(--fg);
+    border: 1px solid var(--rule-color);
+  }
+  .btn-ghost:hover { border-color: var(--fg); }
+  .btn-accent {
+    background: var(--accent);
+    color: #FBF7ED;
+  }
+  .btn-accent:hover { background: color-mix(in oklab, var(--accent) 88%, black); }
+
+  .step { display: none; }
+  .step.active { display: block; }
+
+  .progress { margin-bottom: 44px; }
+  .progress-rule {
+    position: relative;
+    height: 1px;
+    background: var(--rule-color);
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+  .progress-rule span {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    background: var(--accent);
+    height: 100%;
+    transition: width .45s cubic-bezier(.3,.7,.3,1);
+  }
+  .progress-meta {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--sans);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted-fg);
+  }
+  .progress-meta .stage-tag { color: var(--fg); font-weight: 600; letter-spacing: 0.18em; }
+
+  .question-eyebrow {
+    font-family: var(--sans);
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    margin: 0 0 12px;
+  }
+  .question {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(24px, 3.6vw, 32px);
+    line-height: 1.15;
+    letter-spacing: -0.005em;
+    text-wrap: balance;
+    margin: 0 0 8px;
+    color: var(--fg);
+  }
+  .question-hint {
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--muted-fg);
+    line-height: 1.5;
+    margin: 0 0 28px;
+    max-width: 52ch;
+  }
+
+  .field-label {
+    display: block;
+    font-family: var(--sans);
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted-fg);
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+  input[type=text], input[type=email], textarea {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid var(--rule-color);
+    border-radius: 4px;
+    font-family: var(--sans);
+    font-size: 16px;
+    background: var(--card);
+    color: var(--fg);
+    transition: border-color .15s ease, box-shadow .15s ease;
+    resize: vertical;
+  }
+  textarea {
+    min-height: 90px;
+    line-height: 1.5;
+    font-family: var(--serif);
+    font-size: 17px;
+  }
+  input[type=text]:focus, input[type=email]:focus, textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 15%, transparent);
+  }
+
+  .field-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 32px;
+  }
+  .field { display: flex; flex-direction: column; }
+
+  .scale {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 4px;
+    margin-bottom: 12px;
+  }
+  .scale button {
+    aspect-ratio: 1;
+    background: var(--card);
+    border: 1px solid var(--rule-color);
+    border-radius: 4px;
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--fg);
+    cursor: pointer;
+    transition: all .12s ease;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .scale button:hover { border-color: var(--fg); }
+  .scale button.selected {
+    background: var(--accent);
+    color: #FBF7ED;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px color-mix(in oklab, var(--accent) 20%, transparent);
+  }
+  .scale-legend {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--sans);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted-fg);
+    margin-bottom: 16px;
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    list-style: none;
+    padding: 0;
+    margin: 0 0 8px;
+  }
+  .options li { padding: 0; margin: 0; }
+  .option {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 16px 20px;
+    border: 1px solid var(--rule-color);
+    border-radius: 4px;
+    background: var(--card);
+    cursor: pointer;
+    transition: border-color .15s ease, background .15s ease;
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.42;
+    color: var(--fg);
+    text-align: left;
+    width: 100%;
+  }
+  .option:hover { border-color: var(--fg); }
+  .option:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+  .option.selected {
+    border-color: var(--accent);
+    background: color-mix(in oklab, var(--accent) 5%, var(--card));
+  }
+  .option-marker {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 18px;
+    height: 18px;
+    border-radius: 999px;
+    border: 1.5px solid var(--rule-color);
+    flex-shrink: 0;
+    margin-top: 2px;
+    background: var(--bg);
+    transition: all .15s ease;
+    position: relative;
+  }
+  .option-marker::after {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 999px;
+    background: var(--bg);
+    opacity: 0;
+    transition: opacity .15s ease;
+  }
+  .option.selected .option-marker {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+  .option.selected .option-marker::after { opacity: 1; }
+
+  .multi .option-marker { border-radius: 3px; }
+  .multi .option-marker::after { border-radius: 0; }
+
+  .nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 24px;
+    gap: 12px;
+  }
+
+  /* Section + reflection transitions */
+  .transition-tag {
+    font-family: var(--sans);
+    font-size: 11px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--muted-fg);
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+  .transition-tag strong { color: var(--accent); font-weight: 700; }
+  .transition-title {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(34px, 5.6vw, 48px);
+    line-height: 1.06;
+    letter-spacing: -0.012em;
+    margin: 0 0 20px;
+    color: var(--fg);
+    text-wrap: balance;
+  }
+  .transition-body {
+    font-family: var(--serif);
+    font-size: clamp(18px, 2.2vw, 20px);
+    line-height: 1.6;
+    color: var(--fg-soft);
+    max-width: 52ch;
+    margin: 0 0 32px;
+  }
+  .transition-body p { margin: 0 0 18px; }
+  .transition-body p:last-child { margin-bottom: 0; }
+  .transition-body strong { color: var(--fg); font-weight: 500; }
+
+  /* Report */
+  .report-hero {
+    margin-bottom: 48px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid var(--rule-color);
+  }
+  .report-eyebrow {
+    font-family: var(--sans);
+    font-size: 11px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--muted-fg);
+    font-weight: 600;
+    margin: 0 0 16px;
+  }
+  .report-title {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(30px, 4.6vw, 42px);
+    line-height: 1.06;
+    letter-spacing: -0.012em;
+    text-wrap: balance;
+    margin: 0 0 20px;
+    color: var(--fg);
+  }
+  .report-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 16px;
+  }
+  .tag {
+    font-family: var(--sans);
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: var(--card);
+    border: 1px solid var(--rule-color);
+    color: var(--fg-soft);
+  }
+  .tag.accent {
+    background: var(--accent);
+    color: #FBF7ED;
+    border-color: var(--accent);
+    font-weight: 500;
+  }
+
+  .section {
+    margin: 56px 0;
+  }
+  .section-label {
+    font-family: var(--sans);
+    font-size: 11px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 700;
+    margin: 0 0 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--rule-color);
+  }
+  .section-headline {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(24px, 3.4vw, 30px);
+    line-height: 1.15;
+    letter-spacing: -0.005em;
+    text-wrap: balance;
+    margin: 0 0 20px;
+    color: var(--fg);
+  }
+  .prose {
+    font-family: var(--serif);
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--fg);
+    max-width: 60ch;
+  }
+  .prose p { margin: 0 0 18px; }
+  .prose p:last-child { margin-bottom: 0; }
+  .prose strong { font-weight: 600; }
+
+  .stage {
+    margin: 32px 0;
+    padding: 24px;
+    border: 1px solid var(--rule-color);
+    border-radius: 6px;
+    background: var(--card);
+  }
+  .stage-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .stage-name {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 22px;
+    line-height: 1.2;
+    color: var(--fg);
+    margin: 0;
+  }
+  .stage-status {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .stage-status .tag { font-size: 11px; padding: 4px 10px; }
+  .stage-block {
+    margin-top: 16px;
+  }
+  .stage-block-label {
+    font-family: var(--sans);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted-fg);
+    font-weight: 600;
+    margin: 0 0 6px;
+  }
+  .stage-list {
+    margin: 0;
+    padding-left: 20px;
+    font-family: var(--serif);
+    font-size: 16px;
+    line-height: 1.55;
+    color: var(--fg);
+  }
+  .stage-list li { margin-bottom: 4px; }
+  .stage-text {
+    font-family: var(--serif);
+    font-size: 16px;
+    line-height: 1.55;
+    color: var(--fg);
+    margin: 0;
+  }
+
+  .state-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 24px 0;
+  }
+  .state-card {
+    padding: 20px;
+    border: 1px solid var(--rule-color);
+    border-radius: 6px;
+    background: var(--card);
+    text-align: center;
+  }
+  .state-card .label {
+    font-family: var(--sans);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted-fg);
+    font-weight: 600;
+    margin: 0 0 8px;
+  }
+  .state-card .value {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 36px;
+    line-height: 1;
+    color: var(--fg);
+    margin: 0 0 4px;
+  }
+  .state-card .value .over {
+    font-size: 20px;
+    color: var(--muted-fg);
+    font-weight: 400;
+  }
+  .state-card.critical .value { color: var(--accent); }
+  .state-card .note {
+    font-family: var(--sans);
+    font-size: 11px;
+    color: var(--muted-fg);
+    margin: 0;
+    letter-spacing: 0.02em;
+  }
+
+  .callout {
+    padding: 32px;
+    border: 1px solid var(--accent);
+    border-radius: 6px;
+    background: color-mix(in oklab, var(--accent) 4%, var(--card));
+    margin: 32px 0;
+  }
+  .callout .section-label { color: var(--accent); margin-top: 0; }
+  .callout .section-label::after { background: color-mix(in oklab, var(--accent) 30%, transparent); }
+  .callout .section-headline { margin-bottom: 12px; }
+  .callout .prose { font-size: 17px; }
+
+  .treatment-grid {
+    display: grid;
+    gap: 12px;
+    margin: 24px 0;
+  }
+  .treatment-row {
+    padding: 18px 20px;
+    border: 1px solid var(--rule-color);
+    border-radius: 6px;
+    background: var(--card);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    align-items: baseline;
+  }
+  .treatment-row .name {
+    font-family: var(--serif);
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--fg);
+    margin: 0;
+  }
+  .treatment-row .did {
+    font-family: var(--sans);
+    font-size: 13px;
+    color: var(--muted-fg);
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  .approach-stages {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin: 24px 0;
+  }
+  .approach-stage {
+    padding: 20px;
+    border: 1px solid var(--rule-color);
+    border-radius: 6px;
+    background: var(--card);
+  }
+  .approach-stage .num {
+    font-family: var(--serif);
+    font-size: 14px;
+    color: var(--accent);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin: 0 0 4px;
+  }
+  .approach-stage .stage-title {
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--fg);
+    margin: 0 0 8px;
+  }
+  .approach-stage p {
+    font-family: var(--serif);
+    font-size: 15px;
+    color: var(--fg-soft);
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  .cta-block {
+    margin-top: 64px;
+    padding: 40px 32px;
+    border: 1px solid var(--rule-color);
+    border-radius: 6px;
+    background: var(--card);
+    text-align: left;
+  }
+  .cta-block h3 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(26px, 3.6vw, 32px);
+    line-height: 1.15;
+    margin: 0 0 12px;
+    color: var(--fg);
+    text-wrap: balance;
+  }
+  .cta-block p {
+    font-family: var(--serif);
+    font-size: 17px;
+    line-height: 1.55;
+    color: var(--fg-soft);
+    margin: 0 0 20px;
+    max-width: 50ch;
+  }
+  .cta-buttons {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+  }
+  .cta-note {
+    font-family: var(--sans);
+    font-size: 13px;
+    color: var(--muted-fg);
+    margin-top: 20px;
+    line-height: 1.5;
+  }
+
+  .restart {
+    margin-top: 48px;
+    text-align: center;
+  }
+  .restart button {
+    background: none;
+    border: 0;
+    color: var(--muted-fg);
+    font-family: var(--sans);
+    font-size: 13px;
+    cursor: pointer;
+    text-decoration: underline;
+    letter-spacing: 0.03em;
+    padding: 6px 10px;
+  }
+  .restart button:hover { color: var(--fg); }
+
+  .footnote {
+    font-family: var(--sans);
+    font-size: 12px;
+    line-height: 1.55;
+    color: var(--muted-fg);
+    margin-top: 48px;
+    max-width: 60ch;
+    letter-spacing: 0.01em;
+  }
+
+  .sent-confirm {
+    padding: 40px;
+    border: 1px solid var(--rule-color);
+    border-radius: 6px;
+    background: var(--card);
+    text-align: center;
+    margin-bottom: 32px;
+  }
+  .sent-confirm .check {
+    display: inline-flex;
+    width: 44px;
+    height: 44px;
+    border-radius: 999px;
+    background: var(--accent);
+    color: #FBF7ED;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    margin-bottom: 16px;
+  }
+  .sent-confirm h4 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 22px;
+    margin: 0 0 8px;
+    color: var(--fg);
+  }
+  .sent-confirm p {
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--muted-fg);
+    margin: 0;
+    line-height: 1.5;
+    max-width: 40ch;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .step.active { animation: fadeIn .35s ease; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  }
+
+  @media (max-width: 640px) {
+    .state-grid { grid-template-columns: 1fr; }
+    .scale button { font-size: 15px; }
+    .cta-block { padding: 28px 20px; }
+    .stage { padding: 20px; }
+    .callout { padding: 24px 20px; }
+    .nav { flex-direction: column-reverse; align-items: stretch; }
+    .nav .btn { justify-content: center; }
+    .treatment-row { grid-template-columns: 1fr; gap: 4px; }
+  }
+
+  /* ---- Kit (ConvertKit) embed form, restyled to match the paper/oxblood system ---- */
+  .formkit-form[data-uid="709ce44e7b"] *{box-sizing:border-box;}
+  .formkit-form[data-uid="709ce44e7b"]{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
+  .formkit-form[data-uid="709ce44e7b"] legend{border:none;font-size:inherit;margin-bottom:10px;padding:0;position:relative;display:table;}
+  .formkit-form[data-uid="709ce44e7b"] fieldset{border:0;padding:0.01em 0 0 0;margin:0;min-width:0;}
+  .formkit-form[data-uid="709ce44e7b"] body:not(:-moz-handler-blocked) fieldset{display:table-cell;}
+  .formkit-form[data-uid="709ce44e7b"] h1,.formkit-form[data-uid="709ce44e7b"] h2,.formkit-form[data-uid="709ce44e7b"] h3,.formkit-form[data-uid="709ce44e7b"] h4,.formkit-form[data-uid="709ce44e7b"] h5,.formkit-form[data-uid="709ce44e7b"] h6{color:inherit;font-size:inherit;font-weight:inherit;}
+  .formkit-form[data-uid="709ce44e7b"] h2{font-size:1.5em;margin:1em 0;}
+  .formkit-form[data-uid="709ce44e7b"] h3{font-size:1.17em;margin:1em 0;}
+  .formkit-form[data-uid="709ce44e7b"] p{color:inherit;font-size:inherit;font-weight:inherit;}
+  .formkit-form[data-uid="709ce44e7b"] ol:not([template-default]),.formkit-form[data-uid="709ce44e7b"] ul:not([template-default]),.formkit-form[data-uid="709ce44e7b"] blockquote:not([template-default]){text-align:left;}
+  .formkit-form[data-uid="709ce44e7b"] p:not([template-default]),.formkit-form[data-uid="709ce44e7b"] hr:not([template-default]),.formkit-form[data-uid="709ce44e7b"] blockquote:not([template-default]),.formkit-form[data-uid="709ce44e7b"] ol:not([template-default]),.formkit-form[data-uid="709ce44e7b"] ul:not([template-default]){color:inherit;font-style:initial;}
+  .formkit-form[data-uid="709ce44e7b"] .ordered-list,.formkit-form[data-uid="709ce44e7b"] .unordered-list{list-style-position:outside !important;padding-left:1em;}
+  .formkit-form[data-uid="709ce44e7b"] .list-item{padding-left:0;}
+  .formkit-form[data-uid="709ce44e7b"][data-format="modal"]{display:none;}
+  .formkit-form[data-uid="709ce44e7b"][data-format="slide in"]{display:none;}
+  .formkit-form[data-uid="709ce44e7b"][data-format="sticky bar"]{display:none;}
+  .formkit-sticky-bar .formkit-form[data-uid="709ce44e7b"][data-format="sticky bar"]{display:block;}
+  .formkit-form[data-uid="709ce44e7b"] .formkit-input,.formkit-form[data-uid="709ce44e7b"] .formkit-select,.formkit-form[data-uid="709ce44e7b"] .formkit-checkboxes{width:100%;}
+  .formkit-form[data-uid="709ce44e7b"] .formkit-button,.formkit-form[data-uid="709ce44e7b"] .formkit-submit{border:0;border-radius:999px;color:#FBF7ED;cursor:pointer;display:inline-block;text-align:center;font-size:15px;font-weight:500;cursor:pointer;margin-bottom:0;overflow:hidden;padding:0;position:relative;vertical-align:middle;transition:transform .12s ease, background-color .2s ease, opacity .2s ease;}
+  .formkit-form[data-uid="709ce44e7b"] .formkit-button:hover,.formkit-form[data-uid="709ce44e7b"] .formkit-submit:hover{transform:translateY(-1px);}
+  .formkit-form[data-uid="709ce44e7b"] .formkit-button:hover,.formkit-form[data-uid="709ce44e7b"] .formkit-submit:hover,.formkit-form[data-uid="709ce44e7b"] .formkit-button:focus,.formkit-form[data-uid="709ce44e7b"] .formkit-submit:focus{outline:none;}
+  .formkit-form[data-uid="709ce44e7b"] .formkit-submit:disabled{opacity:.35;cursor:not-allowed;transform:none;}
+  .formkit-form[data-uid="709ce44e7b"] .formkit-button:hover > span,.formkit-form[data-uid="709ce44e7b"] .formkit-submit:hover > span,.formkit-form[data-uid="709ce44e7b"] .formkit-button:focus > span,.formkit-form[data-uid="709ce44e7b"] .formkit-submit:focus > span{background-color:rgba(0,0,0,0.1);}
+  .formkit-form[data-uid="709ce44e7b"] .formkit-button > span,.formkit-form[data-uid="709ce44e7b"] .formkit-submit > span{display:block;-webkit-transition:all 300ms ease-in-out;transition:all 300ms ease-in-out;padding:16px 26px;}
+  .formkit-form[data-uid="709ce44e7b"] .formkit-input{background:var(--card);font-family:var(--sans);font-size:16px;padding:14px 16px;border:1px solid var(--rule-color);color:var(--fg);-webkit-flex:1 0 auto;-ms-flex:1 0 auto;flex:1 0 auto;line-height:1.4;margin:0;border-radius:4px;-webkit-transition:border-color ease-out 300ms;transition:border-color ease-out 300ms;}
+  .formkit-form[data-uid="709ce44e7b"] .formkit-input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in oklab, var(--accent) 15%, transparent);-webkit-transition:border-color ease 300ms;transition:border-color ease 300ms;}
+  .formkit-form[data-uid="709ce44e7b"] .formkit-input::-webkit-input-placeholder{color:inherit;opacity:0.6;}
+  .formkit-form[data-uid="709ce44e7b"] .formkit-input::-moz-placeholder{color:inherit;opacity:0.6;}
+  .formkit-form[data-uid="709ce44e7b"] .formkit-input:-ms-input-placeholder{color:inherit;opacity:0.6;}
+  .formkit-form[data-uid="709ce44e7b"] .formkit-input::placeholder{color:inherit;opacity:0.6;}
+  .formkit-form[data-uid="709ce44e7b"] [data-group="dropdown"]{position:relative;display:inline-block;width:100%;}
+  .formkit-form[data-uid="709ce44e7b"] [data-group="dropdown"]::before{content:"";top:calc(50% - 2.5px);right:10px;position:absolute;pointer-events:none;border-color:#4f4f4f transparent transparent transparent;border-style:solid;border-width:6px 6px 0 6px;height:0;width:0;z-index:999;}
+  .formkit-form[data-uid="709ce44e7b"] [data-group="dropdown"] select{height:auto;width:100%;cursor:pointer;color:#333333;line-height:1.4;margin-bottom:0;padding:0 6px;-webkit-appearance:none;-moz-appearance:none;appearance:none;font-size:15px;padding:12px;padding-right:25px;border:1px solid var(--rule-color);background:var(--card);}
+  .formkit-form[data-uid="709ce44e7b"] [data-group="dropdown"] select:focus{outline:none;}
+  .formkit-form[data-uid="709ce44e7b"] [data-group="checkboxes"]{text-align:left;margin:0;}
+  .formkit-form[data-uid="709ce44e7b"] [data-group="checkboxes"] [data-group="checkbox"]{margin-bottom:10px;}
+  .formkit-form[data-uid="709ce44e7b"] [data-group="checkboxes"] [data-group="checkbox"] *{cursor:pointer;}
+  .formkit-form[data-uid="709ce44e7b"] [data-group="checkboxes"] [data-group="checkbox"]:last-of-type{margin-bottom:0;}
+  .formkit-form[data-uid="709ce44e7b"] [data-group="checkboxes"] [data-group="checkbox"] input[type="checkbox"]{display:none;}
+  .formkit-form[data-uid="709ce44e7b"] [data-group="checkboxes"] [data-group="checkbox"] input[type="checkbox"] + label::after{content:none;}
+  .formkit-form[data-uid="709ce44e7b"] [data-group="checkboxes"] [data-group="checkbox"] input[type="checkbox"]:checked + label::after{border-color:#ffffff;content:"";}
+  .formkit-form[data-uid="709ce44e7b"] [data-group="checkboxes"] [data-group="checkbox"] input[type="checkbox"]:checked + label::before{background:var(--accent);border-color:var(--accent);}
+  .formkit-form[data-uid="709ce44e7b"] [data-group="checkboxes"] [data-group="checkbox"] label{position:relative;display:inline-block;padding-left:28px;}
+  .formkit-form[data-uid="709ce44e7b"] [data-group="checkboxes"] [data-group="checkbox"] label::before,.formkit-form[data-uid="709ce44e7b"] [data-group="checkboxes"] [data-group="checkbox"] label::after{position:absolute;content:"";display:inline-block;}
+  .formkit-form[data-uid="709ce44e7b"] [data-group="checkboxes"] [data-group="checkbox"] label::before{height:16px;width:16px;border:1px solid var(--rule-color);background:var(--card);left:0px;top:3px;}
+  .formkit-form[data-uid="709ce44e7b"] [data-group="checkboxes"] [data-group="checkbox"] label::after{height:4px;width:8px;border-left:2px solid #4d4d4d;border-bottom:2px solid #4d4d4d;-webkit-transform:rotate(-45deg);-ms-transform:rotate(-45deg);transform:rotate(-45deg);left:4px;top:8px;}
+  .formkit-form[data-uid="709ce44e7b"] .formkit-alert{background:var(--card);border:1px solid var(--rule-color);border-radius:4px;-webkit-flex:1 0 auto;-ms-flex:1 0 auto;flex:1 0 auto;list-style:none;margin:0 0 20px;padding:12px;text-align:center;width:100%;font-family:var(--sans);font-size:13px;}
+  .formkit-form[data-uid="709ce44e7b"] .formkit-alert:empty{display:none;}
+  .formkit-form[data-uid="709ce44e7b"] .formkit-alert-success{background:#d3fbeb;border-color:#10bf7a;color:#0c905c;}
+  .formkit-form[data-uid="709ce44e7b"] .formkit-alert-error{background:#fde8e2;border-color:#f2643b;color:#ea4110;}
+  .formkit-form[data-uid="709ce44e7b"] .formkit-spinner{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;height:0px;width:0px;margin:0 auto;position:absolute;top:0;left:0;right:0;width:0px;overflow:hidden;text-align:center;-webkit-transition:all 300ms ease-in-out;transition:all 300ms ease-in-out;}
+  .formkit-form[data-uid="709ce44e7b"] .formkit-spinner > div{margin:auto;width:12px;height:12px;background-color:#fff;opacity:0.3;border-radius:100%;display:inline-block;-webkit-animation:formkit-bouncedelay-formkit-form-data-uid-709ce44e7b- 1.4s infinite ease-in-out both;animation:formkit-bouncedelay-formkit-form-data-uid-709ce44e7b- 1.4s infinite ease-in-out both;}
+  .formkit-form[data-uid="709ce44e7b"] .formkit-spinner > div:nth-child(1){-webkit-animation-delay:-0.32s;animation-delay:-0.32s;}
+  .formkit-form[data-uid="709ce44e7b"] .formkit-spinner > div:nth-child(2){-webkit-animation-delay:-0.16s;animation-delay:-0.16s;}
+  .formkit-form[data-uid="709ce44e7b"] .formkit-submit[data-active] .formkit-spinner{opacity:1;height:100%;width:50px;}
+  .formkit-form[data-uid="709ce44e7b"] .formkit-submit[data-active] .formkit-spinner ~ span{opacity:0;}
+  .formkit-form[data-uid="709ce44e7b"] .formkit-powered-by[data-active="false"]{opacity:0.35;}
+  .formkit-form[data-uid="709ce44e7b"] .formkit-powered-by-convertkit-container{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;width:100%;margin:10px 0 0;position:relative;}
+  .formkit-form[data-uid="709ce44e7b"] .formkit-powered-by-convertkit-container[data-active="false"]{opacity:0.35;}
+  .formkit-form[data-uid="709ce44e7b"] .formkit-powered-by-convertkit{-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;background-color:transparent;border-radius:9px;color:var(--muted-fg);cursor:pointer;display:block;height:36px;margin:0 auto;opacity:0.7;padding:0;-webkit-text-decoration:none;text-decoration:none;text-indent:100%;-webkit-transition:ease-in-out all 200ms;transition:ease-in-out all 200ms;white-space:nowrap;overflow:hidden;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;width:157px;background-repeat:no-repeat;background-position:center;filter:grayscale(1);}
+  .formkit-form[data-uid="709ce44e7b"] .formkit-powered-by-convertkit:hover,.formkit-form[data-uid="709ce44e7b"] .formkit-powered-by-convertkit:focus{opacity:1;}
+  @-webkit-keyframes formkit-bouncedelay-formkit-form-data-uid-709ce44e7b-{0%,80%,100%{-webkit-transform:scale(0);-ms-transform:scale(0);transform:scale(0);}40%{-webkit-transform:scale(1);-ms-transform:scale(1);transform:scale(1);}}
+  @keyframes formkit-bouncedelay-formkit-form-data-uid-709ce44e7b-{0%,80%,100%{-webkit-transform:scale(0);-ms-transform:scale(0);transform:scale(0);}40%{-webkit-transform:scale(1);-ms-transform:scale(1);transform:scale(1);}}
+  .formkit-form[data-uid="709ce44e7b"]{max-width:100%;}
+  .formkit-form[data-uid="709ce44e7b"] [data-style="clean"]{width:100%;padding:0;}
+  .formkit-form[data-uid="709ce44e7b"] .formkit-fields{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-wrap:wrap;-ms-flex-wrap:wrap;flex-wrap:wrap;margin:0 auto;gap:12px;align-items:flex-start;}
+  .formkit-form[data-uid="709ce44e7b"] .formkit-field{margin:0;-webkit-flex:1 0 auto;-ms-flex:1 0 auto;flex:1 0 auto;}
+  .formkit-form[data-uid="709ce44e7b"] .formkit-submit{margin:0;-webkit-flex:0 0 auto;-ms-flex:0 0 auto;flex:0 0 auto;position:static;}
+  @media (max-width: 480px) {
+    .formkit-form[data-uid="709ce44e7b"] .formkit-fields{flex-direction:column;}
+    .formkit-form[data-uid="709ce44e7b"] .formkit-submit{width:100%;}
+    .formkit-form[data-uid="709ce44e7b"] .formkit-submit > span{width:100%;display:flex;justify-content:center;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="masthead">
+    <div class="brand"><strong>CONOR O'SHEA</strong></div>
+    <div>Low Back Assessment</div>
+  </header>
+  <main id="app">
+    <section class="step active" data-step="intro">
+      <p class="eyebrow"><strong>8-10 minute assessment.</strong> Direct questions. Real report.</p>
+      <h1 class="display">Low Back Assessment.</h1>
+      <p class="lede">I am going to ask you direct questions across three areas to identify exactly where your low back pain cycle is coming from, and give you the clearest picture you have had of what is actually keeping you stuck.</p>
+      <p class="lede">Most people I work with are not lacking effort or motivation. They are missing one specific thing. This assessment finds it.</p>
+      <button class="btn btn-accent" id="start-btn" style="margin-top: 16px;">Begin the assessment <span class="btn-arrow">&rarr;</span></button>
+      <p class="byline"><strong>Coaching since 2011.</strong> Got out of a four-year L5-S1 disc bulge injury cycle. I built the system I wish I had. Now I run it with my clients.</p>
+    </section>
+
+    <section class="step" data-step="email" id="email-step">
+      <div class="progress">
+        <div class="progress-rule"><span id="email-progress-fill" style="width: 0%"></span></div>
+        <div class="progress-meta">
+          <span class="stage-tag">Almost done</span>
+          <span>Last step</span>
+        </div>
+      </div>
+      <p class="question-eyebrow">Your report is ready</p>
+      <h2 class="question" id="email-question">Where should I send it?</h2>
+      <p class="question-hint">Your full report will show on the next screen. I will also send you a copy to keep. No pitch. No spam. If you decide it is not for you, one click to unsubscribe.</p>
+
+      <script src="https://f.convertkit.com/ckjs/ck.6.js"></script>
+      <form id="kit-email-form" action="https://app.kit.com/forms/9539937/subscriptions" class="seva-form formkit-form" method="post" data-sv-form="9539937" data-uid="709ce44e7b" data-format="inline" data-version="6" data-options="{&quot;settings&quot;:{&quot;after_subscribe&quot;:{&quot;action&quot;:&quot;message&quot;,&quot;success_message&quot;:&quot;Success! Now check your email to confirm your subscription.&quot;,&quot;redirect_url&quot;:&quot;&quot;},&quot;analytics&quot;:{&quot;google&quot;:null,&quot;fathom&quot;:null,&quot;facebook&quot;:null,&quot;segment&quot;:null,&quot;pinterest&quot;:null,&quot;sparkloop&quot;:null,&quot;googletagmanager&quot;:null},&quot;modal&quot;:{&quot;trigger&quot;:&quot;timer&quot;,&quot;scroll_percentage&quot;:null,&quot;timer&quot;:5,&quot;devices&quot;:&quot;all&quot;,&quot;show_once_every&quot;:15},&quot;powered_by&quot;:{&quot;show&quot;:true,&quot;url&quot;:&quot;https://kit.com/features/forms?utm_campaign=poweredby&amp;utm_content=form&amp;utm_medium=referral&amp;utm_source=dynamic&quot;},&quot;recaptcha&quot;:{&quot;enabled&quot;:false},&quot;return_visitor&quot;:{&quot;action&quot;:&quot;show&quot;,&quot;custom_content&quot;:&quot;&quot;},&quot;slide_in&quot;:{&quot;display_in&quot;:&quot;bottom_right&quot;,&quot;trigger&quot;:&quot;timer&quot;,&quot;scroll_percentage&quot;:null,&quot;timer&quot;:5,&quot;devices&quot;:&quot;all&quot;,&quot;show_once_every&quot;:15},&quot;sticky_bar&quot;:{&quot;display_in&quot;:&quot;top&quot;,&quot;trigger&quot;:&quot;timer&quot;,&quot;scroll_percentage&quot;:null,&quot;timer&quot;:5,&quot;devices&quot;:&quot;all&quot;,&quot;show_once_every&quot;:15}},&quot;version&quot;:&quot;6&quot;}" min-width="400 500 600 700 800">
+        <div data-style="clean">
+          <ul class="formkit-alert formkit-alert-error" data-element="errors" data-group="alert"></ul>
+          <div data-element="fields" data-stacked="false" class="seva-fields formkit-fields">
+            <div class="formkit-field">
+              <input class="formkit-input" name="email_address" aria-label="Your email" placeholder="you@somewhere.com" required type="email" style="color: var(--fg); background: var(--card); border-color: var(--rule-color); border-radius: 4px; font-weight: 400;">
+            </div>
+            <input type="hidden" name="first_name" value="">
+            <input type="hidden" name="fields[profile]" value="">
+            <input type="hidden" name="fields[bottleneck]" value="">
+            <input type="hidden" name="fields[physical_score]" value="">
+            <input type="hidden" name="fields[energy_score]" value="">
+            <input type="hidden" name="fields[stress_score]" value="">
+            <input type="hidden" name="fields[pattern]" value="">
+            <input type="hidden" name="fields[full_answers]" value="">
+            <input type="hidden" name="fields[report_url]" value="">
+            <button data-element="submit" class="formkit-submit formkit-submit" style="color: #FBF7ED; background-color: var(--accent); border-radius: 999px; font-weight: 500;">
+              <div class="formkit-spinner"><div></div><div></div><div></div></div>
+              <span>Send it &amp; show my report &rarr;</span>
+            </button>
+          </div>
+          <div class="formkit-powered-by-convertkit-container">
+            <a href="https://kit.com/features/forms?utm_campaign=poweredby&amp;utm_content=form&amp;utm_medium=referral&amp;utm_source=dynamic" data-element="powered-by" class="formkit-powered-by-convertkit" data-variant="dark" target="_blank" rel="nofollow noopener">Built with Kit</a>
+          </div>
+        </div>
+      </form>
+
+      <p class="cta-note" style="margin-top: 8px;">By continuing you agree to receive the report and follow-up emails from Conor. Unsubscribe any time.</p>
+      <div class="nav" style="justify-content: flex-start;">
+        <button type="button" class="btn btn-ghost" id="email-back-btn">Back</button>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+  // ---------------------------------------------------------
+  //  CONFIG
+  //  Kit (formerly ConvertKit) form ID 9539937 is wired up below via
+  //  the official Kit embed snippet. Create these custom subscriber
+  //  fields in Kit (Settings -> Subscriber Fields) so the hidden
+  //  inputs on the form have somewhere to land, and so your
+  //  automation can use them as merge tags:
+  //    profile, bottleneck, physical_score, energy_score,
+  //    stress_score, pattern, full_answers, report_url
+  //  Zapier webhook is optional. If set, the full JSON also POSTs
+  //  there (use it if you want the raw data in a Google Sheet or
+  //  Airtable, in addition to Kit).
+  // ---------------------------------------------------------
+  const KIT_FORM_ID = '9539937';
+  const WEBHOOK_URL = ''; // optional. e.g. https://hooks.zapier.com/hooks/catch/...
+  const INSTAGRAM_URL = 'https://instagram.com/conorosheafit';
+  const INSTAGRAM_KEYWORD = 'SPINE';
+
+  // ---------------------------------------------------------
+  //  ASSESSMENT DEFINITION
+  //  Types:
+  //    - question    : one input screen
+  //    - section     : static section header ("Foundation.")
+  //    - reflection  : dynamic coach reflection built from state
+  //    - complete    : final "assessment complete" beat before email
+  //    - email       : email capture
+  // ---------------------------------------------------------
+
+  const TREATMENT_OPTIONS = [
+    'Physio or PT',
+    'Chiropractor or osteopath',
+    'Sports massage',
+    'Painkillers or anti-inflammatories',
+    'Steroid injections',
+    'MRI or CT scans',
+    'YouTube rehab programs',
+    'Online course or app',
+    'Rest and waiting it out',
+    'Been offered surgery'
+  ];
+
+  const SYSTEM_INPUT_OPTIONS = [
+    'How stress affects my back',
+    'How sleep affects my back',
+    'The structure of my training across a full week',
+    'How I decide to push or back off in a session',
+    'A planned recovery schedule',
+    'Warning signs before a flare-up',
+    'My long-term goal for training',
+    'None of the above. It has mostly been exercises or adjustments.'
+  ];
+
+  const steps = [
+    // ---- Setup ----
+    {
+      type: 'question',
+      id: 'identity',
+      eyebrow: 'Setup',
+      stage: 'Setup',
+      title: 'Tell me your name, and give me one sentence on the pattern you are most tired of.',
+      hint: null,
+      fields: [
+        { key: 'name', type: 'text', label: 'Your name', placeholder: 'First name is fine', required: true },
+        { key: 'pattern', type: 'textarea', label: 'The pattern you are most tired of', placeholder: 'One sentence. Do not overthink it.', required: true }
+      ]
+    },
+    {
+      type: 'question',
+      id: 'scores',
+      eyebrow: 'Setup',
+      stage: 'Setup',
+      title: 'Before the detail, three numbers.',
+      hint: 'These shape everything that follows. Use the anchors under each scale.',
+      fields: [
+        { key: 'physical', type: 'scale', label: 'Physical state right now',
+          anchors: ['1-4: pain or injury active', '5-7: functional but not where you want to be', '8-10: moving well, no significant limitations'], required: true },
+        { key: 'energy', type: 'scale', label: 'Energy and recovery',
+          anchors: ['1-4: running on empty', '5-7: managing but inconsistent', '8-10: genuinely restored'], required: true },
+        { key: 'stress', type: 'scale', label: 'Stress load right now',
+          anchors: ['1-4: high stress, survival mode', '5-7: elevated but manageable', '8-10: genuinely settled'], required: true }
+      ]
+    },
+
+    // ---- Reflection after scores ----
+    { type: 'reflection', id: 'reflect_scores', build: (s) => ({
+        tag: "Coach's read",
+        title: 'Noted.',
+        body: buildScoreReflection(s)
+    })},
+
+    // ---- Awareness phase ----
+    {
+      type: 'question',
+      id: 'tried',
+      eyebrow: 'Setup',
+      stage: 'Awareness',
+      title: 'What have you already tried?',
+      hint: 'Select everything that has been part of your journey so far.',
+      fields: [
+        { key: 'tried', type: 'multi', options: TREATMENT_OPTIONS.map(o => ({ label: o })), required: true }
+      ]
+    },
+    {
+      type: 'question',
+      id: 'longest_relief',
+      eyebrow: 'Setup',
+      stage: 'Awareness',
+      title: 'Across everything you have tried, what is the longest period of relief you have had before the pain came back?',
+      hint: null,
+      fields: [
+        { key: 'longest_relief', type: 'options', options: [
+          { label: 'Less than two weeks' },
+          { label: 'Two weeks to three months' },
+          { label: 'Three to twelve months' },
+          { label: 'Longer, and it eventually returned' },
+          { label: 'I have never had a real period of relief' }
+        ], required: true }
+      ]
+    },
+    {
+      type: 'question',
+      id: 'addressed',
+      eyebrow: 'Setup',
+      stage: 'Awareness',
+      title: 'Of the professionals you have seen, which of these has any of them systematically addressed?',
+      hint: 'Not "mentioned in passing." Actually built into their assessment or plan.',
+      fields: [
+        { key: 'addressed', type: 'multi', options: SYSTEM_INPUT_OPTIONS.map(o => ({ label: o })), required: true }
+      ]
+    },
+    {
+      type: 'question',
+      id: 'lens',
+      eyebrow: 'Setup',
+      stage: 'Awareness',
+      title: 'Right now, how do you actually see your back pain?',
+      hint: null,
+      fields: [
+        { key: 'lens', type: 'options', options: [
+          { label: 'An exercise problem. I am doing the wrong movements.' },
+          { label: 'A load problem. I am doing too much or progressing too fast.' },
+          { label: 'A structural problem. Something is mechanically wrong that needs fixing.' },
+          { label: 'A system problem. My training, sleep, stress, and body are not in sync.' },
+          { label: 'Honestly, I do not know anymore.' }
+        ], required: true }
+      ]
+    },
+
+    // ---- Reflection after awareness ----
+    { type: 'reflection', id: 'reflect_awareness', build: (s) => ({
+        tag: 'The pattern under the pattern',
+        title: 'Here is what I already see.',
+        body: buildAwarenessReflection(s)
+    })},
+
+    // ---- Context ----
+    {
+      type: 'question',
+      id: 'context1',
+      eyebrow: 'Context',
+      stage: 'Setup',
+      title: 'The ground truth.',
+      hint: "Take a minute on each. Longer answers give a sharper read.",
+      fields: [
+        { key: 'training', type: 'textarea', label: 'What does your training currently look like? Type, frequency, intensity.', required: true },
+        { key: 'cycle_history', type: 'textarea', label: 'How long have you been in the injury-restart cycle? Walk me through the pattern.', required: true }
+      ]
+    },
+    {
+      type: 'question',
+      id: 'context2',
+      eyebrow: 'Context',
+      stage: 'Setup',
+      title: 'Your read on it.',
+      hint: null,
+      fields: [
+        { key: 'think_problem', type: 'textarea', label: 'What do you think the problem actually is?', required: true },
+        { key: 'should_change', type: 'textarea', label: 'Is there anything about your approach that you know you should change but have not changed yet?', required: true }
+      ]
+    },
+
+    // ---- Foundation ----
+    { type: 'section', tag: 'Stage 1 of 3', title: 'Foundation.', body: [
+      "Foundation is the base. Structure, recovery, and the framework guiding your training decisions.",
+      "If Foundation is broken, nothing built on top of it can hold. Four questions."
+    ]},
+    {
+      type: 'question',
+      id: 'training_structure',
+      eyebrow: 'Foundation · 1 of 4',
+      stage: 'Foundation',
+      title: 'How is your training actually structured week to week?',
+      hint: 'Not what you want it to look like. What it genuinely is.',
+      fields: [
+        { key: 'training_structure', type: 'options', options: [
+          { label: 'One progressive plan that I follow week by week.', score: { foundation: 0 } },
+          { label: 'A main plan, plus a few extras I add on.', score: { foundation: 1 } },
+          { label: 'A mixture of sources. Whatever I feel like or find that day.', score: { foundation: 3 } },
+          { label: 'No real structure. I just show up and see what happens.', score: { foundation: 3 } }
+        ], required: true }
+      ]
+    },
+    {
+      type: 'question',
+      id: 'pre_flare',
+      eyebrow: 'Foundation · 2 of 4',
+      stage: 'Foundation',
+      title: 'Think about your last flare-up. What was happening in the two to four weeks before it?',
+      hint: 'Training, life, sleep, stress. Anything that changed.',
+      fields: [
+        { key: 'pre_flare', type: 'textarea', label: null, placeholder: 'Even short answers help.', required: true }
+      ]
+    },
+    {
+      type: 'question',
+      id: 'decision_method',
+      eyebrow: 'Foundation · 3 of 4',
+      stage: 'Foundation',
+      title: 'How do you decide when to push in training and when to back off?',
+      hint: null,
+      fields: [
+        { key: 'decision_method', type: 'options', options: [
+          { label: 'A framework I use every session. Readiness check, then decide.', score: { foundation: 0 } },
+          { label: 'RPE or similar. I regulate load by how the reps actually feel.', score: { foundation: 0, resilience: 1 } },
+          { label: 'Based on how I feel that morning. Gut call.', score: { foundation: 2, resilience: 2 } },
+          { label: 'Whatever the workout says that day.', score: { foundation: 3 } }
+        ], required: true }
+      ]
+    },
+    {
+      type: 'question',
+      id: 'planned_recovery',
+      eyebrow: 'Foundation · 4 of 4',
+      stage: 'Foundation',
+      title: 'When was the last time you took a planned recovery week?',
+      hint: 'Not because the back forced it. Because recovery was scheduled.',
+      fields: [
+        { key: 'planned_recovery', type: 'options', options: [
+          { label: 'Every 4-6 weeks. It is built into my plan.', score: { foundation: 0 } },
+          { label: 'Sometimes. When I remember or feel wrecked.', score: { foundation: 1 } },
+          { label: 'Only when a flare-up or injury forces it.', score: { foundation: 3 } },
+          { label: 'I do not have that kind of planned structure.', score: { foundation: 3 } }
+        ], required: true }
+      ]
+    },
+
+    // ---- Progression ----
+    { type: 'section', tag: 'Stage 2 of 3', title: 'Progression.', body: [
+      "Progression is how you build. How you scale training up in a way your body can adapt to.",
+      "Foundation gets you moving. Progression is what keeps momentum from turning into another crash."
+    ]},
+    {
+      type: 'question',
+      id: 'good_weeks',
+      eyebrow: 'Progression · 1 of 2',
+      stage: 'Progression',
+      title: 'When things are going well in your training, what does that look like? And what typically ends it?',
+      hint: 'Be honest about the ending. That part matters most.',
+      fields: [
+        { key: 'good_weeks', type: 'textarea', label: null, required: true }
+      ]
+    },
+    {
+      type: 'question',
+      id: 'setback_response',
+      eyebrow: 'Progression · 2 of 2',
+      stage: 'Progression',
+      title: 'When something in your body does not feel right in training, what happens next?',
+      hint: null,
+      fields: [
+        { key: 'setback_response', type: 'options', options: [
+          { label: 'I drop the load and keep training with a modified version.', score: { progression: 0 } },
+          { label: 'I switch to a different lift or session and keep moving.', score: { progression: 1 } },
+          { label: 'I push through and hope it settles.', score: { progression: 3 } },
+          { label: 'I stop training entirely and wait for it to feel better.', score: { progression: 3 } }
+        ], required: true }
+      ]
+    },
+
+    // ---- Resilience ----
+    { type: 'section', tag: 'Stage 3 of 3', title: 'Resilience.', body: [
+      "Resilience is the last layer. Whether your body's signals actually reach your decisions.",
+      "Two short questions. Then we build your report."
+    ]},
+    {
+      type: 'question',
+      id: 'warning_signs',
+      eyebrow: 'Resilience · 1 of 2',
+      stage: 'Resilience',
+      title: 'Before your last flare-up, did your body give you any warning signs? What did you do with them?',
+      hint: 'Tightness, fatigue, poor sleep, reduced range. If you noticed anything, how did it change what you did?',
+      fields: [
+        { key: 'warning_signs_text', type: 'textarea', label: 'Describe it', placeholder: 'Even a short answer is fine.', required: true },
+        { key: 'warning_signs', type: 'options', label: 'And which of these is closest to what actually happened?', options: [
+          { label: 'The signs changed my session. I dropped load or skipped what was risky.', score: { resilience: 0 } },
+          { label: 'I noticed them but trained the same session anyway.', score: { resilience: 3 } },
+          { label: 'I felt something but did not really register it until after.', score: { resilience: 2 } },
+          { label: 'No warning signs. The flare came out of nowhere.', score: { resilience: 1, foundation: 1 } }
+        ], required: true }
+      ]
+    },
+    {
+      type: 'question',
+      id: 'longterm',
+      eyebrow: 'Resilience · 2 of 2',
+      stage: 'Resilience',
+      title: 'If the version of training that guaranteed you were still moving well at 75 looked very different from what you do now, would that feel more like a relief or more like a threat?',
+      hint: null,
+      fields: [
+        { key: 'longterm', type: 'options', options: [
+          { label: 'Relief. I want a body that lasts. I am ready to change how I train.', score: { resilience: 0 } },
+          { label: 'Both. Part of me is ready, part of me is attached to how I train now.', score: { resilience: 1 } },
+          { label: 'Threat. My identity is tied to the way I train now.', score: { resilience: 3 } },
+          { label: 'Neutral. I have not really thought that far ahead.', score: { resilience: 1 } }
+        ], required: true }
+      ]
+    },
+
+    { type: 'complete' },
+    { type: 'email' }
+  ];
+
+  // ---------------------------------------------------------
+  //  DYNAMIC REFLECTION BUILDERS
+  // ---------------------------------------------------------
+  function buildScoreReflection(s) {
+    const parts = [];
+    const p = s.answers.physical, e = s.answers.energy, st = s.answers.stress;
+    parts.push(`Physical ${p}/10. ${interpretScore('physical', p)}`);
+    parts.push(`Energy ${e}/10. ${interpretScore('energy', e)}`);
+    parts.push(`Stress ${st}/10. ${interpretScore('stress', st)}`);
+    if (st <= 4) {
+      parts.push("That last one matters most. Your system is under high stress, and stress changes how your body tolerates load, recovers, and responds to pain. We are not going to treat your back in isolation. We are going to treat it as one signal in a system that includes everything else you tell me.");
+    } else if (st <= 7) {
+      parts.push("Stress is elevated but manageable. That is worth knowing, because most people underrate how much a moderately stressful few weeks changes how their body tolerates load. We will factor it in rather than assume your back sits outside of it.");
+    } else {
+      parts.push("Stress is settled. That gives us a cleaner read on what is actually going on in your body, rather than what is going on in your life spilling over into it.");
+    }
+    return parts;
+  }
+
+  function buildAwarenessReflection(s) {
+    const tried = s.answers.tried || [];
+    const addressed = s.answers.addressed || [];
+    const reliefIdx = s.answers.longest_relief;
+    const reliefLabel = typeof reliefIdx === 'number'
+      ? steps.find(q => q.id === 'longest_relief').fields[0].options[reliefIdx].label.toLowerCase()
+      : '';
+    const noneAddressed = addressed.some(i => SYSTEM_INPUT_OPTIONS[i].startsWith('None of the above'));
+    const realAddressed = addressed.filter(i => !SYSTEM_INPUT_OPTIONS[i].startsWith('None of the above')).length;
+
+    const parts = [];
+    parts.push(`You have tried ${tried.length} different route${tried.length === 1 ? '' : 's'}. Longest period of relief lasted ${reliefLabel || 'a limited time'}.`);
+    if (noneAddressed || realAddressed === 0) {
+      parts.push("Of the seven system inputs I asked about, none have been directly addressed by the professionals you have seen. Not stress. Not sleep. Not the way you decide to push or back off. Not a planned recovery schedule. Not warning signs. Not your long-term goal. Not the shape of your training week.");
+    } else {
+      parts.push(`Of the seven system inputs I asked about, ${realAddressed} have been directly addressed. Which means most of them have not.`);
+    }
+    parts.push("That is not a criticism of anyone you have seen. It is a description of what most treatment is designed to do. Physiotherapy addresses the movement. Chiropractic addresses the joint. GPs address the pain. Each of them treats a piece. None of them is designed to treat the pattern.");
+    parts.push("That gap is the one thing I want you to hold onto as we go into the assessment. Everything from here is designed to identify where in that gap your specific cycle is stuck.");
+    return parts;
+  }
+
+  function interpretScore(kind, value) {
+    if (kind === 'physical') {
+      if (value <= 4) return 'Body in active pain or injury.';
+      if (value <= 7) return 'Functional, but not where you want to be.';
+      return 'Moving well, no significant limitations.';
+    }
+    if (kind === 'energy') {
+      if (value <= 4) return 'Running on empty.';
+      if (value <= 7) return 'Managing, but inconsistent.';
+      return 'Genuinely restored.';
+    }
+    if (kind === 'stress') {
+      if (value <= 4) return 'High stress. Survival mode.';
+      if (value <= 7) return 'Elevated but manageable.';
+      return 'Genuinely settled.';
+    }
+    return '';
+  }
+
+  // ---------------------------------------------------------
+  //  PROFILES + REPORTS BY PRIMARY BOTTLENECK
+  // ---------------------------------------------------------
+  const profiles = {
+    foundation: {
+      profileName: 'The Determined Guesser',
+      profileDescription: "You are clearly committed to training. You have kept showing up despite recurring flare-ups. The pattern is not a lack of effort. It is that your decisions are being guided by a mixture of sources rather than one progressive system that accounts for stress, recovery, and load. That is why the cycle keeps repeating.",
+      bottleneckName: 'Foundation',
+      bottleneckDescription: "Your system breaks down at Foundation before Progression or Resilience ever get the chance to work. You have identified weak areas, but your training is not built around systematically addressing them. Recovery is reactive rather than planned, and training decisions change based on the workout you choose that day. The cost is exactly what you described: every time you start building momentum, your back flares, you lose confidence, and the cycle starts again.",
+      stages: [
+        { name: 'Foundation', level: 'Broken', phase: 'Friction',
+          working: ['You are still training and still showing up.', 'You have sought help through physiotherapy.', 'You are starting to notice that sleep and stress affect your back.'],
+          broken: ['There is no single progressive training structure.', 'Recovery is only taken when pain forces it.', 'Training is stitched together from multiple sources.', 'There are no planned recovery weeks.'],
+          costing: 'Instead of building confidence, every period of progress feels temporary because you never know when the next flare-up is coming.',
+          solid: 'Training becomes predictable. Good weeks build into good months because your body has a structure it can actually adapt to.'
+        },
+        { name: 'Progression', level: 'Developing', phase: 'Friction',
+          working: ['You recognise that stable sleep, routine, and training help.', 'You keep returning to training after setbacks.'],
+          broken: ['You fall into the good-day trap. You push hard after time off.', 'You do not adjust training based on sleep, stress, or readiness.', 'Flare-ups feel random because you are not tracking the factors that lead into them.'],
+          costing: "Every interruption from work or travel becomes a reset instead of something you can navigate while continuing to progress.",
+          solid: "You stop trying to make up for lost time. You steadily build capacity regardless of life's disruptions."
+        },
+        { name: 'Resilience', level: 'Developing', phase: 'Friction',
+          working: ['Your long-term goal is clear.', 'You can recognise warning signs when you reflect on them.'],
+          broken: ['Your response is still all or nothing. Push through or full stop.', 'You notice warning signs but they do not change your decision in the moment.'],
+          costing: 'Your body is giving you useful information. It is not yet influencing your choices before the flare-up happens.',
+          solid: 'You trust your body without fearing it. Warning signs become opportunities to adjust rather than the start of another setback.'
+        }
+      ],
+      cycleStart: "High stress and poor sleep reduce your recovery. You continue training without adjusting for those factors. Tightness appears before a session, but you train anyway. After a flare-up, you rest, then feel better and push hard to make up for lost time. The cycle repeats.",
+      whatYouThink: 'The problem is that you are not doing the right training, or that you are weak in certain areas.',
+      whatIsHappening: "Weakness may exist. The deeper issue is the absence of a structured system that manages total load, progression, and recovery. Your back is responding to the overall pattern, not just individual exercises.",
+      whyNotWorked: "Physiotherapy and painkillers addressed the flare-ups. They did not replace your underlying training system. The symptoms improved. The pattern remained.",
+      rootPattern: "Your training decisions are being driven by how you feel today instead of a structured progression that reflects your current capacity.",
+      plain: 'Life stress rises, recovery drops, you keep training as planned, the back flares, you recover, then push hard to catch up.',
+      trigger: 'Poor sleep, work stress, and returning too aggressively after time away.',
+      belief: 'If I can just find the right exercises and train harder when I feel good, this will finally go away.',
+      breakingIt: 'Replacing guesswork with one clear progression that includes planned recovery and adjusts training according to your readiness, not just motivation.',
+      nextStep: "Within the next 48 hours, write down your current weekly training on one page. Include everything: sessions, PT work, recovery, sleep. Then identify one session this week where you will deliberately reduce load if your sleep or stress is poor, instead of automatically completing the planned workout. Build one decision rule before you build more intensity.",
+      honestTruth: [
+        "You have not failed because you lack commitment. Years of continuing to train, seeking physiotherapy, and looking for solutions shows the opposite. What you have been missing is not effort. It is a system that matches how your body actually adapts.",
+        "The uncomfortable part is that your back has been giving you warning signs. You have felt them. Until those signals change your decisions, the cycle is likely to continue, even if you find better exercises.",
+        "The encouraging part is that your direction is already clear. You want a body that lasts. That is an infinite game mindset. Combine that with a structured progression, planned recovery, and better load management, and there is every reason to believe this pattern can change. The cycle is not bad luck. It is a pattern. Patterns can be changed."
+      ]
+    },
+    progression: {
+      profileName: 'The Boom-Bust Trainer',
+      profileDescription: "You know how to build. When you are on, you are on. The problem is not the base. It is that you cannot sustain a build phase without hitting a wall you did not see coming. What you have is momentum without regulation. Big weeks that end in setbacks. Long stretches of good work erased in one bad session.",
+      bottleneckName: 'Progression',
+      bottleneckDescription: "Your Foundation is largely there. You know what to do in a session. The breakdown happens between 'I feel good' and 'I overshoot.' You do not have a system that scales training up in a way your body can actually adapt to. Every time you push, you are relying on how you feel that day to decide how much is too much. That gap is what keeps the cycle repeating.",
+      stages: [
+        { name: 'Foundation', level: 'Solid', phase: 'Momentum',
+          working: ['You have a real training practice you keep returning to.', 'You take some form of recovery.', 'You know the basics of what your body needs.'],
+          broken: ['Recovery is not always planned in advance.', 'You may lean on your Foundation as a safety net when Progression is where the problem sits.'],
+          costing: 'Your base is fine, but you keep loading a build phase onto a base that has not been properly progressed.',
+          solid: 'Foundation stops being the story. You can stop thinking about it and trust it.'
+        },
+        { name: 'Progression', level: 'Broken', phase: 'Friction',
+          working: ['You know how to add intensity when you feel good.', 'You keep returning to training after setbacks.'],
+          broken: ['You use how you feel that day as the primary signal for how hard to push.', 'You do not scale load based on the last two to four weeks of accumulated stress.', "You push hardest right after time off, which is the worst moment to do it."],
+          costing: 'Every good stretch ends the same way. The last session before a flare is almost always your biggest one. You cannot see the wall until you are already through it.',
+          solid: 'Progression becomes deliberate. You get further in every build phase because you stop overshooting your own capacity.'
+        },
+        { name: 'Resilience', level: 'Developing', phase: 'Friction',
+          working: ['You have a long-term goal that gives shape to the work.', 'You can recognise warning signs after the fact.'],
+          broken: ['You still override signals in the moment, because momentum feels good.', "You confuse feeling strong with actually being adapted to the load."],
+          costing: 'Feeling strong is not the same as being ready. That gap is where the flares happen.',
+          solid: "Your body's readiness becomes the ceiling of your training decisions, not your motivation."
+        }
+      ],
+      cycleStart: "You come out of a rest period or a setback feeling good. You add load quickly to make up for lost time. You have two or three great sessions. On the third or fourth, your back protests. You rest again. Repeat.",
+      whatYouThink: 'The problem is the setback itself. If I could just get past this next flare, everything would be fine.',
+      whatIsHappening: "The setback is a symptom. The build phase that led into it was structurally unsustainable. Your body was accumulating stress you were not accounting for. The last session did not cause the flare. It just happened to be the one that broke the run.",
+      whyNotWorked: "You have tried harder. You have tried different exercises. What you have not tried is a build phase that starts smaller than your ego wants and adds load slower than feels satisfying. That is why nothing has held.",
+      rootPattern: "You progress by feel, not by structure. Feel says 'more.' Structure would say 'not yet.'",
+      plain: 'Feel good, add load quickly, get further than last time, then crash.',
+      trigger: 'Coming back from time off feeling fresh, and using that freshness as a signal to push.',
+      belief: 'If I feel good, I should push. Not pushing feels like wasting a good day.',
+      breakingIt: 'Building a progression that treats how you feel as an input, not the input. A structure that grows slower than motivation and outlasts it.',
+      nextStep: "Within the next 48 hours, pick one lift, and one only. Write down the load you would do this week based on how you feel. Then subtract ten percent. That is your load for the next two sessions. Log both. That is the whole ask this week.",
+      honestTruth: [
+        "You do not have a Foundation problem. You have a decision problem at the moment when everything feels fine.",
+        "The uncomfortable part is that the sessions right before your flares are usually the ones you were proudest of. That is not a coincidence. That is the pattern.",
+        "The encouraging part is that this is fixable without changing anything about the work you enjoy. You do not need to train less. You need to progress differently. Same lifts, same movements, different pattern of load. That is a much smaller shift than it feels like right now."
+      ]
+    },
+    resilience: {
+      profileName: 'The Warning-Sign Ignorer',
+      profileDescription: "You have a system. You have progression. What you do not have yet is the ability to trust your body's signals in the moment when it is telling you to adjust. You override the signals. You treat effort as the answer to a signal that is actually asking for adjustment. Everything else is close to right. Just this piece keeps the cycle going.",
+      bottleneckName: 'Resilience',
+      bottleneckDescription: "This is the deepest layer of the system. You have done real work at Foundation and Progression. The final layer, where your body tells you what to do and you actually listen, is not built yet. Until it is, the cycle continues at a smaller amplitude. You get further, but you still get flare-ups. And the flares that do come feel more frustrating because you know you saw them coming.",
+      stages: [
+        { name: 'Foundation', level: 'Solid', phase: 'Momentum',
+          working: ['You have a real, progressive plan.', 'Recovery is built into your week.', 'You know what to do in a session and why.'],
+          broken: ['Very little. Foundation is not the problem.'],
+          costing: 'Nothing. This is your strongest layer.',
+          solid: 'Your Foundation gives you a platform. The problem is what you do on top of it.'
+        },
+        { name: 'Progression', level: 'Developing', phase: 'Momentum',
+          working: ['You use a framework, not just feel, to scale load.', 'You build steadily across weeks.'],
+          broken: ["You occasionally override the framework when a session goes better than expected."],
+          costing: "Small, but it opens the door for the Resilience issue to show up.",
+          solid: 'Progression is on rails. The framework does the work. You do not need to fight it.'
+        },
+        { name: 'Resilience', level: 'Broken', phase: 'Friction',
+          working: ['You have long-term clarity.', 'You can recognise warning signs.'],
+          broken: ['You override warning signs in the session.', 'You confuse skipping a session with being weak.', "You believe effort is the answer to almost every signal your body sends."],
+          costing: 'Every flare-up now feels self-inflicted, because on some level you saw it coming and pushed anyway. That is more demoralising than the earlier flares were.',
+          solid: 'Signals become useful. A tight morning becomes a lighter session, not a fight. Your best sessions become your best sessions, not your last sessions before a flare.'
+        }
+      ],
+      cycleStart: "Something in your body feels off before a session. You know what it means. You go anyway, because backing off feels weaker than pushing through. The session goes fine, but the pattern accumulates. Eventually one of those overrides costs you a week.",
+      whatYouThink: "The problem is that I'm just not tough enough with recovery, or that I need better recovery tools.",
+      whatIsHappening: "You have plenty of recovery. What you do not have is a rule that says a warning sign changes the session. Right now, a warning sign is information you note. It needs to become information you act on.",
+      whyNotWorked: "Every fix you have added so far has been a fix on top of the same decision pattern. The pattern is the problem. No amount of new tools will change it until the pattern does.",
+      rootPattern: "You treat warning signs as a test of your commitment. They are actually a test of your ability to adjust.",
+      plain: 'Signal shows up. You override it. Cycle continues, quieter each time, but still there.',
+      trigger: 'Any session where backing off would feel like admitting weakness.',
+      belief: "If I listen to every twinge, I'll never train hard. So I have to override most of them.",
+      breakingIt: "Building one clear rule that a warning sign always changes the session. Not skips it. Changes it. That is different, and it is the whole game.",
+      nextStep: "Within the next 48 hours, write down the exact rule your body would need you to follow to catch the next flare-up before it happens. Not a list of tools. One decision rule. Something like: 'If I wake up feeling stiff and slept under six hours, I drop load by twenty percent and skip the heaviest set.' Then use it once this week.",
+      honestTruth: [
+        "You have already done most of the work. Foundation and Progression are largely there. What is missing is the layer nobody teaches, because most rehab stops the moment the sharp pain goes away.",
+        "The uncomfortable part is that your remaining flares are the ones you can see in the mirror. That is a different kind of frustration than the earlier ones. It is also a much better problem to have.",
+        "The encouraging part is that Resilience is the last fifteen percent. This is the phase where you stop being a back pain guy. The rule you build this week is the beginning of that."
+      ]
+    }
+  };
+
+  // What each treatment did and did not do. Used in the "why treatment was temporary" section.
+  const TREATMENT_ROLES = {
+    'Physio or PT': 'Restored some movement and gave you exercises. Rarely built into a full weekly system.',
+    'Chiropractor or osteopath': 'Reduced acute pain and adjusted joints. Did not change how you load or progress.',
+    'Sports massage': 'Released tightness. The tightness was a signal, not the cause.',
+    'Painkillers or anti-inflammatories': 'Quieted the alarm. The alarm was doing a job.',
+    'Steroid injections': 'Bought you a window. Windows close.',
+    'MRI or CT scans': 'Named a structure. Did not explain the pattern that keeps stressing it.',
+    'YouTube rehab programs': 'Gave you exercises. Not calibrated to your capacity, and layered on top of an existing routine.',
+    'Online course or app': 'Added structure. Rarely accounted for your stress, sleep, or recovery.',
+    'Rest and waiting it out': 'Reduced the load. Also reduced your capacity.',
+    'Been offered surgery': 'A structural fix for what is often a systemic pattern.'
+  };
+
+  // ---------------------------------------------------------
+  //  STATE
+  // ---------------------------------------------------------
+  const state = {
+    stepIndex: -1,
+    answers: {},
+    scores: { foundation: 0, progression: 0, resilience: 0 },
+    forcedBottleneck: null
+  };
+
+  // ---------------------------------------------------------
+  //  URL-STATE PERSISTENCE
+  //  On email submit, we encode a compact version of the user's
+  //  answers as ?r=<base64> and pass that URL to Kit as a
+  //  custom field `report_url`. Kit's email template inserts
+  //  {{ subscriber.report_url }} as a link. When the user
+  //  clicks it, the report page hydrates from the URL and
+  //  shows their exact report again.
+  // ---------------------------------------------------------
+  function buildReportURL() {
+    try {
+      const payload = {
+        n: state.answers.name || '',
+        p: state.answers.pattern || '',
+        s: [state.answers.physical, state.answers.energy, state.answers.stress],
+        t: state.answers.tried || [],
+        lr: state.answers.longest_relief,
+        b: pickBottleneck()
+      };
+      const encoded = btoa(encodeURIComponent(JSON.stringify(payload)));
+      return window.location.origin + window.location.pathname + '?r=' + encoded;
+    } catch (e) {
+      return window.location.href;
+    }
+  }
+
+  function hydrateFromURL() {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const r = params.get('r');
+      if (!r) return false;
+      const decoded = JSON.parse(decodeURIComponent(atob(r)));
+      state.answers.name = decoded.n || '';
+      state.answers.pattern = decoded.p || '';
+      if (Array.isArray(decoded.s)) {
+        state.answers.physical = decoded.s[0];
+        state.answers.energy = decoded.s[1];
+        state.answers.stress = decoded.s[2];
+      }
+      state.answers.tried = decoded.t || [];
+      state.answers.longest_relief = decoded.lr;
+      state.forcedBottleneck = decoded.b;
+      state.stepIndex = steps.length;
+      return true;
+    } catch (e) {
+      console.warn('Could not hydrate from URL:', e);
+      return false;
+    }
+  }
+
+  const app = document.getElementById('app');
+  const intro = app.querySelector('[data-step="intro"]');
+  const emailSection = document.getElementById('email-step');
+
+  function scrollTop() {
+    try { window.scrollTo({ top: 0, behavior: 'auto' }); } catch (_) { window.scrollTo(0, 0); }
+  }
+
+  function clearDynamic() {
+    app.querySelectorAll('.step').forEach(s => {
+      if (s.dataset.step !== 'intro' && s.dataset.step !== 'email') s.remove();
+    });
+    intro.classList.remove('active');
+    emailSection.classList.remove('active');
+  }
+
+  function totalCount() {
+    return steps.filter(s => s.type === 'question' || s.type === 'email' || s.type === 'reflection' || s.type === 'complete').length;
+  }
+  function progressBefore(index) {
+    return steps.slice(0, index).filter(s => s.type === 'question' || s.type === 'email' || s.type === 'reflection' || s.type === 'complete').length;
+  }
+
+  function render() {
+    if (state.stepIndex < 0) {
+      clearDynamic();
+      intro.classList.add('active');
+      scrollTop();
+      return;
+    }
+    if (state.stepIndex >= steps.length) {
+      renderReport();
+      return;
+    }
+    const step = steps[state.stepIndex];
+    if (step.type === 'section') renderSection(step);
+    else if (step.type === 'question') renderQuestion(step);
+    else if (step.type === 'reflection') renderReflection(step);
+    else if (step.type === 'complete') renderComplete();
+    else if (step.type === 'email') renderEmail();
+  }
+
+  function renderSection(step) {
+    clearDynamic();
+    const el = document.createElement('section');
+    el.className = 'step active';
+    el.dataset.step = 'section';
+    el.innerHTML = `
+      <p class="transition-tag"><strong>${step.tag}</strong></p>
+      <h2 class="transition-title"></h2>
+      <div class="transition-body"></div>
+      <div class="nav">
+        <button class="btn btn-ghost" data-action="back">Back</button>
+        <button class="btn" data-action="next">Continue <span class="btn-arrow">&rarr;</span></button>
+      </div>
+    `;
+    el.querySelector('.transition-title').textContent = step.title;
+    const bodyEl = el.querySelector('.transition-body');
+    step.body.forEach(p => {
+      const para = document.createElement('p');
+      para.textContent = p;
+      bodyEl.appendChild(para);
+    });
+    el.querySelector('[data-action="next"]').addEventListener('click', () => { state.stepIndex++; render(); });
+    el.querySelector('[data-action="back"]').addEventListener('click', () => { state.stepIndex--; render(); });
+    app.appendChild(el);
+    scrollTop();
+  }
+
+  function renderReflection(step) {
+    clearDynamic();
+    recalcScores();
+    const content = step.build(state);
+    const el = document.createElement('section');
+    el.className = 'step active';
+    el.dataset.step = step.id;
+    el.innerHTML = `
+      <p class="transition-tag"><strong>${escapeHTML(content.tag)}</strong></p>
+      <h2 class="transition-title"></h2>
+      <div class="transition-body"></div>
+      <div class="nav">
+        <button class="btn btn-ghost" data-action="back">Back</button>
+        <button class="btn" data-action="next">Continue <span class="btn-arrow">&rarr;</span></button>
+      </div>
+    `;
+    el.querySelector('.transition-title').textContent = content.title;
+    const bodyEl = el.querySelector('.transition-body');
+    content.body.forEach(p => {
+      const para = document.createElement('p');
+      para.textContent = p;
+      bodyEl.appendChild(para);
+    });
+    el.querySelector('[data-action="next"]').addEventListener('click', () => { state.stepIndex++; render(); });
+    el.querySelector('[data-action="back"]').addEventListener('click', () => { state.stepIndex--; render(); });
+    app.appendChild(el);
+    scrollTop();
+  }
+
+  function renderComplete() {
+    clearDynamic();
+    const firstName = firstNameOf(state.answers.name);
+    const el = document.createElement('section');
+    el.className = 'step active';
+    el.dataset.step = 'complete';
+    el.innerHTML = `
+      <p class="transition-tag"><strong>Assessment complete</strong></p>
+      <h2 class="transition-title">That is everything I need, ${escapeHTML(firstName)}.</h2>
+      <div class="transition-body">
+        <p>Your report is generated. It walks through your Cycle Profile, the specific bottleneck stopping you, the stage-by-stage read, and the exact next step.</p>
+        <p>Before I show it: where should I send you the copy? So you have it saved, and you can come back to it any time.</p>
+      </div>
+      <div class="nav">
+        <button class="btn btn-ghost" data-action="back">Back</button>
+        <button class="btn btn-accent" data-action="next">Continue to email <span class="btn-arrow">&rarr;</span></button>
+      </div>
+    `;
+    el.querySelector('[data-action="next"]').addEventListener('click', () => { state.stepIndex++; render(); });
+    el.querySelector('[data-action="back"]').addEventListener('click', () => { state.stepIndex--; render(); });
+    app.appendChild(el);
+    scrollTop();
+  }
+
+  function renderQuestion(step) {
+    clearDynamic();
+    const total = totalCount();
+    const soFar = progressBefore(state.stepIndex);
+    const progressPct = (soFar / total) * 100;
+    const el = document.createElement('section');
+    el.className = 'step active';
+    el.dataset.step = step.id;
+    el.innerHTML = `
+      <div class="progress">
+        <div class="progress-rule"><span style="width: ${progressPct}%"></span></div>
+        <div class="progress-meta">
+          <span class="stage-tag">${step.stage}</span>
+          <span>${soFar + 1} of ${total}</span>
+        </div>
+      </div>
+      <p class="question-eyebrow">${step.eyebrow || ''}</p>
+      <h2 class="question"></h2>
+      ${step.hint ? '<p class="question-hint"></p>' : ''}
+      <div class="field-stack" data-fields></div>
+      <div class="nav">
+        <button class="btn btn-ghost" data-action="back">Back</button>
+        <button class="btn" data-action="next" disabled>Continue <span class="btn-arrow">&rarr;</span></button>
+      </div>
+    `;
+    el.querySelector('.question').textContent = step.title;
+    if (step.hint) el.querySelector('.question-hint').textContent = step.hint;
+
+    const fieldsEl = el.querySelector('[data-fields]');
+    step.fields.forEach(f => renderField(fieldsEl, f, step));
+
+    const nextBtn = el.querySelector('[data-action="next"]');
+    const backBtn = el.querySelector('[data-action="back"]');
+
+    function checkValid() {
+      const allValid = step.fields.every(f => {
+        if (!f.required) return true;
+        const v = state.answers[f.key];
+        if (v === undefined || v === null) return false;
+        if (Array.isArray(v)) return v.length > 0;
+        if (typeof v === 'string' && v.trim() === '') return false;
+        return true;
+      });
+      nextBtn.disabled = !allValid;
+    }
+
+    fieldsEl.addEventListener('input', checkValid);
+    fieldsEl.addEventListener('click', () => setTimeout(checkValid, 0));
+
+    nextBtn.addEventListener('click', () => {
+      if (nextBtn.disabled) return;
+      recalcScores();
+      state.stepIndex++;
+      render();
+    });
+    backBtn.addEventListener('click', () => { state.stepIndex--; render(); });
+
+    app.appendChild(el);
+    checkValid();
+    scrollTop();
+  }
+
+  function renderField(container, field, step) {
+    const wrap = document.createElement('div');
+    wrap.className = 'field';
+    if (field.label) {
+      const lbl = document.createElement('label');
+      lbl.className = 'field-label';
+      lbl.textContent = field.label;
+      wrap.appendChild(lbl);
+    }
+    if (field.type === 'text') {
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.placeholder = field.placeholder || '';
+      input.value = state.answers[field.key] || '';
+      input.addEventListener('input', () => { state.answers[field.key] = input.value; });
+      wrap.appendChild(input);
+    } else if (field.type === 'textarea') {
+      const ta = document.createElement('textarea');
+      ta.placeholder = field.placeholder || '';
+      ta.value = state.answers[field.key] || '';
+      ta.rows = 3;
+      ta.addEventListener('input', () => { state.answers[field.key] = ta.value; });
+      wrap.appendChild(ta);
+    } else if (field.type === 'scale') {
+      if (field.anchors) {
+        const hint = document.createElement('p');
+        hint.style.cssText = 'font-family: var(--sans); font-size: 12px; color: var(--muted-fg); margin: 0 0 12px; line-height: 1.5;';
+        hint.textContent = field.anchors.join(' · ');
+        wrap.appendChild(hint);
+      }
+      const scale = document.createElement('div');
+      scale.className = 'scale';
+      for (let i = 1; i <= 10; i++) {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.textContent = i;
+        btn.dataset.value = i;
+        if (state.answers[field.key] === i) btn.classList.add('selected');
+        btn.addEventListener('click', () => {
+          scale.querySelectorAll('button').forEach(b => b.classList.remove('selected'));
+          btn.classList.add('selected');
+          state.answers[field.key] = i;
+          container.dispatchEvent(new Event('input'));
+        });
+        scale.appendChild(btn);
+      }
+      wrap.appendChild(scale);
+      const legend = document.createElement('div');
+      legend.className = 'scale-legend';
+      legend.innerHTML = '<span>1 · lowest</span><span>10 · highest</span>';
+      wrap.appendChild(legend);
+    } else if (field.type === 'options') {
+      const ul = document.createElement('ul');
+      ul.className = 'options';
+      field.options.forEach((opt, i) => {
+        const li = document.createElement('li');
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'option';
+        btn.dataset.index = i;
+        const marker = document.createElement('span');
+        marker.className = 'option-marker';
+        const label = document.createElement('span');
+        label.textContent = opt.label;
+        btn.appendChild(marker);
+        btn.appendChild(label);
+        if (state.answers[field.key] === i) btn.classList.add('selected');
+        btn.addEventListener('click', () => {
+          ul.querySelectorAll('.option').forEach(b => b.classList.remove('selected'));
+          btn.classList.add('selected');
+          state.answers[field.key] = i;
+          container.dispatchEvent(new Event('input'));
+        });
+        li.appendChild(btn);
+        ul.appendChild(li);
+      });
+      wrap.appendChild(ul);
+    } else if (field.type === 'multi') {
+      const ul = document.createElement('ul');
+      ul.className = 'options multi';
+      const current = new Set(state.answers[field.key] || []);
+      field.options.forEach((opt, i) => {
+        const li = document.createElement('li');
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'option' + (current.has(i) ? ' selected' : '');
+        btn.dataset.index = i;
+        const marker = document.createElement('span');
+        marker.className = 'option-marker';
+        const label = document.createElement('span');
+        label.textContent = opt.label;
+        btn.appendChild(marker);
+        btn.appendChild(label);
+        btn.addEventListener('click', () => {
+          if (current.has(i)) current.delete(i);
+          else current.add(i);
+          btn.classList.toggle('selected', current.has(i));
+          state.answers[field.key] = Array.from(current).sort((a,b) => a-b);
+          container.dispatchEvent(new Event('input'));
+        });
+        li.appendChild(btn);
+        ul.appendChild(li);
+      });
+      wrap.appendChild(ul);
+      const hint = document.createElement('p');
+      hint.style.cssText = 'font-family: var(--sans); font-size: 12px; color: var(--muted-fg); margin: 4px 0 0;';
+      hint.textContent = 'Select all that apply.';
+      wrap.appendChild(hint);
+    }
+    container.appendChild(wrap);
+  }
+
+  function recalcScores() {
+    const scores = { foundation: 0, progression: 0, resilience: 0 };
+    for (const step of steps) {
+      if (step.type !== 'question') continue;
+      for (const f of step.fields) {
+        if (f.type !== 'options') continue;
+        const idx = state.answers[f.key];
+        if (typeof idx !== 'number') continue;
+        const opt = f.options[idx];
+        if (!opt || !opt.score) continue;
+        for (const k in opt.score) scores[k] = (scores[k] || 0) + opt.score[k];
+      }
+    }
+    const stress = state.answers.stress;
+    const energy = state.answers.energy;
+    if (typeof stress === 'number' && stress <= 4) scores.foundation += 1;
+    if (typeof energy === 'number' && energy <= 4) scores.foundation += 1;
+    state.scores = scores;
+  }
+
+  function pickBottleneck() {
+    if (state.forcedBottleneck) return state.forcedBottleneck;
+    const order = ['foundation', 'progression', 'resilience'];
+    let winner = 'foundation';
+    let max = -1;
+    for (const k of order) {
+      if ((state.scores[k] || 0) > max) {
+        max = state.scores[k] || 0;
+        winner = k;
+      }
+    }
+    return winner;
+  }
+
+  function firstNameOf(name) {
+    return (name || '').trim().split(/\s+/)[0] || 'friend';
+  }
+
+  // ---------------------------------------------------------
+  //  EMAIL CAPTURE
+  //  The email step lives statically in the page markup (like
+  //  "intro") instead of being built and torn down like the other
+  //  steps. That's so the Kit embed form is present in the DOM from
+  //  page load, which is what the Kit script (ck.js) needs to find
+  //  and bind to it. renderEmail() only updates its dynamic bits
+  //  (progress, question copy, hidden field values) and toggles it
+  //  visible.
+  // ---------------------------------------------------------
+  function renderEmail() {
+    clearDynamic();
+    recalcScores();
+    const bottleneck = pickBottleneck();
+    const profile = profiles[bottleneck];
+    const firstName = firstNameOf(state.answers.name);
+
+    const total = totalCount();
+    const soFar = progressBefore(state.stepIndex);
+    const progressPct = (soFar / total) * 100;
+
+    emailSection.querySelector('#email-progress-fill').style.width = progressPct + '%';
+    emailSection.querySelector('#email-question').textContent = `Where should I send it, ${firstName}?`;
+
+    const form = document.getElementById('kit-email-form');
+    form.querySelector('[name="first_name"]').value = firstName;
+    form.querySelector('[name="fields[profile]"]').value = profile.profileName;
+    form.querySelector('[name="fields[bottleneck]"]').value = profile.bottleneckName;
+    form.querySelector('[name="fields[physical_score]"]').value = String(state.answers.physical ?? '');
+    form.querySelector('[name="fields[energy_score]"]').value = String(state.answers.energy ?? '');
+    form.querySelector('[name="fields[stress_score]"]').value = String(state.answers.stress ?? '');
+    form.querySelector('[name="fields[pattern]"]').value = state.answers.pattern || '';
+    form.querySelector('[name="fields[full_answers]"]').value = buildFullAnswers();
+    form.querySelector('[name="fields[report_url]"]').value = buildReportURL();
+
+    emailSection.classList.add('active');
+    scrollTop();
+  }
+
+  function isValidEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test((v || '').trim()); }
+  function escapeHTML(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+  // Build a readable full-answers block (all text + selections) for Kit / webhook
+  function buildFullAnswers() {
+    const a = state.answers;
+    const relIdx = a.longest_relief;
+    const reliefStep = steps.find(s => s.id === 'longest_relief');
+    const relLabel = typeof relIdx === 'number' && reliefStep ? reliefStep.fields[0].options[relIdx].label : '';
+    const lensStep = steps.find(s => s.id === 'lens');
+    const lensLabel = typeof a.lens === 'number' && lensStep ? lensStep.fields[0].options[a.lens].label : '';
+    const struct = steps.find(s => s.id === 'training_structure');
+    const structLabel = typeof a.training_structure === 'number' ? struct.fields[0].options[a.training_structure].label : '';
+    const dec = steps.find(s => s.id === 'decision_method');
+    const decLabel = typeof a.decision_method === 'number' ? dec.fields[0].options[a.decision_method].label : '';
+    const rec = steps.find(s => s.id === 'planned_recovery');
+    const recLabel = typeof a.planned_recovery === 'number' ? rec.fields[0].options[a.planned_recovery].label : '';
+    const setback = steps.find(s => s.id === 'setback_response');
+    const setbackLabel = typeof a.setback_response === 'number' ? setback.fields[0].options[a.setback_response].label : '';
+    const ws = steps.find(s => s.id === 'warning_signs');
+    const wsLabel = typeof a.warning_signs === 'number' ? ws.fields[1].options[a.warning_signs].label : '';
+    const lt = steps.find(s => s.id === 'longterm');
+    const ltLabel = typeof a.longterm === 'number' ? lt.fields[0].options[a.longterm].label : '';
+    const triedLabels = (a.tried || []).map(i => TREATMENT_OPTIONS[i]).join(', ');
+    const addressedLabels = (a.addressed || []).map(i => SYSTEM_INPUT_OPTIONS[i]).join(', ');
+
+    return [
+      '=== LOW BACK ASSESSMENT ANSWERS ===',
+      `Name: ${a.name || ''}`,
+      `Pattern tired of: ${a.pattern || ''}`,
+      '',
+      `Physical state: ${a.physical}/10`,
+      `Energy & recovery: ${a.energy}/10`,
+      `Stress load: ${a.stress}/10`,
+      '',
+      '--- AWARENESS ---',
+      `What they've tried: ${triedLabels || 'none listed'}`,
+      `Longest period of relief: ${relLabel}`,
+      `What treatment has actually addressed: ${addressedLabels || 'none listed'}`,
+      `How they see the pain: ${lensLabel}`,
+      '',
+      '--- CONTEXT ---',
+      `Current training: ${a.training || ''}`,
+      `Cycle history: ${a.cycle_history || ''}`,
+      `What they think the problem is: ${a.think_problem || ''}`,
+      `What they know they should change: ${a.should_change || ''}`,
+      '',
+      '--- FOUNDATION ---',
+      `Training structure: ${structLabel}`,
+      `2-4 weeks before last flare: ${a.pre_flare || ''}`,
+      `Decision method: ${decLabel}`,
+      `Planned recovery: ${recLabel}`,
+      '',
+      '--- PROGRESSION ---',
+      `Good weeks / what ends them: ${a.good_weeks || ''}`,
+      `Setback response: ${setbackLabel}`,
+      '',
+      '--- RESILIENCE ---',
+      `Warning signs before last flare: ${a.warning_signs_text || ''}`,
+      `Warning signs response: ${wsLabel}`,
+      `75yo mobility relief or threat: ${ltLabel}`,
+      '',
+      '=== ==='
+    ].join('\n');
+  }
+
+  // Submits straight to the Kit forms endpoint (same endpoint the embedded
+  // form's action attribute points to) so the app controls the app-flow
+  // (advancing to the report) itself, rather than depending on the
+  // externally-hosted ck.js script to signal success back to us.
+  async function submitAll({ email, firstName, profile, bottleneck }) {
+    const a = state.answers;
+    const fullAnswers = buildFullAnswers();
+    const reportURL = buildReportURL();
+
+    // ---- Kit ----
+    try {
+      const fd = new FormData();
+      fd.append('email_address', email);
+      fd.append('first_name', firstName);
+      fd.append('fields[profile]', profile);
+      fd.append('fields[bottleneck]', bottleneck);
+      fd.append('fields[physical_score]', String(a.physical));
+      fd.append('fields[energy_score]', String(a.energy));
+      fd.append('fields[stress_score]', String(a.stress));
+      fd.append('fields[pattern]', a.pattern || '');
+      fd.append('fields[full_answers]', fullAnswers);
+      fd.append('fields[report_url]', reportURL);
+      await fetch(`https://app.kit.com/forms/${KIT_FORM_ID}/subscriptions`, {
+        method: 'POST',
+        body: fd,
+        mode: 'no-cors'
+      });
+    } catch (e) { console.warn('Kit submission failed:', e); }
+
+    // ---- Optional webhook (structured JSON) ----
+    if (WEBHOOK_URL) {
+      try {
+        const payload = {
+          email, first_name: firstName, profile, bottleneck,
+          physical_score: a.physical, energy_score: a.energy, stress_score: a.stress,
+          answers: a,
+          full_answers: fullAnswers,
+          report_url: reportURL,
+          submitted_at: new Date().toISOString()
+        };
+        await fetch(WEBHOOK_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+          mode: 'no-cors'
+        });
+      } catch (e) { console.warn('Webhook failed:', e); }
+    }
+  }
+
+  // ---------------------------------------------------------
+  //  REPORT
+  // ---------------------------------------------------------
+  function renderReport() {
+    clearDynamic();
+    const bottleneck = pickBottleneck();
+    const profile = profiles[bottleneck];
+    const firstName = firstNameOf(state.answers.name);
+    const physical = state.answers.physical;
+    const energy = state.answers.energy;
+    const stress = state.answers.stress;
+    const triedList = (state.answers.tried || []).map(i => TREATMENT_OPTIONS[i]);
+    const reliefIdx = state.answers.longest_relief;
+    const reliefStep = steps.find(s => s.id === 'longest_relief');
+    const reliefLabel = typeof reliefIdx === 'number' && reliefStep
+      ? reliefStep.fields[0].options[reliefIdx].label
+      : 'a limited time';
+
+    const el = document.createElement('section');
+    el.className = 'step active';
+    el.dataset.step = 'report';
+
+    const sentConfirm = state.answers.email ? `
+      <div class="sent-confirm">
+        <span class="check">&#10003;</span>
+        <h4>Sent. Your report is on the way.</h4>
+        <p>Check your inbox in the next few minutes. If it does not arrive, check spam and add the sender to your contacts.</p>
+      </div>
+    ` : '';
+
+    el.innerHTML = `
+      ${sentConfirm}
+      <div class="report-hero">
+        <p class="report-eyebrow">Your Low Back Assessment</p>
+        <h1 class="report-title">${escapeHTML(firstName)}, here is what your answers show.</h1>
+        <div class="report-tags">
+          <span class="tag">Cycle Profile</span>
+          <span class="tag accent">${profile.profileName}</span>
+          <span class="tag">Primary Bottleneck</span>
+          <span class="tag accent">${profile.bottleneckName}</span>
+        </div>
+      </div>
+
+      <section class="section">
+        <p class="section-label">Cycle Profile</p>
+        <h2 class="section-headline">${profile.profileName}</h2>
+        <div class="prose">
+          <p>${escapeHTML(profile.profileDescription)}</p>
+        </div>
+      </section>
+
+      <section class="section" id="why-temporary"></section>
+
+      <section class="section" id="different-approach"></section>
+
+      <section class="section">
+        <p class="section-label">Primary Bottleneck</p>
+        <h2 class="section-headline">${profile.bottleneckName}</h2>
+        <div class="prose">
+          <p>${escapeHTML(profile.bottleneckDescription)}</p>
+        </div>
+      </section>
+
+      <section class="section">
+        <p class="section-label">Stage Breakdown</p>
+        <div id="stages"></div>
+      </section>
+
+      <section class="section">
+        <p class="section-label">Cycle Diagnosis</p>
+        <div class="prose">
+          <p><strong>Where the cycle actually starts:</strong> ${escapeHTML(profile.cycleStart)}</p>
+          <p><strong>What you think is happening:</strong> ${escapeHTML(profile.whatYouThink)}</p>
+          <p><strong>What is actually happening:</strong> ${escapeHTML(profile.whatIsHappening)}</p>
+          <p><strong>Why what you have tried has not worked:</strong> ${escapeHTML(profile.whyNotWorked)}</p>
+        </div>
+      </section>
+
+      <section class="section">
+        <p class="section-label">The Root Pattern</p>
+        <h2 class="section-headline">${escapeHTML(profile.rootPattern)}</h2>
+        <div class="prose">
+          <p><strong>Plain language:</strong> ${escapeHTML(profile.plain)}</p>
+          <p><strong>The trigger:</strong> ${escapeHTML(profile.trigger)}</p>
+          <p><strong>The belief underneath:</strong> &ldquo;${escapeHTML(profile.belief)}&rdquo;</p>
+          <p><strong>What breaking it actually requires:</strong> ${escapeHTML(profile.breakingIt)}</p>
+        </div>
+      </section>
+
+      <section class="section">
+        <p class="section-label">Your Current State</p>
+        <div class="state-grid">
+          <div class="state-card${physical <= 4 ? ' critical' : ''}">
+            <p class="label">Physical</p>
+            <p class="value">${physical}<span class="over">/10</span></p>
+            <p class="note">${interpretScore('physical', physical)}</p>
+          </div>
+          <div class="state-card${energy <= 4 ? ' critical' : ''}">
+            <p class="label">Energy &amp; Recovery</p>
+            <p class="value">${energy}<span class="over">/10</span></p>
+            <p class="note">${interpretScore('energy', energy)}</p>
+          </div>
+          <div class="state-card${stress <= 4 ? ' critical' : ''}">
+            <p class="label">Stress Load</p>
+            <p class="value">${stress}<span class="over">/10</span></p>
+            <p class="note">${interpretScore('stress', stress)}</p>
+          </div>
+        </div>
+        <div class="prose">
+          <p>Your body is currently operating in ${stress <= 4 ? 'protection mode' : energy <= 4 ? 'recovery deficit' : 'a workable state'}. This is not weakness. This is biology. A system under chronic stress contracts, compensates, and guards itself. Adding more load from this state does not build you. It accelerates breakdown.</p>
+          <p>The sequence that works is: regulate first, stabilise second, build third. Reversing that sequence is what keeps the cycle going.</p>
+        </div>
+      </section>
+
+      <div class="callout">
+        <p class="section-label">Your Immediate Next Step</p>
+        <div class="prose">
+          <p>${escapeHTML(profile.nextStep)}</p>
+        </div>
+      </div>
+
+      <section class="section">
+        <p class="section-label">The Honest Truth</p>
+        <div class="prose" id="honest-truth"></div>
+      </section>
+
+      <div class="cta-block">
+        <h3>If this named something you have been circling, let's talk.</h3>
+        <p>The assessment is the diagnosis. The work is the fix. If you want help actually breaking the cycle, DM me the word ${INSTAGRAM_KEYWORD} on Instagram and I will reach out personally.</p>
+        <div class="cta-buttons">
+          <a class="btn btn-accent" href="${INSTAGRAM_URL}" target="_blank" rel="noopener">DM ${INSTAGRAM_KEYWORD} on Instagram <span class="btn-arrow">&rarr;</span></a>
+        </div>
+        <p class="cta-note">No pitch. No pressure. Just a real conversation with someone who has been where you are.</p>
+      </div>
+
+      <div class="restart">
+        <button type="button" data-action="restart">Restart the assessment</button>
+      </div>
+      <p class="footnote">This assessment doesn't replace a proper diagnosis. If you have red-flag symptoms (loss of bladder or bowel control, sudden weakness in a leg, unexplained weight loss with pain), see a GP first.</p>
+    `;
+
+    // --- "Why treatment kept feeling temporary" section ---
+    const whyEl = el.querySelector('#why-temporary');
+    whyEl.innerHTML = `
+      <p class="section-label">Why every route worked temporarily</p>
+      <h2 class="section-headline">This is the pattern you have been in.</h2>
+      <div class="prose">
+        <p>Your longest period of relief was <strong>${escapeHTML(reliefLabel.toLowerCase())}</strong>. Every treatment on your list gave you a piece of the puzzle. None of them gave you the whole thing. That is not because they were bad. It is because none of them was designed to.</p>
+      </div>
+      <div class="treatment-grid"></div>
+      <div class="prose">
+        <p>Read that grid again. Every entry on it did what it was supposed to do. What none of them did was change the pattern underneath, because the pattern lives outside the room those professionals work in. That is the gap.</p>
+      </div>
+    `;
+    const treatGrid = whyEl.querySelector('.treatment-grid');
+    if (triedList.length === 0) {
+      const row = document.createElement('div');
+      row.className = 'treatment-row';
+      row.innerHTML = `<p class="name">Nothing formal yet</p><p class="did">That is worth naming too. Most people arrive here after years of piecemeal fixes. You are earlier in the loop.</p>`;
+      treatGrid.appendChild(row);
+    } else {
+      triedList.forEach(t => {
+        const row = document.createElement('div');
+        row.className = 'treatment-row';
+        row.innerHTML = `<p class="name">${escapeHTML(t)}</p><p class="did">${escapeHTML(TREATMENT_ROLES[t] || '')}</p>`;
+        treatGrid.appendChild(row);
+      });
+    }
+
+    // --- "The different approach" section ---
+    const diffEl = el.querySelector('#different-approach');
+    diffEl.innerHTML = `
+      <p class="section-label">The system missing from your recovery</p>
+      <h2 class="section-headline">This is not another set of exercises. It is a three-stage system built specifically for the pattern behind chronic low back pain.</h2>
+      <div class="prose">
+        <p>The reason physio, chiro, painkillers, and YouTube routines feel temporary is that each of them is aimed at one link in your cycle. What you have needed is something aimed at the cycle itself.</p>
+        <p>That is what these three stages do. Each one is a layer of the system nobody has walked you through. Together, they are what your Foundation, your Progression, and your Resilience need to be in order to break the cycle for good.</p>
+      </div>
+      <div class="approach-stages">
+        <div class="approach-stage">
+          <p class="num">Stage 1</p>
+          <p class="stage-title">Foundation</p>
+          <p>Structure, recovery, and the framework guiding your training decisions. This is the base. It is what makes every session sit on solid ground.</p>
+        </div>
+        <div class="approach-stage">
+          <p class="num">Stage 2</p>
+          <p class="stage-title">Progression</p>
+          <p>How you scale training up in a way your body can actually adapt to. Foundation gets you moving. Progression keeps momentum from turning into another crash.</p>
+        </div>
+        <div class="approach-stage">
+          <p class="num">Stage 3</p>
+          <p class="stage-title">Resilience</p>
+          <p>Whether your body's signals actually reach your decisions. The layer nobody teaches, because most rehab stops when the sharp pain goes away.</p>
+        </div>
+      </div>
+      <div class="prose">
+        <p>Your assessment identified which of these three is the specific one stopping you. That is what the rest of your report is about.</p>
+      </div>
+    `;
+
+    // Populate stages
+    const stagesEl = el.querySelector('#stages');
+    profile.stages.forEach(stage => {
+      const s = document.createElement('div');
+      s.className = 'stage';
+      s.innerHTML = `
+        <div class="stage-head">
+          <h3 class="stage-name">${stage.name}</h3>
+          <div class="stage-status">
+            <span class="tag ${stage.level === 'Broken' ? 'accent' : ''}">${stage.level}</span>
+            <span class="tag">${stage.phase}</span>
+          </div>
+        </div>
+        <div class="stage-block">
+          <p class="stage-block-label">What is working</p>
+          <ul class="stage-list"></ul>
+        </div>
+        <div class="stage-block">
+          <p class="stage-block-label">What is broken</p>
+          <ul class="stage-list"></ul>
+        </div>
+        <div class="stage-block">
+          <p class="stage-block-label">What this is costing you</p>
+          <p class="stage-text"></p>
+        </div>
+        <div class="stage-block">
+          <p class="stage-block-label">What changes when this is solid</p>
+          <p class="stage-text"></p>
+        </div>
+      `;
+      const [workingUl, brokenUl] = s.querySelectorAll('.stage-list');
+      stage.working.forEach(w => { const li = document.createElement('li'); li.textContent = w; workingUl.appendChild(li); });
+      stage.broken.forEach(w => { const li = document.createElement('li'); li.textContent = w; brokenUl.appendChild(li); });
+      const [costEl, solidEl] = s.querySelectorAll('.stage-text');
+      costEl.textContent = stage.costing;
+      solidEl.textContent = stage.solid;
+      stagesEl.appendChild(s);
+    });
+
+    // Honest truth
+    const truthEl = el.querySelector('#honest-truth');
+    profile.honestTruth.forEach(p => { const para = document.createElement('p'); para.textContent = p; truthEl.appendChild(para); });
+
+    el.querySelector('[data-action="restart"]').addEventListener('click', () => {
+      state.stepIndex = -1;
+      state.answers = {};
+      state.scores = { foundation: 0, progression: 0, resilience: 0 };
+      render();
+    });
+
+    app.appendChild(el);
+    scrollTop();
+  }
+
+  document.getElementById('start-btn').addEventListener('click', () => {
+    state.stepIndex = 0;
+    render();
+  });
+
+  // ---------------------------------------------------------
+  //  Email step wiring (the Kit embed form + its Back button live
+  //  statically in the page, so they're wired up once here rather
+  //  than inside renderEmail()).
+  // ---------------------------------------------------------
+  document.getElementById('email-back-btn').addEventListener('click', () => {
+    state.stepIndex--;
+    render();
+  });
+
+  const kitForm = document.getElementById('kit-email-form');
+  const kitEmailInput = kitForm.querySelector('[name="email_address"]');
+  const kitSubmitBtn = kitForm.querySelector('[data-element="submit"]');
+
+  function updateKitSubmitState() {
+    kitSubmitBtn.disabled = !isValidEmail(kitEmailInput.value);
+  }
+  kitEmailInput.addEventListener('input', updateKitSubmitState);
+  updateKitSubmitState();
+
+  kitForm.addEventListener('submit', async (e) => {
+    // Native browser validation (required + type=email on the input) has
+    // already passed by the time this handler runs. We take over the
+    // actual submission ourselves (posting straight to the same Kit
+    // endpoint the form's action points to) so the app's flow doesn't
+    // depend on the externally-hosted ck.js script telling us it worked.
+    e.preventDefault();
+    if (kitSubmitBtn.hasAttribute('data-active')) return;
+    kitSubmitBtn.setAttribute('data-active', '');
+    kitSubmitBtn.disabled = true;
+
+    const email = kitEmailInput.value.trim();
+    state.answers.email = email;
+    const firstName = firstNameOf(state.answers.name);
+    recalcScores();
+    const bottleneck = pickBottleneck();
+    const profile = profiles[bottleneck];
+
+    await submitAll({ email, firstName, profile: profile.profileName, bottleneck: profile.bottleneckName });
+
+    state.stepIndex++;
+    render();
+  });
+
+  // If landed via a report URL (from Kit email), hydrate state and jump to report.
+  if (hydrateFromURL()) {
+    render();
+  }
+</script>
+</body>
+</html>
