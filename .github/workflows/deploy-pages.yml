@@ -1,5 +1,11 @@
 name: Deploy to GitHub Pages
 
+# Note: the first-ever Pages enablement for a repo has to happen once via
+# Settings -> Pages -> Source: "GitHub Actions". The built-in GITHUB_TOKEN
+# cannot create the Pages site itself (GitHub returns "Resource not
+# accessible by integration"). Once that one-time step is done, this
+# workflow deploys on every push to main with no further manual steps.
+
 on:
   push:
     branches: [main]
