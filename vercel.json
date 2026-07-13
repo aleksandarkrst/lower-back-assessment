@@ -1,0 +1,8 @@
+{
+  "functions": {
+    "api/report-pdf.js": {
+      "maxDuration": 30,
+      "memory": 2048
+    }
+  }
+}
