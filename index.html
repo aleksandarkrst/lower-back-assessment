@@ -810,17 +810,6 @@
     .treatment-row { grid-template-columns: 1fr; gap: 4px; }
   }
 
-  /* PDF / print: report-pdf.js loads the report as ?pdf=1, which forces the
-     light theme (see PDF_MODE in the script) and hides chrome that doesn't
-     belong in a saved report. @media print also covers a manual browser
-     print of the live page, since Puppeteer's page.pdf() emulates it too. */
-  .pdf-mode .restart { display: none; }
-  @media print {
-    .restart, .sent-confirm { display: none; }
-    .stage, .state-grid, .treatment-row, .approach-stage,
-    .callout, .cta-block, .report-hero { break-inside: avoid; }
-  }
-
   /* ---- Kit (ConvertKit) embed form, restyled to match the paper/oxblood system ---- */
   .formkit-form[data-uid="709ce44e7b"] *{box-sizing:border-box;}
   .formkit-form[data-uid="709ce44e7b"]{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
@@ -942,7 +931,6 @@
             <input type="hidden" name="fields[pattern]" value="">
             <input type="hidden" name="fields[full_answers]" value="">
             <input type="hidden" name="fields[report_url]" value="">
-            <input type="hidden" name="fields[report_pdf_url]" value="">
             <button data-element="submit" class="formkit-submit formkit-submit" style="color: #FBF7ED; background-color: var(--accent); border-radius: 999px; font-weight: 500;">
               <div class="formkit-spinner"><div></div><div></div><div></div></div>
               <span>Send it &amp; show my report &rarr;</span>
@@ -971,7 +959,7 @@
   //  inputs on the form have somewhere to land, and so your
   //  automation can use them as merge tags:
   //    profile, bottleneck, physical_score, energy_score,
-  //    stress_score, pattern, full_answers, report_url, report_pdf_url
+  //    stress_score, pattern, full_answers, report_url
   //  Zapier webhook is optional. If set, the full JSON also POSTs
   //  there (use it if you want the raw data in a Google Sheet or
   //  Airtable, in addition to Kit).
@@ -980,7 +968,6 @@
   const WEBHOOK_URL = ''; // optional. e.g. https://hooks.zapier.com/hooks/catch/...
   const INSTAGRAM_URL = 'https://instagram.com/conorosheafit';
   const INSTAGRAM_KEYWORD = 'SPINE';
-  const PDF_SERVICE_BASE_URL = ''; // e.g. https://<project>.vercel.app/api/report-pdf — fill in after Vercel deploy
 
   // ---------------------------------------------------------
   //  ASSESSMENT DEFINITION
@@ -1500,19 +1487,6 @@
   };
 
   // ---------------------------------------------------------
-  //  PDF MODE
-  //  When the report-pdf serverless function loads this page as
-  //  ?pdf=1&r=<payload>, force the light theme (reusing the existing
-  //  light/dark override vars) and hide chrome that doesn't belong in
-  //  a saved PDF (restart link, sent-confirmation banner).
-  // ---------------------------------------------------------
-  const PDF_MODE = new URLSearchParams(window.location.search).get('pdf') === '1';
-  if (PDF_MODE) {
-    document.documentElement.dataset.theme = 'light';
-    document.body.classList.add('pdf-mode');
-  }
-
-  // ---------------------------------------------------------
   //  URL-STATE PERSISTENCE
   //  On email submit, we encode a compact version of the user's
   //  answers as ?r=<base64> and pass that URL to Kit as a
@@ -1521,33 +1495,20 @@
   //  clicks it, the report page hydrates from the URL and
   //  shows their exact report again.
   // ---------------------------------------------------------
-  function encodeReportPayload() {
-    const payload = {
-      n: state.answers.name || '',
-      p: state.answers.pattern || '',
-      s: [state.answers.physical, state.answers.energy, state.answers.stress],
-      t: state.answers.tried || [],
-      lr: state.answers.longest_relief,
-      b: pickBottleneck()
-    };
-    return btoa(encodeURIComponent(JSON.stringify(payload)));
-  }
-
   function buildReportURL() {
     try {
-      return window.location.origin + window.location.pathname + '?r=' + encodeReportPayload();
+      const payload = {
+        n: state.answers.name || '',
+        p: state.answers.pattern || '',
+        s: [state.answers.physical, state.answers.energy, state.answers.stress],
+        t: state.answers.tried || [],
+        lr: state.answers.longest_relief,
+        b: pickBottleneck()
+      };
+      const encoded = btoa(encodeURIComponent(JSON.stringify(payload)));
+      return window.location.origin + window.location.pathname + '?r=' + encoded;
     } catch (e) {
       return window.location.href;
-    }
-  }
-
-  // Points at the report-pdf serverless function (see /api/report-pdf.js).
-  // Empty until PDF_SERVICE_BASE_URL is filled in after that's deployed.
-  function buildReportPdfURL() {
-    try {
-      return PDF_SERVICE_BASE_URL ? (PDF_SERVICE_BASE_URL + '?r=' + encodeReportPayload()) : '';
-    } catch (e) {
-      return '';
     }
   }
 
@@ -1943,7 +1904,6 @@
     form.querySelector('[name="fields[pattern]"]').value = state.answers.pattern || '';
     form.querySelector('[name="fields[full_answers]"]').value = buildFullAnswers();
     form.querySelector('[name="fields[report_url]"]').value = buildReportURL();
-    form.querySelector('[name="fields[report_pdf_url]"]').value = buildReportPdfURL();
 
     emailSection.classList.add('active');
     scrollTop();
@@ -2037,7 +1997,6 @@
       fd.append('fields[pattern]', a.pattern || '');
       fd.append('fields[full_answers]', fullAnswers);
       fd.append('fields[report_url]', reportURL);
-      fd.append('fields[report_pdf_url]', buildReportPdfURL());
       await fetch(`https://app.kit.com/forms/${KIT_FORM_ID}/subscriptions`, {
         method: 'POST',
         body: fd,
@@ -2088,7 +2047,7 @@
     el.className = 'step active';
     el.dataset.step = 'report';
 
-    const sentConfirm = (state.answers.email && !PDF_MODE) ? `
+    const sentConfirm = state.answers.email ? `
       <div class="sent-confirm">
         <span class="check">&#10003;</span>
         <h4>Sent. Your report is on the way.</h4>

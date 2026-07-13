@@ -1,8 +1,0 @@
-{
-  "name": "lower-back-assessment-pdf",
-  "private": true,
-  "dependencies": {
-    "puppeteer-core": "^24",
-    "@sparticuz/chromium-min": "^149"
-  }
-}
