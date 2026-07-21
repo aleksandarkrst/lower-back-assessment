@@ -965,7 +965,7 @@
   //  Airtable, in addition to Kit).
   // ---------------------------------------------------------
   const KIT_FORM_ID = '9539937';
-  const WEBHOOK_URL = ''; // optional. e.g. https://hooks.zapier.com/hooks/catch/...
+  const WEBHOOK_URL = 'https://hooks.zapier.com/hooks/catch/13699978/44hc8lk/';
   const INSTAGRAM_URL = 'https://instagram.com/conorosheafit';
   const INSTAGRAM_KEYWORD = 'SPINE';
 
@@ -1913,27 +1913,35 @@
   function escapeHTML(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
   // Build a readable full-answers block (all text + selections) for Kit / webhook
-  function buildFullAnswers() {
-    const a = state.answers;
+  // Resolves the select/multi-select answers (stored as option indices) to
+  // their actual label text. Shared by buildFullAnswers() and the webhook
+  // payload in submitAll(), so both send readable answers, not raw indices.
+  function resolveAnswerLabels(a) {
     const relIdx = a.longest_relief;
     const reliefStep = steps.find(s => s.id === 'longest_relief');
-    const relLabel = typeof relIdx === 'number' && reliefStep ? reliefStep.fields[0].options[relIdx].label : '';
+    const longest_relief = typeof relIdx === 'number' && reliefStep ? reliefStep.fields[0].options[relIdx].label : '';
     const lensStep = steps.find(s => s.id === 'lens');
-    const lensLabel = typeof a.lens === 'number' && lensStep ? lensStep.fields[0].options[a.lens].label : '';
+    const lens = typeof a.lens === 'number' && lensStep ? lensStep.fields[0].options[a.lens].label : '';
     const struct = steps.find(s => s.id === 'training_structure');
-    const structLabel = typeof a.training_structure === 'number' ? struct.fields[0].options[a.training_structure].label : '';
+    const training_structure = typeof a.training_structure === 'number' ? struct.fields[0].options[a.training_structure].label : '';
     const dec = steps.find(s => s.id === 'decision_method');
-    const decLabel = typeof a.decision_method === 'number' ? dec.fields[0].options[a.decision_method].label : '';
+    const decision_method = typeof a.decision_method === 'number' ? dec.fields[0].options[a.decision_method].label : '';
     const rec = steps.find(s => s.id === 'planned_recovery');
-    const recLabel = typeof a.planned_recovery === 'number' ? rec.fields[0].options[a.planned_recovery].label : '';
+    const planned_recovery = typeof a.planned_recovery === 'number' ? rec.fields[0].options[a.planned_recovery].label : '';
     const setback = steps.find(s => s.id === 'setback_response');
-    const setbackLabel = typeof a.setback_response === 'number' ? setback.fields[0].options[a.setback_response].label : '';
+    const setback_response = typeof a.setback_response === 'number' ? setback.fields[0].options[a.setback_response].label : '';
     const ws = steps.find(s => s.id === 'warning_signs');
-    const wsLabel = typeof a.warning_signs === 'number' ? ws.fields[1].options[a.warning_signs].label : '';
+    const warning_signs = typeof a.warning_signs === 'number' ? ws.fields[1].options[a.warning_signs].label : '';
     const lt = steps.find(s => s.id === 'longterm');
-    const ltLabel = typeof a.longterm === 'number' ? lt.fields[0].options[a.longterm].label : '';
-    const triedLabels = (a.tried || []).map(i => TREATMENT_OPTIONS[i]).join(', ');
-    const addressedLabels = (a.addressed || []).map(i => SYSTEM_INPUT_OPTIONS[i]).join(', ');
+    const longterm = typeof a.longterm === 'number' ? lt.fields[0].options[a.longterm].label : '';
+    const tried = (a.tried || []).map(i => TREATMENT_OPTIONS[i]).join(', ');
+    const addressed = (a.addressed || []).map(i => SYSTEM_INPUT_OPTIONS[i]).join(', ');
+    return { longest_relief, lens, training_structure, decision_method, planned_recovery, setback_response, warning_signs, longterm, tried, addressed };
+  }
+
+  function buildFullAnswers() {
+    const a = state.answers;
+    const labels = resolveAnswerLabels(a);
 
     return [
       '=== LOW BACK ASSESSMENT ANSWERS ===',
@@ -1945,10 +1953,10 @@
       `Stress load: ${a.stress}/10`,
       '',
       '--- AWARENESS ---',
-      `What they've tried: ${triedLabels || 'none listed'}`,
-      `Longest period of relief: ${relLabel}`,
-      `What treatment has actually addressed: ${addressedLabels || 'none listed'}`,
-      `How they see the pain: ${lensLabel}`,
+      `What they've tried: ${labels.tried || 'none listed'}`,
+      `Longest period of relief: ${labels.longest_relief}`,
+      `What treatment has actually addressed: ${labels.addressed || 'none listed'}`,
+      `How they see the pain: ${labels.lens}`,
       '',
       '--- CONTEXT ---',
       `Current training: ${a.training || ''}`,
@@ -1957,19 +1965,19 @@
       `What they know they should change: ${a.should_change || ''}`,
       '',
       '--- FOUNDATION ---',
-      `Training structure: ${structLabel}`,
+      `Training structure: ${labels.training_structure}`,
       `2-4 weeks before last flare: ${a.pre_flare || ''}`,
-      `Decision method: ${decLabel}`,
-      `Planned recovery: ${recLabel}`,
+      `Decision method: ${labels.decision_method}`,
+      `Planned recovery: ${labels.planned_recovery}`,
       '',
       '--- PROGRESSION ---',
       `Good weeks / what ends them: ${a.good_weeks || ''}`,
-      `Setback response: ${setbackLabel}`,
+      `Setback response: ${labels.setback_response}`,
       '',
       '--- RESILIENCE ---',
       `Warning signs before last flare: ${a.warning_signs_text || ''}`,
-      `Warning signs response: ${wsLabel}`,
-      `75yo mobility relief or threat: ${ltLabel}`,
+      `Warning signs response: ${labels.warning_signs}`,
+      `75yo mobility relief or threat: ${labels.longterm}`,
       '',
       '=== ==='
     ].join('\n');
@@ -2010,7 +2018,10 @@
         const payload = {
           email, first_name: firstName, profile, bottleneck,
           physical_score: a.physical, energy_score: a.energy, stress_score: a.stress,
-          answers: a,
+          // Spread the raw answers first, then overwrite the select/multi-select
+          // fields with their resolved label text (see resolveAnswerLabels) so
+          // the webhook sends readable answers instead of raw option indices.
+          answers: { ...a, ...resolveAnswerLabels(a) },
           full_answers: fullAnswers,
           report_url: reportURL,
           submitted_at: new Date().toISOString()
