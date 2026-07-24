@@ -929,6 +929,8 @@
             <input type="hidden" name="fields[energy_score]" value="">
             <input type="hidden" name="fields[stress_score]" value="">
             <input type="hidden" name="fields[pattern]" value="">
+            <input type="hidden" name="fields[age]" value="">
+            <input type="hidden" name="fields[instagram]" value="">
             <input type="hidden" name="fields[full_answers]" value="">
             <input type="hidden" name="fields[report_url]" value="">
             <button data-element="submit" class="formkit-submit formkit-submit" style="color: #FBF7ED; background-color: var(--accent); border-radius: 999px; font-weight: 500;">
@@ -959,7 +961,7 @@
   //  inputs on the form have somewhere to land, and so your
   //  automation can use them as merge tags:
   //    profile, bottleneck, physical_score, energy_score,
-  //    stress_score, pattern, full_answers, report_url
+  //    stress_score, pattern, age, instagram, full_answers, report_url
   //  Zapier webhook is optional. If set, the full JSON also POSTs
   //  there (use it if you want the raw data in a Google Sheet or
   //  Airtable, in addition to Kit).
@@ -1014,6 +1016,8 @@
       hint: null,
       fields: [
         { key: 'name', type: 'text', label: 'Your name', placeholder: 'First name is fine', required: true },
+        { key: 'age', type: 'text', label: 'Age', placeholder: 'Your age', required: true },
+        { key: 'instagram', type: 'text', label: 'Instagram handle', placeholder: '@yourusername', required: true },
         { key: 'pattern', type: 'textarea', label: 'The pattern you are most tired of', placeholder: 'One sentence. Do not overthink it.', required: true }
       ]
     },
@@ -1902,6 +1906,8 @@
     form.querySelector('[name="fields[energy_score]"]').value = String(state.answers.energy ?? '');
     form.querySelector('[name="fields[stress_score]"]').value = String(state.answers.stress ?? '');
     form.querySelector('[name="fields[pattern]"]').value = state.answers.pattern || '';
+    form.querySelector('[name="fields[age]"]').value = state.answers.age || '';
+    form.querySelector('[name="fields[instagram]"]').value = state.answers.instagram || '';
     form.querySelector('[name="fields[full_answers]"]').value = buildFullAnswers();
     form.querySelector('[name="fields[report_url]"]').value = buildReportURL();
 
@@ -1946,6 +1952,8 @@
     return [
       '=== LOW BACK ASSESSMENT ANSWERS ===',
       `Name: ${a.name || ''}`,
+      `Age: ${a.age || ''}`,
+      `Instagram: ${a.instagram || ''}`,
       `Pattern tired of: ${a.pattern || ''}`,
       '',
       `Physical state: ${a.physical}/10`,
@@ -2003,6 +2011,8 @@
       fd.append('fields[energy_score]', String(a.energy));
       fd.append('fields[stress_score]', String(a.stress));
       fd.append('fields[pattern]', a.pattern || '');
+      fd.append('fields[age]', a.age || '');
+      fd.append('fields[instagram]', a.instagram || '');
       fd.append('fields[full_answers]', fullAnswers);
       fd.append('fields[report_url]', reportURL);
       await fetch(`https://app.kit.com/forms/${KIT_FORM_ID}/subscriptions`, {
