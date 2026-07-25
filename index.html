@@ -6,54 +6,25 @@
 <title>Low Back Assessment · Conor O'Shea</title>
 <style>
   :root {
-    --paper: #EFEAE0;
-    --paper-tint: #FBF7ED;
-    --ink: #171518;
-    --ink-soft: #3B3833;
-    --muted: #7C7468;
-    --rule: #D9D0BF;
-    --oxblood: #6D1F27;
+    --bg: #0D0D0D;
+    --fg: #F5F3EE;
+    --fg-soft: #C9C7C0;
+    --card: #1C1B18;
+    --rule-color: #3A3934;
+    --accent: #E8672C;
+    --muted-fg: #9A968C;
 
-    --bg: var(--paper);
-    --fg: var(--ink);
-    --fg-soft: var(--ink-soft);
-    --card: var(--paper-tint);
-    --rule-color: var(--rule);
-    --accent: var(--oxblood);
-    --muted-fg: var(--muted);
+    --radius: 2px;
+    --elevated: #181815;
+    --pill-bg: #201F1C;
+    --selected-tint: #3A2416;
+    --divider: #2A2A26;
+    --positive: #8FD9AE;
+    --highlight: #F3A66B;
+    --accent-hover: #B84E1F;
 
-    --serif: 'Iowan Old Style', 'Palatino', 'Palatino Linotype', 'Book Antiqua', Georgia, serif;
-    --sans: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', 'Segoe UI', system-ui, sans-serif;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: #14151A;
-      --fg: #EFEAE0;
-      --fg-soft: #C6BFB1;
-      --card: #1C1D22;
-      --rule-color: #2D2E33;
-      --accent: #D06A5C;
-      --muted-fg: #8C8578;
-    }
-  }
-  :root[data-theme="dark"] {
-    --bg: #14151A;
-    --fg: #EFEAE0;
-    --fg-soft: #C6BFB1;
-    --card: #1C1D22;
-    --rule-color: #2D2E33;
-    --accent: #D06A5C;
-    --muted-fg: #8C8578;
-  }
-  :root[data-theme="light"] {
-    --bg: var(--paper);
-    --fg: var(--ink);
-    --fg-soft: var(--ink-soft);
-    --card: var(--paper-tint);
-    --rule-color: var(--rule);
-    --accent: var(--oxblood);
-    --muted-fg: var(--muted);
+    --serif: 'Helvetica Neue', Arial, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --sans: 'Helvetica Neue', Arial, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   }
 
   * { box-sizing: border-box; }
@@ -105,8 +76,8 @@
 
   .display {
     font-family: var(--serif);
-    font-weight: 500;
-    font-size: clamp(38px, 7vw, 60px);
+    font-weight: 800;
+    font-size: clamp(38px, 7vw, 62px);
     line-height: 1.02;
     letter-spacing: -0.012em;
     text-wrap: balance;
@@ -137,15 +108,16 @@
 
   .btn {
     appearance: none;
-    background: var(--fg);
-    color: var(--bg);
+    background: var(--accent);
+    color: #fff;
     border: 0;
     font-family: var(--sans);
     font-size: 15px;
-    font-weight: 500;
-    letter-spacing: 0.01em;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
     padding: 16px 26px;
-    border-radius: 999px;
+    border-radius: var(--radius);
     cursor: pointer;
     transition: transform .12s ease, background-color .2s ease, opacity .2s ease;
     display: inline-flex;
@@ -161,14 +133,14 @@
   .btn-ghost {
     background: transparent;
     color: var(--fg);
-    border: 1px solid var(--rule-color);
+    border: 2px solid var(--rule-color);
   }
   .btn-ghost:hover { border-color: var(--fg); }
   .btn-accent {
     background: var(--accent);
-    color: #FBF7ED;
+    color: #fff;
   }
-  .btn-accent:hover { background: color-mix(in oklab, var(--accent) 88%, black); }
+  .btn-accent:hover { background: var(--accent-hover); }
 
   .step { display: none; }
   .step.active { display: block; }
@@ -176,8 +148,8 @@
   .progress { margin-bottom: 44px; }
   .progress-rule {
     position: relative;
-    height: 1px;
-    background: var(--rule-color);
+    height: 4px;
+    background: var(--divider);
     overflow: hidden;
     margin-bottom: 12px;
   }
@@ -210,8 +182,8 @@
   }
   .question {
     font-family: var(--serif);
-    font-weight: 500;
-    font-size: clamp(24px, 3.6vw, 32px);
+    font-weight: 800;
+    font-size: clamp(23px, 3.4vw, 30px);
     line-height: 1.15;
     letter-spacing: -0.005em;
     text-wrap: balance;
@@ -240,8 +212,8 @@
   input[type=text], input[type=email], textarea {
     width: 100%;
     padding: 14px 16px;
-    border: 1px solid var(--rule-color);
-    border-radius: 4px;
+    border: 2px solid var(--rule-color);
+    border-radius: var(--radius);
     font-family: var(--sans);
     font-size: 16px;
     background: var(--card);
@@ -278,11 +250,11 @@
   .scale button {
     aspect-ratio: 1;
     background: var(--card);
-    border: 1px solid var(--rule-color);
-    border-radius: 4px;
+    border: 2px solid var(--rule-color);
+    border-radius: var(--radius);
     font-family: var(--serif);
-    font-size: 18px;
-    font-weight: 500;
+    font-size: 16px;
+    font-weight: 700;
     color: var(--fg);
     cursor: pointer;
     transition: all .12s ease;
@@ -294,9 +266,8 @@
   .scale button:hover { border-color: var(--fg); }
   .scale button.selected {
     background: var(--accent);
-    color: #FBF7ED;
+    color: #fff;
     border-color: var(--accent);
-    box-shadow: 0 0 0 2px color-mix(in oklab, var(--accent) 20%, transparent);
   }
   .scale-legend {
     display: flex;
@@ -323,8 +294,8 @@
     align-items: flex-start;
     gap: 14px;
     padding: 16px 20px;
-    border: 1px solid var(--rule-color);
-    border-radius: 4px;
+    border: 2px solid var(--rule-color);
+    border-radius: var(--radius);
     background: var(--card);
     cursor: pointer;
     transition: border-color .15s ease, background .15s ease;
@@ -342,7 +313,7 @@
   }
   .option.selected {
     border-color: var(--accent);
-    background: color-mix(in oklab, var(--accent) 5%, var(--card));
+    background: var(--selected-tint);
   }
   .option-marker {
     display: inline-flex;
@@ -358,22 +329,12 @@
     transition: all .15s ease;
     position: relative;
   }
-  .option-marker::after {
-    content: '';
-    width: 6px; height: 6px;
-    border-radius: 999px;
-    background: var(--bg);
-    opacity: 0;
-    transition: opacity .15s ease;
-  }
   .option.selected .option-marker {
     background: var(--accent);
     border-color: var(--accent);
   }
-  .option.selected .option-marker::after { opacity: 1; }
 
   .multi .option-marker { border-radius: 3px; }
-  .multi .option-marker::after { border-radius: 0; }
 
   .nav {
     display: flex;
@@ -382,6 +343,20 @@
     margin-top: 24px;
     gap: 12px;
   }
+
+  .step[data-step="section"] {
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+    width: 100vw;
+    background: var(--elevated);
+    padding: clamp(48px, 10vw, 96px) clamp(20px, 6vw, 64px);
+  }
+  .step[data-step="section"] > * {
+    max-width: 720px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .step[data-step="section"] .btn-ghost { border-color: #45443F; }
 
   /* Section + reflection transitions */
   .transition-tag {
@@ -394,10 +369,11 @@
     margin-bottom: 20px;
   }
   .transition-tag strong { color: var(--accent); font-weight: 700; }
+  .step[data-step="section"] .transition-tag strong { color: var(--highlight); }
   .transition-title {
     font-family: var(--serif);
-    font-weight: 500;
-    font-size: clamp(34px, 5.6vw, 48px);
+    font-weight: 800;
+    font-size: clamp(34px, 6vw, 52px);
     line-height: 1.06;
     letter-spacing: -0.012em;
     margin: 0 0 20px;
@@ -420,7 +396,7 @@
   .report-hero {
     margin-bottom: 48px;
     padding-bottom: 40px;
-    border-bottom: 1px solid var(--rule-color);
+    border-bottom: 2px solid var(--rule-color);
   }
   .report-eyebrow {
     font-family: var(--sans);
@@ -433,8 +409,8 @@
   }
   .report-title {
     font-family: var(--serif);
-    font-weight: 500;
-    font-size: clamp(30px, 4.6vw, 42px);
+    font-weight: 800;
+    font-size: clamp(28px, 4.6vw, 42px);
     line-height: 1.06;
     letter-spacing: -0.012em;
     text-wrap: balance;
@@ -452,14 +428,14 @@
     font-size: 12px;
     letter-spacing: 0.06em;
     padding: 6px 12px;
-    border-radius: 999px;
-    background: var(--card);
-    border: 1px solid var(--rule-color);
+    border-radius: var(--radius);
+    background: var(--pill-bg);
+    border: 2px solid var(--rule-color);
     color: var(--fg-soft);
   }
   .tag.accent {
     background: var(--accent);
-    color: #FBF7ED;
+    color: #fff;
     border-color: var(--accent);
     font-weight: 500;
   }
@@ -483,11 +459,11 @@
     content: '';
     flex: 1;
     height: 1px;
-    background: var(--rule-color);
+    background: var(--divider);
   }
   .section-headline {
     font-family: var(--serif);
-    font-weight: 500;
+    font-weight: 800;
     font-size: clamp(24px, 3.4vw, 30px);
     line-height: 1.15;
     letter-spacing: -0.005em;
@@ -509,8 +485,8 @@
   .stage {
     margin: 32px 0;
     padding: 24px;
-    border: 1px solid var(--rule-color);
-    border-radius: 6px;
+    border: 2px solid var(--rule-color);
+    border-radius: var(--radius);
     background: var(--card);
   }
   .stage-head {
@@ -523,7 +499,7 @@
   }
   .stage-name {
     font-family: var(--serif);
-    font-weight: 500;
+    font-weight: 700;
     font-size: 22px;
     line-height: 1.2;
     color: var(--fg);
@@ -572,8 +548,8 @@
   }
   .state-card {
     padding: 20px;
-    border: 1px solid var(--rule-color);
-    border-radius: 6px;
+    border: 2px solid var(--rule-color);
+    border-radius: var(--radius);
     background: var(--card);
     text-align: center;
   }
@@ -600,6 +576,7 @@
     font-weight: 400;
   }
   .state-card.critical .value { color: var(--accent); }
+  .state-card:not(.critical) .value { color: var(--positive); }
   .state-card .note {
     font-family: var(--sans);
     font-size: 11px;
@@ -610,13 +587,12 @@
 
   .callout {
     padding: 32px;
-    border: 1px solid var(--accent);
-    border-radius: 6px;
-    background: color-mix(in oklab, var(--accent) 4%, var(--card));
+    border: 2px solid var(--rule-color);
+    border-radius: var(--radius);
+    background: var(--elevated);
     margin: 32px 0;
   }
-  .callout .section-label { color: var(--accent); margin-top: 0; }
-  .callout .section-label::after { background: color-mix(in oklab, var(--accent) 30%, transparent); }
+  .callout .section-label { color: var(--highlight); margin-top: 0; }
   .callout .section-headline { margin-bottom: 12px; }
   .callout .prose { font-size: 17px; }
 
@@ -627,8 +603,8 @@
   }
   .treatment-row {
     padding: 18px 20px;
-    border: 1px solid var(--rule-color);
-    border-radius: 6px;
+    border: 2px solid var(--rule-color);
+    border-radius: var(--radius);
     background: var(--card);
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -638,7 +614,7 @@
   .treatment-row .name {
     font-family: var(--serif);
     font-size: 17px;
-    font-weight: 500;
+    font-weight: 700;
     color: var(--fg);
     margin: 0;
   }
@@ -658,8 +634,8 @@
   }
   .approach-stage {
     padding: 20px;
-    border: 1px solid var(--rule-color);
-    border-radius: 6px;
+    border: 2px solid var(--rule-color);
+    border-radius: var(--radius);
     background: var(--card);
   }
   .approach-stage .num {
@@ -674,7 +650,7 @@
   .approach-stage .stage-title {
     font-family: var(--serif);
     font-size: 20px;
-    font-weight: 500;
+    font-weight: 700;
     color: var(--fg);
     margin: 0 0 8px;
   }
@@ -689,14 +665,14 @@
   .cta-block {
     margin-top: 64px;
     padding: 40px 32px;
-    border: 1px solid var(--rule-color);
-    border-radius: 6px;
+    border: 2px solid var(--rule-color);
+    border-radius: var(--radius);
     background: var(--card);
     text-align: left;
   }
   .cta-block h3 {
     font-family: var(--serif);
-    font-weight: 500;
+    font-weight: 800;
     font-size: clamp(26px, 3.6vw, 32px);
     line-height: 1.15;
     margin: 0 0 12px;
@@ -754,8 +730,8 @@
 
   .sent-confirm {
     padding: 40px;
-    border: 1px solid var(--rule-color);
-    border-radius: 6px;
+    border: 2px solid var(--rule-color);
+    border-radius: var(--radius);
     background: var(--card);
     text-align: center;
     margin-bottom: 32px;
@@ -764,9 +740,9 @@
     display: inline-flex;
     width: 44px;
     height: 44px;
-    border-radius: 999px;
+    border-radius: var(--radius);
     background: var(--accent);
-    color: #FBF7ED;
+    color: #fff;
     align-items: center;
     justify-content: center;
     font-size: 22px;
@@ -774,7 +750,7 @@
   }
   .sent-confirm h4 {
     font-family: var(--serif);
-    font-weight: 500;
+    font-weight: 700;
     font-size: 22px;
     margin: 0 0 8px;
     color: var(--fg);
@@ -829,13 +805,13 @@
   .formkit-form[data-uid="709ce44e7b"][data-format="sticky bar"]{display:none;}
   .formkit-sticky-bar .formkit-form[data-uid="709ce44e7b"][data-format="sticky bar"]{display:block;}
   .formkit-form[data-uid="709ce44e7b"] .formkit-input,.formkit-form[data-uid="709ce44e7b"] .formkit-select,.formkit-form[data-uid="709ce44e7b"] .formkit-checkboxes{width:100%;}
-  .formkit-form[data-uid="709ce44e7b"] .formkit-button,.formkit-form[data-uid="709ce44e7b"] .formkit-submit{border:0;border-radius:999px;color:#FBF7ED;cursor:pointer;display:inline-block;text-align:center;font-size:15px;font-weight:500;cursor:pointer;margin-bottom:0;overflow:hidden;padding:0;position:relative;vertical-align:middle;transition:transform .12s ease, background-color .2s ease, opacity .2s ease;}
+  .formkit-form[data-uid="709ce44e7b"] .formkit-button,.formkit-form[data-uid="709ce44e7b"] .formkit-submit{border:0;border-radius:var(--radius);color:#fff;cursor:pointer;display:inline-block;text-align:center;font-size:15px;font-weight:500;cursor:pointer;margin-bottom:0;overflow:hidden;padding:0;position:relative;vertical-align:middle;transition:transform .12s ease, background-color .2s ease, opacity .2s ease;}
   .formkit-form[data-uid="709ce44e7b"] .formkit-button:hover,.formkit-form[data-uid="709ce44e7b"] .formkit-submit:hover{transform:translateY(-1px);}
   .formkit-form[data-uid="709ce44e7b"] .formkit-button:hover,.formkit-form[data-uid="709ce44e7b"] .formkit-submit:hover,.formkit-form[data-uid="709ce44e7b"] .formkit-button:focus,.formkit-form[data-uid="709ce44e7b"] .formkit-submit:focus{outline:none;}
   .formkit-form[data-uid="709ce44e7b"] .formkit-submit:disabled{opacity:.35;cursor:not-allowed;transform:none;}
   .formkit-form[data-uid="709ce44e7b"] .formkit-button:hover > span,.formkit-form[data-uid="709ce44e7b"] .formkit-submit:hover > span,.formkit-form[data-uid="709ce44e7b"] .formkit-button:focus > span,.formkit-form[data-uid="709ce44e7b"] .formkit-submit:focus > span{background-color:rgba(0,0,0,0.1);}
   .formkit-form[data-uid="709ce44e7b"] .formkit-button > span,.formkit-form[data-uid="709ce44e7b"] .formkit-submit > span{display:block;-webkit-transition:all 300ms ease-in-out;transition:all 300ms ease-in-out;padding:16px 26px;}
-  .formkit-form[data-uid="709ce44e7b"] .formkit-input{background:var(--card);font-family:var(--sans);font-size:16px;padding:14px 16px;border:1px solid var(--rule-color);color:var(--fg);-webkit-flex:1 0 auto;-ms-flex:1 0 auto;flex:1 0 auto;line-height:1.4;margin:0;border-radius:4px;-webkit-transition:border-color ease-out 300ms;transition:border-color ease-out 300ms;}
+  .formkit-form[data-uid="709ce44e7b"] .formkit-input{background:var(--card);font-family:var(--sans);font-size:16px;padding:14px 16px;border:2px solid var(--rule-color);color:var(--fg);-webkit-flex:1 0 auto;-ms-flex:1 0 auto;flex:1 0 auto;line-height:1.4;margin:0;border-radius:var(--radius);-webkit-transition:border-color ease-out 300ms;transition:border-color ease-out 300ms;}
   .formkit-form[data-uid="709ce44e7b"] .formkit-input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in oklab, var(--accent) 15%, transparent);-webkit-transition:border-color ease 300ms;transition:border-color ease 300ms;}
   .formkit-form[data-uid="709ce44e7b"] .formkit-input::-webkit-input-placeholder{color:inherit;opacity:0.6;}
   .formkit-form[data-uid="709ce44e7b"] .formkit-input::-moz-placeholder{color:inherit;opacity:0.6;}
@@ -857,7 +833,7 @@
   .formkit-form[data-uid="709ce44e7b"] [data-group="checkboxes"] [data-group="checkbox"] label::before,.formkit-form[data-uid="709ce44e7b"] [data-group="checkboxes"] [data-group="checkbox"] label::after{position:absolute;content:"";display:inline-block;}
   .formkit-form[data-uid="709ce44e7b"] [data-group="checkboxes"] [data-group="checkbox"] label::before{height:16px;width:16px;border:1px solid var(--rule-color);background:var(--card);left:0px;top:3px;}
   .formkit-form[data-uid="709ce44e7b"] [data-group="checkboxes"] [data-group="checkbox"] label::after{height:4px;width:8px;border-left:2px solid #4d4d4d;border-bottom:2px solid #4d4d4d;-webkit-transform:rotate(-45deg);-ms-transform:rotate(-45deg);transform:rotate(-45deg);left:4px;top:8px;}
-  .formkit-form[data-uid="709ce44e7b"] .formkit-alert{background:var(--card);border:1px solid var(--rule-color);border-radius:4px;-webkit-flex:1 0 auto;-ms-flex:1 0 auto;flex:1 0 auto;list-style:none;margin:0 0 20px;padding:12px;text-align:center;width:100%;font-family:var(--sans);font-size:13px;}
+  .formkit-form[data-uid="709ce44e7b"] .formkit-alert{background:var(--card);border:2px solid var(--rule-color);border-radius:var(--radius);-webkit-flex:1 0 auto;-ms-flex:1 0 auto;flex:1 0 auto;list-style:none;margin:0 0 20px;padding:12px;text-align:center;width:100%;font-family:var(--sans);font-size:13px;}
   .formkit-form[data-uid="709ce44e7b"] .formkit-alert:empty{display:none;}
   .formkit-form[data-uid="709ce44e7b"] .formkit-alert-success{background:#d3fbeb;border-color:#10bf7a;color:#0c905c;}
   .formkit-form[data-uid="709ce44e7b"] .formkit-alert-error{background:#fde8e2;border-color:#f2643b;color:#ea4110;}
@@ -920,7 +896,7 @@
           <ul class="formkit-alert formkit-alert-error" data-element="errors" data-group="alert"></ul>
           <div data-element="fields" data-stacked="false" class="seva-fields formkit-fields">
             <div class="formkit-field">
-              <input class="formkit-input" name="email_address" aria-label="Your email" placeholder="you@somewhere.com" required type="email" style="color: var(--fg); background: var(--card); border-color: var(--rule-color); border-radius: 4px; font-weight: 400;">
+              <input class="formkit-input" name="email_address" aria-label="Your email" placeholder="you@somewhere.com" required type="email" style="color: var(--fg); background: var(--card); border-color: var(--rule-color); border-radius: 2px; font-weight: 400;">
             </div>
             <input type="hidden" name="first_name" value="">
             <input type="hidden" name="fields[profile]" value="">
@@ -933,7 +909,7 @@
             <input type="hidden" name="fields[instagram]" value="">
             <input type="hidden" name="fields[full_answers]" value="">
             <input type="hidden" name="fields[report_url]" value="">
-            <button data-element="submit" class="formkit-submit formkit-submit" style="color: #FBF7ED; background-color: var(--accent); border-radius: 999px; font-weight: 500;">
+            <button data-element="submit" class="formkit-submit formkit-submit" style="color: #fff; background-color: var(--accent); border-radius: 2px; font-weight: 700;">
               <div class="formkit-spinner"><div></div><div></div><div></div></div>
               <span>Send it &amp; show my report &rarr;</span>
             </button>
