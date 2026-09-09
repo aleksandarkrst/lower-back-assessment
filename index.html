@@ -233,6 +233,32 @@
     box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 15%, transparent);
   }
 
+  .phone-row {
+    display: grid;
+    grid-template-columns: minmax(0, 150px) 1fr;
+    gap: 10px;
+    width: 100%;
+  }
+  .phone-row input {
+    padding: 14px 12px;
+    border: 2px solid var(--rule-color);
+    border-radius: var(--radius);
+    font-family: var(--sans);
+    font-size: 16px;
+    background: var(--card);
+    color: var(--fg);
+    transition: border-color .15s ease, box-shadow .15s ease;
+    min-width: 0;
+  }
+  #phone-country { text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
+  .phone-row input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 15%, transparent);
+  }
+  @media (max-width: 420px) {
+    .phone-row { grid-template-columns: 108px 1fr; }
+  }
   .field-stack {
     display: flex;
     flex-direction: column;
@@ -344,53 +370,6 @@
     gap: 12px;
   }
 
-  .step[data-step="section"] {
-    margin-left: calc(50% - 50vw);
-    margin-right: calc(50% - 50vw);
-    width: 100vw;
-    background: var(--elevated);
-    padding: clamp(48px, 10vw, 96px) clamp(20px, 6vw, 64px);
-  }
-  .step[data-step="section"] > * {
-    max-width: 720px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  .step[data-step="section"] .btn-ghost { border-color: #45443F; }
-
-  /* Section + reflection transitions */
-  .transition-tag {
-    font-family: var(--sans);
-    font-size: 11px;
-    letter-spacing: 0.24em;
-    text-transform: uppercase;
-    color: var(--muted-fg);
-    font-weight: 600;
-    margin-bottom: 20px;
-  }
-  .transition-tag strong { color: var(--accent); font-weight: 700; }
-  .step[data-step="section"] .transition-tag strong { color: var(--highlight); }
-  .transition-title {
-    font-family: var(--serif);
-    font-weight: 800;
-    font-size: clamp(34px, 6vw, 52px);
-    line-height: 1.06;
-    letter-spacing: -0.012em;
-    margin: 0 0 20px;
-    color: var(--fg);
-    text-wrap: balance;
-  }
-  .transition-body {
-    font-family: var(--serif);
-    font-size: clamp(18px, 2.2vw, 20px);
-    line-height: 1.6;
-    color: var(--fg-soft);
-    max-width: 52ch;
-    margin: 0 0 32px;
-  }
-  .transition-body p { margin: 0 0 18px; }
-  .transition-body p:last-child { margin-bottom: 0; }
-  .transition-body strong { color: var(--fg); font-weight: 500; }
 
   /* Report */
   .report-hero {
@@ -854,6 +833,8 @@
   .formkit-form[data-uid="709ce44e7b"] [data-style="clean"]{width:100%;padding:0;}
   .formkit-form[data-uid="709ce44e7b"] .formkit-fields{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-wrap:wrap;-ms-flex-wrap:wrap;flex-wrap:wrap;margin:0 auto;gap:12px;align-items:flex-start;}
   .formkit-form[data-uid="709ce44e7b"] .formkit-field{margin:0;-webkit-flex:1 0 auto;-ms-flex:1 0 auto;flex:1 0 auto;}
+  .formkit-form[data-uid="709ce44e7b"] .formkit-fields{flex-direction:column;align-items:stretch;}
+  .formkit-form[data-uid="709ce44e7b"] .formkit-field{width:100%;}
   .formkit-form[data-uid="709ce44e7b"] .formkit-submit{margin:0;-webkit-flex:0 0 auto;-ms-flex:0 0 auto;flex:0 0 auto;position:static;}
   @media (max-width: 480px) {
     .formkit-form[data-uid="709ce44e7b"] .formkit-fields{flex-direction:column;}
@@ -870,10 +851,9 @@
   </header>
   <main id="app">
     <section class="step active" data-step="intro">
-      <p class="eyebrow"><strong>8-10 minute assessment.</strong> Direct questions. Real report.</p>
+      <p class="eyebrow"><strong>3 minute assessment.</strong> Tap only. Real report.</p>
       <h1 class="display">Low Back Assessment.</h1>
-      <p class="lede">I am going to ask you direct questions across three areas to identify exactly where your low back pain cycle is coming from, and give you the clearest picture you have had of what is actually keeping you stuck.</p>
-      <p class="lede">Most people I work with are not lacking effort or motivation. They are missing one specific thing. This assessment finds it.</p>
+      <p class="lede">Ten quick questions across three areas to find exactly where your low back pain cycle is coming from. Most people I work with are not short on effort. They are missing one specific piece. This finds it.</p>
       <button class="btn btn-accent" id="start-btn" style="margin-top: 16px;">Begin the assessment <span class="btn-arrow">&rarr;</span></button>
       <p class="byline"><strong>Coaching since 2011.</strong> Got out of a four-year L5-S1 disc bulge injury cycle. I built the system I wish I had. Now I run it with my clients.</p>
     </section>
@@ -886,17 +866,26 @@
           <span>Last step</span>
         </div>
       </div>
-      <p class="question-eyebrow">Your report is ready</p>
+      <p class="question-eyebrow">Last step</p>
       <h2 class="question" id="email-question">Where should I send it?</h2>
-      <p class="question-hint">Your full report will show on the next screen. I will also send you a copy to keep. No pitch. No spam. If you decide it is not for you, one click to unsubscribe.</p>
+      <p class="question-hint">Your full report shows on the next screen. I will also send you a copy to keep. No pitch. No spam. If you decide it is not for you, one click to unsubscribe.</p>
 
       <script src="https://f.convertkit.com/ckjs/ck.6.js"></script>
       <form id="kit-email-form" action="https://app.kit.com/forms/9539937/subscriptions" class="seva-form formkit-form" method="post" data-sv-form="9539937" data-uid="709ce44e7b" data-format="inline" data-version="6" data-options="{&quot;settings&quot;:{&quot;after_subscribe&quot;:{&quot;action&quot;:&quot;message&quot;,&quot;success_message&quot;:&quot;Success! Now check your email to confirm your subscription.&quot;,&quot;redirect_url&quot;:&quot;&quot;},&quot;analytics&quot;:{&quot;google&quot;:null,&quot;fathom&quot;:null,&quot;facebook&quot;:null,&quot;segment&quot;:null,&quot;pinterest&quot;:null,&quot;sparkloop&quot;:null,&quot;googletagmanager&quot;:null},&quot;modal&quot;:{&quot;trigger&quot;:&quot;timer&quot;,&quot;scroll_percentage&quot;:null,&quot;timer&quot;:5,&quot;devices&quot;:&quot;all&quot;,&quot;show_once_every&quot;:15},&quot;powered_by&quot;:{&quot;show&quot;:true,&quot;url&quot;:&quot;https://kit.com/features/forms?utm_campaign=poweredby&amp;utm_content=form&amp;utm_medium=referral&amp;utm_source=dynamic&quot;},&quot;recaptcha&quot;:{&quot;enabled&quot;:false},&quot;return_visitor&quot;:{&quot;action&quot;:&quot;show&quot;,&quot;custom_content&quot;:&quot;&quot;},&quot;slide_in&quot;:{&quot;display_in&quot;:&quot;bottom_right&quot;,&quot;trigger&quot;:&quot;timer&quot;,&quot;scroll_percentage&quot;:null,&quot;timer&quot;:5,&quot;devices&quot;:&quot;all&quot;,&quot;show_once_every&quot;:15},&quot;sticky_bar&quot;:{&quot;display_in&quot;:&quot;top&quot;,&quot;trigger&quot;:&quot;timer&quot;,&quot;scroll_percentage&quot;:null,&quot;timer&quot;:5,&quot;devices&quot;:&quot;all&quot;,&quot;show_once_every&quot;:15}},&quot;version&quot;:&quot;6&quot;}" min-width="400 500 600 700 800">
         <div data-style="clean">
           <ul class="formkit-alert formkit-alert-error" data-element="errors" data-group="alert"></ul>
           <div data-element="fields" data-stacked="false" class="seva-fields formkit-fields">
+            <div class="formkit-field phone-field">
+              <label class="field-label" for="phone-number">Phone number</label>
+              <div class="phone-row">
+                <input type="text" id="phone-country" list="country-list" autocomplete="off" aria-label="Country" placeholder="Country">
+                <datalist id="country-list"></datalist>
+                <input type="tel" id="phone-number" placeholder="87 123 4567" aria-label="Phone number">
+              </div>
+            </div>
             <div class="formkit-field">
-              <input class="formkit-input" name="email_address" aria-label="Your email" placeholder="you@somewhere.com" required type="email" style="color: var(--fg); background: var(--card); border-color: var(--rule-color); border-radius: 2px; font-weight: 400;">
+              <label class="field-label" for="email-address-input">Email</label>
+              <input class="formkit-input" id="email-address-input" name="email_address" aria-label="Your email" placeholder="you@somewhere.com" required type="email" style="color: var(--fg); background: var(--card); border-color: var(--rule-color); border-radius: 2px; font-weight: 400;">
             </div>
             <input type="hidden" name="first_name" value="">
             <input type="hidden" name="fields[profile]" value="">
@@ -905,13 +894,13 @@
             <input type="hidden" name="fields[energy_score]" value="">
             <input type="hidden" name="fields[stress_score]" value="">
             <input type="hidden" name="fields[pattern]" value="">
-            <input type="hidden" name="fields[age]" value="">
+            <input type="hidden" name="fields[phone]" value="">
             <input type="hidden" name="fields[instagram]" value="">
             <input type="hidden" name="fields[full_answers]" value="">
             <input type="hidden" name="fields[report_url]" value="">
             <button data-element="submit" class="formkit-submit formkit-submit" style="color: #fff; background-color: var(--accent); border-radius: 2px; font-weight: 700;">
               <div class="formkit-spinner"><div></div><div></div><div></div></div>
-              <span>Send it &amp; show my report &rarr;</span>
+              <span>Send it and show my report &rarr;</span>
             </button>
           </div>
           <div class="formkit-powered-by-convertkit-container">
@@ -937,7 +926,7 @@
   //  inputs on the form have somewhere to land, and so your
   //  automation can use them as merge tags:
   //    profile, bottleneck, physical_score, energy_score,
-  //    stress_score, pattern, age, instagram, full_answers, report_url
+  //    stress_score, pattern, phone, instagram, full_answers, report_url
   //  Zapier webhook is optional. If set, the full JSON also POSTs
   //  there (use it if you want the raw data in a Google Sheet or
   //  Airtable, in addition to Kit).
@@ -950,17 +939,20 @@
   // ---------------------------------------------------------
   //  ASSESSMENT DEFINITION
   //  Types:
-  //    - question    : one input screen
-  //    - section     : static section header ("Foundation.")
-  //    - reflection  : dynamic coach reflection built from state
-  //    - complete    : final "assessment complete" beat before email
-  //    - email       : email capture
+  //    - question    : one input screen (10 numbered screens total)
+  //    - email       : contact capture (phone + email)
+  //  Nothing is required on the 10 numbered screens. Only the contact
+  //  step validates. Field keys match the build brief's naming
+  //  (q1_pattern, q2_physical, ...) so the scoring function below can
+  //  be ported without translation risk.
   // ---------------------------------------------------------
 
   const TREATMENT_OPTIONS = [
     'Physio or PT',
+    'Multiple physios or clinics, not just one',
     'Chiropractor or osteopath',
     'Sports massage',
+    'Strength or gym program',
     'Painkillers or anti-inflammatories',
     'Steroid injections',
     'MRI or CT scans',
@@ -970,328 +962,272 @@
     'Been offered surgery'
   ];
 
-  const SYSTEM_INPUT_OPTIONS = [
-    'How stress affects my back',
-    'How sleep affects my back',
-    'The structure of my training across a full week',
-    'How I decide to push or back off in a session',
-    'A planned recovery schedule',
-    'Warning signs before a flare-up',
-    'My long-term goal for training',
-    'None of the above. It has mostly been exercises or adjustments.'
+  const ADDRESSED_OPTIONS = [
+    'Why your back keeps flaring in the first place, not just how to calm it',
+    'How to progress your training week to week without setting it off',
+    'A plan for what to do when a flare-up hits',
+    'How stress and sleep are feeding into it',
+    'How to build load back up to the things you want to do',
+    'A long-term plan, not just "do these until it settles"',
+    'None of the above. It has mostly been hands-on treatment or basic exercises.'
   ];
 
   const steps = [
-    // ---- Setup ----
+    // ---- Screen 1 of 10 ----
     {
       type: 'question',
-      id: 'identity',
-      eyebrow: 'Setup',
-      stage: 'Setup',
-      title: 'Tell me your name, and give me one sentence on the pattern you are most tired of.',
+      id: 'situation',
+      eyebrow: 'Your situation',
+      stage: 'Your situation',
+      title: "Let's start with where you are.",
       hint: null,
       fields: [
         { key: 'name', type: 'text', label: 'Your name', placeholder: 'First name is fine', required: true },
-        { key: 'age', type: 'text', label: 'Age', placeholder: 'Your age', required: true },
         { key: 'instagram', type: 'text', label: 'Instagram handle', placeholder: '@yourusername', required: true },
-        { key: 'pattern', type: 'textarea', label: 'The pattern you are most tired of', placeholder: 'One sentence. Do not overthink it.', required: true }
+        { key: 'q1_pattern', type: 'options', label: 'The pattern you are most sick of', required: true, options: [
+          { label: 'It flares, I calm it down, I rebuild, it flares again' },
+          { label: 'I get a few good weeks then something sets it off' },
+          { label: 'It never fully clears, I just manage it around everything' },
+          { label: 'Certain lifts or movements always trigger it' },
+          { label: 'It is fine until a busy or stressful stretch, then it goes' },
+          { label: 'Different every time, I cannot predict it' }
+        ] },
+        { key: 'q1_view', type: 'options', label: 'Right now, how do you see it?', required: true, options: [
+          { label: 'An exercise problem. I am doing the wrong movements.' },
+          { label: 'A load problem. I am doing too much or progressing too fast.' },
+          { label: 'A structural problem. Something is mechanically wrong.' },
+          { label: 'A system problem. Training, sleep, stress and body are not in sync.' },
+          { label: 'I do not know anymore.' }
+        ] }
       ]
     },
+
+    // ---- Screen 2 of 10 ----
     {
       type: 'question',
       id: 'scores',
-      eyebrow: 'Setup',
-      stage: 'Setup',
-      title: 'Before the detail, three numbers.',
+      eyebrow: 'Your situation',
+      stage: 'Your situation',
+      title: 'Three numbers.',
       hint: 'These shape everything that follows. Use the anchors under each scale.',
       fields: [
-        { key: 'physical', type: 'scale', label: 'Physical state right now',
-          anchors: ['1-4: pain or injury active', '5-7: functional but not where you want to be', '8-10: moving well, no significant limitations'], required: true },
-        { key: 'energy', type: 'scale', label: 'Energy and recovery',
-          anchors: ['1-4: running on empty', '5-7: managing but inconsistent', '8-10: genuinely restored'], required: true },
-        { key: 'stress', type: 'scale', label: 'Stress load right now',
-          anchors: ['1-4: high stress, survival mode', '5-7: elevated but manageable', '8-10: genuinely settled'], required: true }
+        { key: 'q2_physical', type: 'scale', label: 'Physical state right now', required: true,
+          anchors: ['1-4: pain or injury active', '5-7: functional but not where you want to be', '8-10: moving well, no significant limitations'] },
+        { key: 'q2_energy', type: 'scale', label: 'Energy and recovery', required: true,
+          anchors: ['1-4: running on empty', '5-7: managing but inconsistent', '8-10: genuinely restored'] },
+        { key: 'q2_stress', type: 'scale', label: 'Stress load right now', required: true,
+          anchors: ['1-4: high stress, survival mode', '5-7: elevated but manageable', '8-10: genuinely settled'] }
       ]
     },
 
-    // ---- Reflection after scores ----
-    { type: 'reflection', id: 'reflect_scores', build: (s) => ({
-        tag: "Coach's read",
-        title: 'Noted.',
-        body: buildScoreReflection(s)
-    })},
-
-    // ---- Awareness phase ----
+    // ---- Screen 3 of 10 ----
     {
       type: 'question',
       id: 'tried',
-      eyebrow: 'Setup',
-      stage: 'Awareness',
+      eyebrow: "What you've tried",
+      stage: "What you've tried",
       title: 'What have you already tried?',
-      hint: 'Select everything that has been part of your journey so far.',
+      hint: 'Select everything that has been part of your journey.',
       fields: [
-        { key: 'tried', type: 'multi', options: TREATMENT_OPTIONS.map(o => ({ label: o })), required: true }
+        { key: 'q3_tried', type: 'multi', required: true, options: TREATMENT_OPTIONS.map(o => ({ label: o })) }
       ]
     },
+
+    // ---- Screen 4 of 10 ----
     {
       type: 'question',
-      id: 'longest_relief',
-      eyebrow: 'Setup',
-      stage: 'Awareness',
-      title: 'Across everything you have tried, what is the longest period of relief you have had before the pain came back?',
+      id: 'outcome',
+      eyebrow: "What you've tried",
+      stage: "What you've tried",
+      title: 'So how did that go?',
       hint: null,
       fields: [
-        { key: 'longest_relief', type: 'options', options: [
+        { key: 'q4_outcome', type: 'options', label: 'Across everything you have tried, what actually happened?', required: true, options: [
+          { label: 'I got relief while I was seeing someone, but it came back within weeks of stopping' },
+          { label: 'It helped a bit, but it never held' },
+          { label: 'The exercises never progressed. I got stuck on the basics' },
+          { label: 'Every practitioner had a different theory, so I never knew what to follow' },
+          { label: 'Honestly, none of it gave me real relief' }
+        ] },
+        { key: 'q4_relief', type: 'options', label: 'Longest stretch of real relief before it came back?', required: true, options: [
           { label: 'Less than two weeks' },
           { label: 'Two weeks to three months' },
           { label: 'Three to twelve months' },
           { label: 'Longer, and it eventually returned' },
           { label: 'I have never had a real period of relief' }
-        ], required: true }
+        ] }
       ]
     },
+
+    // ---- Screen 5 of 10 ----
     {
       type: 'question',
       id: 'addressed',
-      eyebrow: 'Setup',
-      stage: 'Awareness',
-      title: 'Of the professionals you have seen, which of these has any of them systematically addressed?',
-      hint: 'Not "mentioned in passing." Actually built into their assessment or plan.',
+      eyebrow: "What you've tried",
+      stage: "What you've tried",
+      title: 'What has anyone actually built into a plan for you?',
+      hint: 'Not mentioned in passing. Actually addressed.',
       fields: [
-        { key: 'addressed', type: 'multi', options: SYSTEM_INPUT_OPTIONS.map(o => ({ label: o })), required: true }
+        { key: 'q5_addressed', type: 'multi', required: true, options: ADDRESSED_OPTIONS.map(o => ({ label: o })) }
       ]
     },
+
+    // ---- Screen 6 of 10 ----
     {
       type: 'question',
-      id: 'lens',
-      eyebrow: 'Setup',
-      stage: 'Awareness',
-      title: 'Right now, how do you actually see your back pain?',
+      id: 'foundation',
+      eyebrow: 'Foundation',
+      stage: 'Foundation',
+      title: 'Your training right now.',
       hint: null,
       fields: [
-        { key: 'lens', type: 'options', options: [
-          { label: 'An exercise problem. I am doing the wrong movements.' },
-          { label: 'A load problem. I am doing too much or progressing too fast.' },
-          { label: 'A structural problem. Something is mechanically wrong that needs fixing.' },
-          { label: 'A system problem. My training, sleep, stress, and body are not in sync.' },
-          { label: 'Honestly, I do not know anymore.' }
-        ], required: true }
+        { key: 'q6_freq', type: 'options', label: 'How often do you train?', required: true, options: [
+          { label: '5 or more times a week' },
+          { label: '3 to 4 times a week' },
+          { label: '1 to 2 times a week' },
+          { label: 'Irregular, depends on the week' }
+        ] },
+        { key: 'q6_structure', type: 'options', label: 'How is it actually structured?', required: true, options: [
+          { label: 'A single progressive plan I follow' },
+          { label: 'A mix of sources, whatever I feel like on the day' },
+          { label: 'No real structure, I show up and see what happens' },
+          { label: 'I combine old physio exercises with my main program' }
+        ] },
+        { key: 'q6_intensity', type: 'options', label: 'How hard do the sessions go?', required: true, options: [
+          { label: 'Near max most sessions' },
+          { label: 'Hard, but with something in the tank' },
+          { label: 'Moderate and controlled' },
+          { label: 'Easy, I am being cautious with the back' }
+        ] }
       ]
     },
 
-    // ---- Reflection after awareness ----
-    { type: 'reflection', id: 'reflect_awareness', build: (s) => ({
-        tag: 'The pattern under the pattern',
-        title: 'Here is what I already see.',
-        body: buildAwarenessReflection(s)
-    })},
-
-    // ---- Context ----
+    // ---- Screen 7 of 10 ----
     {
       type: 'question',
-      id: 'context1',
-      eyebrow: 'Context',
-      stage: 'Setup',
-      title: 'The ground truth.',
-      hint: "Take a minute on each. Longer answers give a sharper read.",
-      fields: [
-        { key: 'training', type: 'textarea', label: 'What does your training currently look like? Type, frequency, intensity.', required: true },
-        { key: 'cycle_history', type: 'textarea', label: 'How long have you been in the injury-restart cycle? Walk me through the pattern.', required: true }
-      ]
-    },
-    {
-      type: 'question',
-      id: 'context2',
-      eyebrow: 'Context',
-      stage: 'Setup',
-      title: 'Your read on it.',
-      hint: null,
-      fields: [
-        { key: 'think_problem', type: 'textarea', label: 'What do you think the problem actually is?', required: true },
-        { key: 'should_change', type: 'textarea', label: 'Is there anything about your approach that you know you should change but have not changed yet?', required: true }
-      ]
-    },
-
-    // ---- Foundation ----
-    { type: 'section', tag: 'Stage 1 of 3', title: 'Foundation.', body: [
-      "Foundation is the base. Structure, recovery, and the framework guiding your training decisions.",
-      "If Foundation is broken, nothing built on top of it can hold. Four questions."
-    ]},
-    {
-      type: 'question',
-      id: 'training_structure',
-      eyebrow: 'Foundation · 1 of 4',
-      stage: 'Foundation',
-      title: 'How is your training actually structured week to week?',
-      hint: 'Not what you want it to look like. What it genuinely is.',
-      fields: [
-        { key: 'training_structure', type: 'options', options: [
-          { label: 'One progressive plan that I follow week by week.', score: { foundation: 0 } },
-          { label: 'A main plan, plus a few extras I add on.', score: { foundation: 1 } },
-          { label: 'A mixture of sources. Whatever I feel like or find that day.', score: { foundation: 3 } },
-          { label: 'No real structure. I just show up and see what happens.', score: { foundation: 3 } }
-        ], required: true }
-      ]
-    },
-    {
-      type: 'question',
-      id: 'pre_flare',
-      eyebrow: 'Foundation · 2 of 4',
-      stage: 'Foundation',
-      title: 'Think about your last flare-up. What was happening in the two to four weeks before it?',
-      hint: 'Training, life, sleep, stress. Anything that changed.',
-      fields: [
-        { key: 'pre_flare', type: 'textarea', label: null, placeholder: 'Even short answers help.', required: true }
-      ]
-    },
-    {
-      type: 'question',
-      id: 'decision_method',
-      eyebrow: 'Foundation · 3 of 4',
-      stage: 'Foundation',
-      title: 'How do you decide when to push in training and when to back off?',
-      hint: null,
-      fields: [
-        { key: 'decision_method', type: 'options', options: [
-          { label: 'A framework I use every session. Readiness check, then decide.', score: { foundation: 0 } },
-          { label: 'RPE or similar. I regulate load by how the reps actually feel.', score: { foundation: 0, resilience: 1 } },
-          { label: 'Based on how I feel that morning. Gut call.', score: { foundation: 2, resilience: 2 } },
-          { label: 'Whatever the workout says that day.', score: { foundation: 3 } }
-        ], required: true }
-      ]
-    },
-    {
-      type: 'question',
-      id: 'planned_recovery',
-      eyebrow: 'Foundation · 4 of 4',
-      stage: 'Foundation',
-      title: 'When was the last time you took a planned recovery week?',
-      hint: 'Not because the back forced it. Because recovery was scheduled.',
-      fields: [
-        { key: 'planned_recovery', type: 'options', options: [
-          { label: 'Every 4-6 weeks. It is built into my plan.', score: { foundation: 0 } },
-          { label: 'Sometimes. When I remember or feel wrecked.', score: { foundation: 1 } },
-          { label: 'Only when a flare-up or injury forces it.', score: { foundation: 3 } },
-          { label: 'I do not have that kind of planned structure.', score: { foundation: 3 } }
-        ], required: true }
-      ]
-    },
-
-    // ---- Progression ----
-    { type: 'section', tag: 'Stage 2 of 3', title: 'Progression.', body: [
-      "Progression is how you build. How you scale training up in a way your body can adapt to.",
-      "Foundation gets you moving. Progression is what keeps momentum from turning into another crash."
-    ]},
-    {
-      type: 'question',
-      id: 'good_weeks',
-      eyebrow: 'Progression · 1 of 2',
+      id: 'flare_runup',
+      eyebrow: 'Progression',
       stage: 'Progression',
-      title: 'When things are going well in your training, what does that look like? And what typically ends it?',
-      hint: 'Be honest about the ending. That part matters most.',
-      fields: [
-        { key: 'good_weeks', type: 'textarea', label: null, required: true }
-      ]
-    },
-    {
-      type: 'question',
-      id: 'setback_response',
-      eyebrow: 'Progression · 2 of 2',
-      stage: 'Progression',
-      title: 'When something in your body does not feel right in training, what happens next?',
+      title: 'Around a flare.',
       hint: null,
       fields: [
-        { key: 'setback_response', type: 'options', options: [
-          { label: 'I drop the load and keep training with a modified version.', score: { progression: 0 } },
-          { label: 'I switch to a different lift or session and keep moving.', score: { progression: 1 } },
-          { label: 'I push through and hope it settles.', score: { progression: 3 } },
-          { label: 'I stop training entirely and wait for it to feel better.', score: { progression: 3 } }
-        ], required: true }
+        { key: 'q7_runup', type: 'multi', label: 'In the 2 to 4 weeks before your last flare, what was going on?', required: true, options: [
+          { label: 'Volume or intensity had crept up' },
+          { label: 'A run of bad sleep' },
+          { label: 'High work or life stress' },
+          { label: 'Just back from a break or time off' },
+          { label: 'Chasing a PB or trying something new' },
+          { label: 'A small jump in load on one exercise' },
+          { label: 'Nothing obvious changed' }
+        ] },
+        { key: 'q7_ends', type: 'multi', label: 'When a good stretch of training ends, what usually ends it?', required: true, options: [
+          { label: 'A flare with no obvious cause' },
+          { label: 'I pushed a PB or a hard session' },
+          { label: 'Life got busy and I dropped off' },
+          { label: 'I added too much too fast' },
+          { label: 'A separate niggle or injury' },
+          { label: 'I stopped the rehab work once I felt fine' },
+          { label: 'It just always does, eventually' }
+        ] }
       ]
     },
 
-    // ---- Resilience ----
-    { type: 'section', tag: 'Stage 3 of 3', title: 'Resilience.', body: [
-      "Resilience is the last layer. Whether your body's signals actually reach your decisions.",
-      "Two short questions. Then we build your report."
-    ]},
+    // ---- Screen 8 of 10 ----
     {
       type: 'question',
-      id: 'warning_signs',
-      eyebrow: 'Resilience · 1 of 2',
+      id: 'flare_response',
+      eyebrow: 'Resilience',
       stage: 'Resilience',
-      title: 'Before your last flare-up, did your body give you any warning signs? What did you do with them?',
-      hint: 'Tightness, fatigue, poor sleep, reduced range. If you noticed anything, how did it change what you did?',
-      fields: [
-        { key: 'warning_signs_text', type: 'textarea', label: 'Describe it', placeholder: 'Even a short answer is fine.', required: true },
-        { key: 'warning_signs', type: 'options', label: 'And which of these is closest to what actually happened?', options: [
-          { label: 'The signs changed my session. I dropped load or skipped what was risky.', score: { resilience: 0 } },
-          { label: 'I noticed them but trained the same session anyway.', score: { resilience: 3 } },
-          { label: 'I felt something but did not really register it until after.', score: { resilience: 2 } },
-          { label: 'No warning signs. The flare came out of nowhere.', score: { resilience: 1, foundation: 1 } }
-        ], required: true }
-      ]
-    },
-    {
-      type: 'question',
-      id: 'longterm',
-      eyebrow: 'Resilience · 2 of 2',
-      stage: 'Resilience',
-      title: 'If the version of training that guaranteed you were still moving well at 75 looked very different from what you do now, would that feel more like a relief or more like a threat?',
+      title: 'When a flare hits.',
       hint: null,
       fields: [
-        { key: 'longterm', type: 'options', options: [
-          { label: 'Relief. I want a body that lasts. I am ready to change how I train.', score: { resilience: 0 } },
-          { label: 'Both. Part of me is ready, part of me is attached to how I train now.', score: { resilience: 1 } },
-          { label: 'Threat. My identity is tied to the way I train now.', score: { resilience: 3 } },
-          { label: 'Neutral. I have not really thought that far ahead.', score: { resilience: 1 } }
-        ], required: true }
+        { key: 'q8_signs', type: 'multi', label: 'Which warning signs do you tend to get first?', required: true, options: [
+          { label: 'Tightness or stiffness building over a few days' },
+          { label: 'Poor sleep' },
+          { label: 'Motivation or mood drops' },
+          { label: 'Range of movement reduces' },
+          { label: 'A small niggle that grows' },
+          { label: 'None that I notice, it just hits' }
+        ] },
+        { key: 'q8_do', type: 'options', label: 'When a flare-up hits, what do you actually do?', required: true, options: [
+          { label: 'I have a clear plan I follow and it settles in a few days' },
+          { label: 'I have a rough idea, but I mostly guess' },
+          { label: 'I stop everything and wait it out' },
+          { label: 'I push through and hope it calms down' },
+          { label: 'I panic a bit. I do not know what is safe.' }
+        ] },
+        { key: 'q8_cost', type: 'options', label: 'What does a flare-up usually cost you?', required: true, options: [
+          { label: 'A day or two' },
+          { label: 'Most of a week' },
+          { label: 'One to two weeks' },
+          { label: 'Several weeks, and it knocks my training right back' }
+        ] }
       ]
     },
 
-    { type: 'complete' },
+    // ---- Screen 9 of 10 ----
+    {
+      type: 'question',
+      id: 'training_run',
+      eyebrow: 'Foundation',
+      stage: 'Foundation',
+      title: 'How you run your training.',
+      hint: null,
+      fields: [
+        { key: 'q9_decide', type: 'options', label: 'How do you decide when to push and when to back off?', required: true, options: [
+          { label: 'A framework I use every session. Readiness check, then decide.' },
+          { label: 'RPE or similar. I go by how the reps feel.' },
+          { label: 'Gut call on the morning.' },
+          { label: 'Whatever the plan says that day.' }
+        ] },
+        { key: 'q9_recovery', type: 'options', label: 'When did you last take a planned recovery week? Not forced by the back. Scheduled.', required: true, options: [
+          { label: 'Every 4 to 6 weeks. It is built into my plan.' },
+          { label: 'Sometimes. When I remember or feel wrecked.' },
+          { label: 'Only when a flare or injury forces it.' },
+          { label: 'I do not have that kind of structure.' }
+        ] }
+      ]
+    },
+
+    // ---- Screen 10 of 10 ----
+    {
+      type: 'question',
+      id: 'priorities',
+      eyebrow: 'Priorities',
+      stage: 'Priorities',
+      title: 'Where are you guilty?',
+      hint: 'Any of these that you know you need to address.',
+      fields: [
+        { key: 'q10_guilty', type: 'multi', required: true, options: [
+          { label: 'Following one plan instead of stitching sources together' },
+          { label: 'Taking real recovery weeks' },
+          { label: 'Starting lighter and building slower after a flare-up' },
+          { label: 'Dealing with my sleep' },
+          { label: 'Dealing with my stress load' },
+          { label: 'Losing excess body weight or body fat' },
+          { label: 'Not training through the warning signals' },
+          { label: 'Getting a proper assessment instead of guessing' }
+        ] }
+      ]
+    },
+
     { type: 'email' }
   ];
 
-  // ---------------------------------------------------------
-  //  DYNAMIC REFLECTION BUILDERS
-  // ---------------------------------------------------------
-  function buildScoreReflection(s) {
-    const parts = [];
-    const p = s.answers.physical, e = s.answers.energy, st = s.answers.stress;
-    parts.push(`Physical ${p}/10. ${interpretScore('physical', p)}`);
-    parts.push(`Energy ${e}/10. ${interpretScore('energy', e)}`);
-    parts.push(`Stress ${st}/10. ${interpretScore('stress', st)}`);
-    if (st <= 4) {
-      parts.push("That last one matters most. Your system is under high stress, and stress changes how your body tolerates load, recovers, and responds to pain. We are not going to treat your back in isolation. We are going to treat it as one signal in a system that includes everything else you tell me.");
-    } else if (st <= 7) {
-      parts.push("Stress is elevated but manageable. That is worth knowing, because most people underrate how much a moderately stressful few weeks changes how their body tolerates load. We will factor it in rather than assume your back sits outside of it.");
-    } else {
-      parts.push("Stress is settled. That gives us a cleaner read on what is actually going on in your body, rather than what is going on in your life spilling over into it.");
+  // Find a field definition by its answer key, searching every question
+  // step. Used to resolve stored indices back to label text for the
+  // reflection, the report, and the webhook/Kit payload.
+  function findField(key) {
+    for (const step of steps) {
+      if (step.type !== 'question') continue;
+      const f = step.fields.find(f => f.key === key);
+      if (f) return f;
     }
-    return parts;
+    return null;
   }
-
-  function buildAwarenessReflection(s) {
-    const tried = s.answers.tried || [];
-    const addressed = s.answers.addressed || [];
-    const reliefIdx = s.answers.longest_relief;
-    const reliefLabel = typeof reliefIdx === 'number'
-      ? steps.find(q => q.id === 'longest_relief').fields[0].options[reliefIdx].label.toLowerCase()
-      : '';
-    const noneAddressed = addressed.some(i => SYSTEM_INPUT_OPTIONS[i].startsWith('None of the above'));
-    const realAddressed = addressed.filter(i => !SYSTEM_INPUT_OPTIONS[i].startsWith('None of the above')).length;
-
-    const parts = [];
-    parts.push(`You have tried ${tried.length} different route${tried.length === 1 ? '' : 's'}. Longest period of relief lasted ${reliefLabel || 'a limited time'}.`);
-    if (noneAddressed || realAddressed === 0) {
-      parts.push("Of the seven system inputs I asked about, none have been directly addressed by the professionals you have seen. Not stress. Not sleep. Not the way you decide to push or back off. Not a planned recovery schedule. Not warning signs. Not your long-term goal. Not the shape of your training week.");
-    } else {
-      parts.push(`Of the seven system inputs I asked about, ${realAddressed} have been directly addressed. Which means most of them have not.`);
-    }
-    parts.push("That is not a criticism of anyone you have seen. It is a description of what most treatment is designed to do. Physiotherapy addresses the movement. Chiropractic addresses the joint. GPs address the pain. Each of them treats a piece. None of them is designed to treat the pattern.");
-    parts.push("That gap is the one thing I want you to hold onto as we go into the assessment. Everything from here is designed to identify where in that gap your specific cycle is stuck.");
-    return parts;
+  function labelFor(key, idx) {
+    const f = findField(key);
+    return (f && typeof idx === 'number' && f.options && f.options[idx]) ? f.options[idx].label : '';
   }
 
   function interpretScore(kind, value) {
@@ -1362,7 +1298,7 @@
       profileName: 'The Boom-Bust Trainer',
       profileDescription: "You know how to build. When you are on, you are on. The problem is not the base. It is that you cannot sustain a build phase without hitting a wall you did not see coming. What you have is momentum without regulation. Big weeks that end in setbacks. Long stretches of good work erased in one bad session.",
       bottleneckName: 'Progression',
-      bottleneckDescription: "Your Foundation is largely there. You know what to do in a session. The breakdown happens between 'I feel good' and 'I overshoot.' You do not have a system that scales training up in a way your body can actually adapt to. Every time you push, you are relying on how you feel that day to decide how much is too much. That gap is what keeps the cycle repeating.",
+      bottleneckDescription: "Your Foundation is largely there. You know what to do in a session. The breakdown happens between 'I feel good' and 'I overshoot.' You do not have a system that scales training up in a way your body can actually adapt to. Every time you push, you are relying on how you feel that day to decide how much is too much. What is missing is a way to add load back without it tipping into the next flare: how much to add, how often, and what to pull back when it flares.",
       stages: [
         { name: 'Foundation', level: 'Solid', phase: 'Momentum',
           working: ['You have a real training practice you keep returning to.', 'You take some form of recovery.', 'You know the basics of what your body needs.'],
@@ -1379,7 +1315,7 @@
         { name: 'Resilience', level: 'Developing', phase: 'Friction',
           working: ['You have a long-term goal that gives shape to the work.', 'You can recognise warning signs after the fact.'],
           broken: ['You still override signals in the moment, because momentum feels good.', "You confuse feeling strong with actually being adapted to the load."],
-          costing: 'Feeling strong is not the same as being ready. That gap is where the flares happen.',
+          costing: 'Feeling strong is not the same as being ready. The flares happen in that space between the two.',
           solid: "Your body's readiness becomes the ceiling of your training decisions, not your motivation."
         }
       ],
@@ -1445,8 +1381,10 @@
   // What each treatment did and did not do. Used in the "why treatment was temporary" section.
   const TREATMENT_ROLES = {
     'Physio or PT': 'Restored some movement and gave you exercises. Rarely built into a full weekly system.',
+    'Multiple physios or clinics, not just one': 'More opinions, more exercises. Nobody tied them into one plan.',
     'Chiropractor or osteopath': 'Reduced acute pain and adjusted joints. Did not change how you load or progress.',
     'Sports massage': 'Released tightness. The tightness was a signal, not the cause.',
+    'Strength or gym program': 'Built general capacity. Not calibrated to what your back specifically needed.',
     'Painkillers or anti-inflammatories': 'Quieted the alarm. The alarm was doing a job.',
     'Steroid injections': 'Bought you a window. Windows close.',
     'MRI or CT scans': 'Named a structure. Did not explain the pattern that keeps stressing it.',
@@ -1462,7 +1400,8 @@
   const state = {
     stepIndex: -1,
     answers: {},
-    scores: { foundation: 0, progression: 0, resilience: 0 },
+    scores: { foundation: 2, progression: 2, resilience: 2 },
+    vagueAdvice: false,
     forcedBottleneck: null
   };
 
@@ -1479,10 +1418,11 @@
     try {
       const payload = {
         n: state.answers.name || '',
-        p: state.answers.pattern || '',
-        s: [state.answers.physical, state.answers.energy, state.answers.stress],
-        t: state.answers.tried || [],
-        lr: state.answers.longest_relief,
+        pt: state.answers.q1_pattern,
+        s: [state.answers.q2_physical, state.answers.q2_energy, state.answers.q2_stress],
+        t: state.answers.q3_tried || [],
+        lr: state.answers.q4_relief,
+        g: state.answers.q10_guilty || [],
         b: pickBottleneck()
       };
       const encoded = btoa(encodeURIComponent(JSON.stringify(payload)));
@@ -1499,14 +1439,15 @@
       if (!r) return false;
       const decoded = JSON.parse(decodeURIComponent(atob(r)));
       state.answers.name = decoded.n || '';
-      state.answers.pattern = decoded.p || '';
+      state.answers.q1_pattern = decoded.pt;
       if (Array.isArray(decoded.s)) {
-        state.answers.physical = decoded.s[0];
-        state.answers.energy = decoded.s[1];
-        state.answers.stress = decoded.s[2];
+        state.answers.q2_physical = decoded.s[0];
+        state.answers.q2_energy = decoded.s[1];
+        state.answers.q2_stress = decoded.s[2];
       }
-      state.answers.tried = decoded.t || [];
-      state.answers.longest_relief = decoded.lr;
+      state.answers.q3_tried = decoded.t || [];
+      state.answers.q4_relief = decoded.lr;
+      state.answers.q10_guilty = decoded.g || [];
       state.forcedBottleneck = decoded.b;
       state.stepIndex = steps.length;
       return true;
@@ -1533,10 +1474,10 @@
   }
 
   function totalCount() {
-    return steps.filter(s => s.type === 'question' || s.type === 'email' || s.type === 'reflection' || s.type === 'complete').length;
+    return steps.filter(s => s.type === 'question').length;
   }
   function progressBefore(index) {
-    return steps.slice(0, index).filter(s => s.type === 'question' || s.type === 'email' || s.type === 'reflection' || s.type === 'complete').length;
+    return steps.slice(0, index).filter(s => s.type === 'question').length;
   }
 
   function render() {
@@ -1551,91 +1492,8 @@
       return;
     }
     const step = steps[state.stepIndex];
-    if (step.type === 'section') renderSection(step);
-    else if (step.type === 'question') renderQuestion(step);
-    else if (step.type === 'reflection') renderReflection(step);
-    else if (step.type === 'complete') renderComplete();
+    if (step.type === 'question') renderQuestion(step);
     else if (step.type === 'email') renderEmail();
-  }
-
-  function renderSection(step) {
-    clearDynamic();
-    const el = document.createElement('section');
-    el.className = 'step active';
-    el.dataset.step = 'section';
-    el.innerHTML = `
-      <p class="transition-tag"><strong>${step.tag}</strong></p>
-      <h2 class="transition-title"></h2>
-      <div class="transition-body"></div>
-      <div class="nav">
-        <button class="btn btn-ghost" data-action="back">Back</button>
-        <button class="btn" data-action="next">Continue <span class="btn-arrow">&rarr;</span></button>
-      </div>
-    `;
-    el.querySelector('.transition-title').textContent = step.title;
-    const bodyEl = el.querySelector('.transition-body');
-    step.body.forEach(p => {
-      const para = document.createElement('p');
-      para.textContent = p;
-      bodyEl.appendChild(para);
-    });
-    el.querySelector('[data-action="next"]').addEventListener('click', () => { state.stepIndex++; render(); });
-    el.querySelector('[data-action="back"]').addEventListener('click', () => { state.stepIndex--; render(); });
-    app.appendChild(el);
-    scrollTop();
-  }
-
-  function renderReflection(step) {
-    clearDynamic();
-    recalcScores();
-    const content = step.build(state);
-    const el = document.createElement('section');
-    el.className = 'step active';
-    el.dataset.step = step.id;
-    el.innerHTML = `
-      <p class="transition-tag"><strong>${escapeHTML(content.tag)}</strong></p>
-      <h2 class="transition-title"></h2>
-      <div class="transition-body"></div>
-      <div class="nav">
-        <button class="btn btn-ghost" data-action="back">Back</button>
-        <button class="btn" data-action="next">Continue <span class="btn-arrow">&rarr;</span></button>
-      </div>
-    `;
-    el.querySelector('.transition-title').textContent = content.title;
-    const bodyEl = el.querySelector('.transition-body');
-    content.body.forEach(p => {
-      const para = document.createElement('p');
-      para.textContent = p;
-      bodyEl.appendChild(para);
-    });
-    el.querySelector('[data-action="next"]').addEventListener('click', () => { state.stepIndex++; render(); });
-    el.querySelector('[data-action="back"]').addEventListener('click', () => { state.stepIndex--; render(); });
-    app.appendChild(el);
-    scrollTop();
-  }
-
-  function renderComplete() {
-    clearDynamic();
-    const firstName = firstNameOf(state.answers.name);
-    const el = document.createElement('section');
-    el.className = 'step active';
-    el.dataset.step = 'complete';
-    el.innerHTML = `
-      <p class="transition-tag"><strong>Assessment complete</strong></p>
-      <h2 class="transition-title">That is everything I need, ${escapeHTML(firstName)}.</h2>
-      <div class="transition-body">
-        <p>Your report is generated. It walks through your Cycle Profile, the specific bottleneck stopping you, the stage-by-stage read, and the exact next step.</p>
-        <p>Before I show it: where should I send you the copy? So you have it saved, and you can come back to it any time.</p>
-      </div>
-      <div class="nav">
-        <button class="btn btn-ghost" data-action="back">Back</button>
-        <button class="btn btn-accent" data-action="next">Continue to email <span class="btn-arrow">&rarr;</span></button>
-      </div>
-    `;
-    el.querySelector('[data-action="next"]').addEventListener('click', () => { state.stepIndex++; render(); });
-    el.querySelector('[data-action="back"]').addEventListener('click', () => { state.stepIndex--; render(); });
-    app.appendChild(el);
-    scrollTop();
   }
 
   function renderQuestion(step) {
@@ -1651,7 +1509,7 @@
         <div class="progress-rule"><span style="width: ${progressPct}%"></span></div>
         <div class="progress-meta">
           <span class="stage-tag">${step.stage}</span>
-          <span>${soFar + 1} of ${total}</span>
+          <span>Step ${soFar + 1} of ${total}</span>
         </div>
       </div>
       <p class="question-eyebrow">${step.eyebrow || ''}</p>
@@ -1812,36 +1670,69 @@
     container.appendChild(wrap);
   }
 
+  // ---------------------------------------------------------
+  //  SCORING
+  //  Three stages, each banded to a level 1-3 from a handful of
+  //  answers (unanswered counts as neutral). Lowest level is the
+  //  bottleneck; ties break Foundation, then Progression, then
+  //  Resilience. Ported from the brief's reference implementation.
+  // ---------------------------------------------------------
   function recalcScores() {
-    const scores = { foundation: 0, progression: 0, resilience: 0 };
-    for (const step of steps) {
-      if (step.type !== 'question') continue;
-      for (const f of step.fields) {
-        if (f.type !== 'options') continue;
-        const idx = state.answers[f.key];
-        if (typeof idx !== 'number') continue;
-        const opt = f.options[idx];
-        if (!opt || !opt.score) continue;
-        for (const k in opt.score) scores[k] = (scores[k] || 0) + opt.score[k];
-      }
-    }
-    const stress = state.answers.stress;
-    const energy = state.answers.energy;
-    if (typeof stress === 'number' && stress <= 4) scores.foundation += 1;
-    if (typeof energy === 'number' && energy <= 4) scores.foundation += 1;
-    state.scores = scores;
+    const a = state.answers;
+    const has = (id, idx) => Array.isArray(a[id]) && a[id].indexOf(idx) !== -1;
+    const arr = (id) => Array.isArray(a[id]) ? a[id] : [];
+    const num = (id) => (typeof a[id] === 'number' ? a[id] : null);
+    const band = (sum, hi, lo) => (sum >= hi ? 3 : sum <= lo ? 1 : 2);
+
+    // FOUNDATION (unanswered contributes 1 = neutral)
+    let f = 0;
+    const structure = num('q6_structure');
+    f += structure === null ? 1 : structure === 0 ? 2 : 0;
+    const decide = num('q9_decide');
+    f += decide === null ? 1 : decide === 0 ? 2 : decide === 1 ? 1 : 0;
+    const recovery = num('q9_recovery');
+    f += recovery === null ? 1 : recovery === 0 ? 2 : recovery === 1 ? 1 : 0;
+    const pattern = num('q1_pattern');
+    f += (pattern === 3 || pattern === 5) ? 0 : 1;
+    const foundation = band(f, 5, 1);
+
+    // PROGRESSION (unanswered contributes 1 = neutral)
+    let p = 0;
+    const outcome = num('q4_outcome');
+    p += outcome === null ? 1 : (outcome === 1 || outcome === 3) ? 1 : 0;
+    const relief = num('q4_relief');
+    p += relief === null ? 1 : (relief === 2 || relief === 3) ? 2 : relief === 1 ? 1 : 0;
+    const endsHard = has('q7_ends', 0) || has('q7_ends', 3) || has('q7_ends', 5);
+    const endsOnlyBusy = arr('q7_ends').length > 0 && arr('q7_ends').every(i => i === 2);
+    p += endsHard ? 0 : endsOnlyBusy ? 2 : 1;
+    const intensity = num('q6_intensity');
+    p += intensity === null ? 1 : (intensity === 2 || intensity === 3) ? 2 : intensity === 1 ? 1 : 0;
+    const progression = band(p, 5, 1);
+
+    // RESILIENCE (unanswered contributes 1 = neutral)
+    let r = 0;
+    const stress = num('q2_stress');
+    r += stress === null ? 1 : stress >= 8 ? 2 : stress >= 5 ? 1 : 0;
+    const runupOnlyNothing = arr('q7_runup').length > 0 && arr('q7_runup').every(i => i === 6);
+    r += runupOnlyNothing ? 0 : 1;
+    const signs = arr('q8_signs');
+    r += has('q8_signs', 5) ? 0 : signs.length === 0 ? 1 : signs.length === 1 ? 1 : 2;
+    const flareDo = num('q8_do');
+    r += flareDo === null ? 1 : flareDo === 0 ? 2 : flareDo === 1 ? 1 : 0;
+    const flareCost = num('q8_cost');
+    r += flareCost === null ? 1 : flareCost === 0 ? 2 : flareCost === 1 ? 1 : 0;
+    const resilience = band(r, 6, 2);
+
+    state.scores = { foundation, progression, resilience };
+    state.vagueAdvice = outcome === 3 || has('q5_addressed', 6);
   }
 
   function pickBottleneck() {
     if (state.forcedBottleneck) return state.forcedBottleneck;
     const order = ['foundation', 'progression', 'resilience'];
     let winner = 'foundation';
-    let max = -1;
     for (const k of order) {
-      if ((state.scores[k] || 0) > max) {
-        max = state.scores[k] || 0;
-        winner = k;
-      }
+      if ((state.scores[k] ?? 3) < (state.scores[winner] ?? 3)) winner = k;
     }
     return winner;
   }
@@ -1878,11 +1769,10 @@
     form.querySelector('[name="first_name"]').value = firstName;
     form.querySelector('[name="fields[profile]"]').value = profile.profileName;
     form.querySelector('[name="fields[bottleneck]"]').value = profile.bottleneckName;
-    form.querySelector('[name="fields[physical_score]"]').value = String(state.answers.physical ?? '');
-    form.querySelector('[name="fields[energy_score]"]').value = String(state.answers.energy ?? '');
-    form.querySelector('[name="fields[stress_score]"]').value = String(state.answers.stress ?? '');
-    form.querySelector('[name="fields[pattern]"]').value = state.answers.pattern || '';
-    form.querySelector('[name="fields[age]"]').value = state.answers.age || '';
+    form.querySelector('[name="fields[physical_score]"]').value = String(state.answers.q2_physical ?? '');
+    form.querySelector('[name="fields[energy_score]"]').value = String(state.answers.q2_energy ?? '');
+    form.querySelector('[name="fields[stress_score]"]').value = String(state.answers.q2_stress ?? '');
+    form.querySelector('[name="fields[pattern]"]').value = labelFor('q1_pattern', state.answers.q1_pattern);
     form.querySelector('[name="fields[instagram]"]').value = state.answers.instagram || '';
     form.querySelector('[name="fields[full_answers]"]').value = buildFullAnswers();
     form.querySelector('[name="fields[report_url]"]').value = buildReportURL();
@@ -1893,88 +1783,52 @@
 
   function isValidEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test((v || '').trim()); }
   function escapeHTML(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+  function joinList(items) {
+    if (items.length <= 1) return items.join('');
+    return items.slice(0, -1).join(', ') + ' and ' + items[items.length - 1];
+  }
 
-  // Build a readable full-answers block (all text + selections) for Kit / webhook
-  // Resolves the select/multi-select answers (stored as option indices) to
-  // their actual label text. Shared by buildFullAnswers() and the webhook
-  // payload in submitAll(), so both send readable answers, not raw indices.
-  function resolveAnswerLabels(a) {
-    const relIdx = a.longest_relief;
-    const reliefStep = steps.find(s => s.id === 'longest_relief');
-    const longest_relief = typeof relIdx === 'number' && reliefStep ? reliefStep.fields[0].options[relIdx].label : '';
-    const lensStep = steps.find(s => s.id === 'lens');
-    const lens = typeof a.lens === 'number' && lensStep ? lensStep.fields[0].options[a.lens].label : '';
-    const struct = steps.find(s => s.id === 'training_structure');
-    const training_structure = typeof a.training_structure === 'number' ? struct.fields[0].options[a.training_structure].label : '';
-    const dec = steps.find(s => s.id === 'decision_method');
-    const decision_method = typeof a.decision_method === 'number' ? dec.fields[0].options[a.decision_method].label : '';
-    const rec = steps.find(s => s.id === 'planned_recovery');
-    const planned_recovery = typeof a.planned_recovery === 'number' ? rec.fields[0].options[a.planned_recovery].label : '';
-    const setback = steps.find(s => s.id === 'setback_response');
-    const setback_response = typeof a.setback_response === 'number' ? setback.fields[0].options[a.setback_response].label : '';
-    const ws = steps.find(s => s.id === 'warning_signs');
-    const warning_signs = typeof a.warning_signs === 'number' ? ws.fields[1].options[a.warning_signs].label : '';
-    const lt = steps.find(s => s.id === 'longterm');
-    const longterm = typeof a.longterm === 'number' ? lt.fields[0].options[a.longterm].label : '';
-    const tried = (a.tried || []).map(i => TREATMENT_OPTIONS[i]).join(', ');
-    const addressed = (a.addressed || []).map(i => SYSTEM_INPUT_OPTIONS[i]).join(', ');
-    return { longest_relief, lens, training_structure, decision_method, planned_recovery, setback_response, warning_signs, longterm, tried, addressed };
+  // Resolve a stored multi-select answer (array of option indices) to its
+  // array of label text. Pairs with labelFor() (single-select) above.
+  function labelsFor(key, indices) {
+    const f = findField(key);
+    if (!f || !Array.isArray(indices)) return [];
+    return indices.map(i => (f.options[i] || {}).label).filter(Boolean);
+  }
+
+  // Build the full-answers payload for Kit / the webhook: every selection,
+  // keyed by question id, resolved to its label (or array of labels for a
+  // multi-select) rather than a raw index. Text/scale answers pass through
+  // as-is. Serialized to JSON so it lands as one self-describing field.
+  function buildFullAnswersObject() {
+    const a = state.answers;
+    const out = {};
+    for (const step of steps) {
+      if (step.type !== 'question') continue;
+      for (const f of step.fields) {
+        const v = a[f.key];
+        if (v === undefined || v === null || v === '') continue;
+        if (f.type === 'options') out[f.key] = labelFor(f.key, v);
+        else if (f.type === 'multi') out[f.key] = labelsFor(f.key, v);
+        else out[f.key] = v;
+      }
+    }
+    return out;
   }
 
   function buildFullAnswers() {
-    const a = state.answers;
-    const labels = resolveAnswerLabels(a);
-
-    return [
-      '=== LOW BACK ASSESSMENT ANSWERS ===',
-      `Name: ${a.name || ''}`,
-      `Age: ${a.age || ''}`,
-      `Instagram: ${a.instagram || ''}`,
-      `Pattern tired of: ${a.pattern || ''}`,
-      '',
-      `Physical state: ${a.physical}/10`,
-      `Energy & recovery: ${a.energy}/10`,
-      `Stress load: ${a.stress}/10`,
-      '',
-      '--- AWARENESS ---',
-      `What they've tried: ${labels.tried || 'none listed'}`,
-      `Longest period of relief: ${labels.longest_relief}`,
-      `What treatment has actually addressed: ${labels.addressed || 'none listed'}`,
-      `How they see the pain: ${labels.lens}`,
-      '',
-      '--- CONTEXT ---',
-      `Current training: ${a.training || ''}`,
-      `Cycle history: ${a.cycle_history || ''}`,
-      `What they think the problem is: ${a.think_problem || ''}`,
-      `What they know they should change: ${a.should_change || ''}`,
-      '',
-      '--- FOUNDATION ---',
-      `Training structure: ${labels.training_structure}`,
-      `2-4 weeks before last flare: ${a.pre_flare || ''}`,
-      `Decision method: ${labels.decision_method}`,
-      `Planned recovery: ${labels.planned_recovery}`,
-      '',
-      '--- PROGRESSION ---',
-      `Good weeks / what ends them: ${a.good_weeks || ''}`,
-      `Setback response: ${labels.setback_response}`,
-      '',
-      '--- RESILIENCE ---',
-      `Warning signs before last flare: ${a.warning_signs_text || ''}`,
-      `Warning signs response: ${labels.warning_signs}`,
-      `75yo mobility relief or threat: ${labels.longterm}`,
-      '',
-      '=== ==='
-    ].join('\n');
+    return JSON.stringify(buildFullAnswersObject());
   }
 
   // Submits straight to the Kit forms endpoint (same endpoint the embedded
   // form's action attribute points to) so the app controls the app-flow
   // (advancing to the report) itself, rather than depending on the
   // externally-hosted ck.js script to signal success back to us.
-  async function submitAll({ email, firstName, profile, bottleneck }) {
+  async function submitAll({ email, phone, firstName, profile, bottleneck }) {
     const a = state.answers;
     const fullAnswers = buildFullAnswers();
     const reportURL = buildReportURL();
+    const pattern = labelFor('q1_pattern', a.q1_pattern);
 
     // ---- Kit ----
     try {
@@ -1983,11 +1837,11 @@
       fd.append('first_name', firstName);
       fd.append('fields[profile]', profile);
       fd.append('fields[bottleneck]', bottleneck);
-      fd.append('fields[physical_score]', String(a.physical));
-      fd.append('fields[energy_score]', String(a.energy));
-      fd.append('fields[stress_score]', String(a.stress));
-      fd.append('fields[pattern]', a.pattern || '');
-      fd.append('fields[age]', a.age || '');
+      fd.append('fields[physical_score]', String(a.q2_physical ?? ''));
+      fd.append('fields[energy_score]', String(a.q2_energy ?? ''));
+      fd.append('fields[stress_score]', String(a.q2_stress ?? ''));
+      fd.append('fields[pattern]', pattern);
+      fd.append('fields[phone]', phone || '');
       fd.append('fields[instagram]', a.instagram || '');
       fd.append('fields[full_answers]', fullAnswers);
       fd.append('fields[report_url]', reportURL);
@@ -2002,12 +1856,14 @@
     if (WEBHOOK_URL) {
       try {
         const payload = {
-          email, first_name: firstName, profile, bottleneck,
-          physical_score: a.physical, energy_score: a.energy, stress_score: a.stress,
-          // Spread the raw answers first, then overwrite the select/multi-select
-          // fields with their resolved label text (see resolveAnswerLabels) so
-          // the webhook sends readable answers instead of raw option indices.
-          answers: { ...a, ...resolveAnswerLabels(a) },
+          // Every individual question answer, flattened to its own key
+          // (name, instagram, q1_pattern, q2_physical, q3_tried, ...) so
+          // each can be mapped to its own column in Google Sheets/Zapier.
+          ...buildFullAnswersObject(),
+          email, phone, first_name: firstName, profile, bottleneck,
+          physical_score: a.q2_physical, energy_score: a.q2_energy, stress_score: a.q2_stress,
+          pattern,
+          instagram: a.instagram || '',
           full_answers: fullAnswers,
           report_url: reportURL,
           submitted_at: new Date().toISOString()
@@ -2030,15 +1886,12 @@
     const bottleneck = pickBottleneck();
     const profile = profiles[bottleneck];
     const firstName = firstNameOf(state.answers.name);
-    const physical = state.answers.physical;
-    const energy = state.answers.energy;
-    const stress = state.answers.stress;
-    const triedList = (state.answers.tried || []).map(i => TREATMENT_OPTIONS[i]);
-    const reliefIdx = state.answers.longest_relief;
-    const reliefStep = steps.find(s => s.id === 'longest_relief');
-    const reliefLabel = typeof reliefIdx === 'number' && reliefStep
-      ? reliefStep.fields[0].options[reliefIdx].label
-      : 'a limited time';
+    const physical = state.answers.q2_physical;
+    const energy = state.answers.q2_energy;
+    const stress = state.answers.q2_stress;
+    const triedList = labelsFor('q3_tried', state.answers.q3_tried || []);
+    const reliefLabel = labelFor('q4_relief', state.answers.q4_relief) || 'a limited time';
+    const guiltyList = labelsFor('q10_guilty', state.answers.q10_guilty || []).map(t => t.charAt(0).toLowerCase() + t.slice(1));
 
     const el = document.createElement('section');
     el.className = 'step active';
@@ -2098,6 +1951,7 @@
           <p><strong>What you think is happening:</strong> ${escapeHTML(profile.whatYouThink)}</p>
           <p><strong>What is actually happening:</strong> ${escapeHTML(profile.whatIsHappening)}</p>
           <p><strong>Why what you have tried has not worked:</strong> ${escapeHTML(profile.whyNotWorked)}</p>
+          ${state.vagueAdvice ? `<p><strong>On the advice you have had:</strong> Different practitioners, different theories, and nothing that added up to a plan. A plan says what, in what order, at what load, and what to change when it flares. You were given exercises and left to it. That is the difference.</p>` : ''}
         </div>
       </section>
 
@@ -2140,6 +1994,7 @@
       <div class="callout">
         <p class="section-label">Your Immediate Next Step</p>
         <div class="prose">
+          ${guiltyList.length ? `<p>You already flagged ${escapeHTML(joinList(guiltyList.slice(0, 2)))} as things you know are on you. Start there.</p>` : ''}
           <p>${escapeHTML(profile.nextStep)}</p>
         </div>
       </div>
@@ -2174,7 +2029,7 @@
       </div>
       <div class="treatment-grid"></div>
       <div class="prose">
-        <p>Read that grid again. Every entry on it did what it was supposed to do. What none of them did was change the pattern underneath, because the pattern lives outside the room those professionals work in. That is the gap.</p>
+        <p>Read that grid again. Every entry on it did what it was supposed to do. What none of them did was change the pattern underneath, because the pattern lives outside the room those professionals work in. That is what is actually missing: not another treatment, but something built to address the pattern itself.</p>
       </div>
     `;
     const treatGrid = whyEl.querySelector('.treatment-grid');
@@ -2269,7 +2124,9 @@
     el.querySelector('[data-action="restart"]').addEventListener('click', () => {
       state.stepIndex = -1;
       state.answers = {};
-      state.scores = { foundation: 0, progression: 0, resilience: 0 };
+      state.scores = { foundation: 2, progression: 2, resilience: 2 };
+      state.vagueAdvice = false;
+      state.forcedBottleneck = null;
       render();
     });
 
@@ -2292,14 +2149,90 @@
     render();
   });
 
+  // Full country/dial-code list for the searchable country combobox
+  // (a <datalist>-backed text input, so it's typeable/filterable, unlike
+  // a plain <select>). Each option's visible text is "Name +Code", so
+  // typing either the country name or the digits of the code filters it.
+  const COUNTRY_CODES = [
+    ['Afghanistan', '+93'], ['Albania', '+355'], ['Algeria', '+213'], ['Andorra', '+376'],
+    ['Angola', '+244'], ['Argentina', '+54'], ['Armenia', '+374'], ['Australia', '+61'],
+    ['Austria', '+43'], ['Azerbaijan', '+994'], ['Bahamas', '+1'], ['Bahrain', '+973'],
+    ['Bangladesh', '+880'], ['Barbados', '+1'], ['Belarus', '+375'], ['Belgium', '+32'],
+    ['Belize', '+501'], ['Benin', '+229'], ['Bhutan', '+975'], ['Bolivia', '+591'],
+    ['Bosnia and Herzegovina', '+387'], ['Botswana', '+267'], ['Brazil', '+55'],
+    ['Brunei', '+673'], ['Bulgaria', '+359'], ['Burkina Faso', '+226'], ['Burundi', '+257'],
+    ['Cambodia', '+855'], ['Cameroon', '+237'], ['Canada', '+1'], ['Cape Verde', '+238'],
+    ['Central African Republic', '+236'], ['Chad', '+235'], ['Chile', '+56'], ['China', '+86'],
+    ['Colombia', '+57'], ['Comoros', '+269'], ['Congo', '+242'], ['Costa Rica', '+506'],
+    ['Croatia', '+385'], ['Cuba', '+53'], ['Cyprus', '+357'], ['Czech Republic', '+420'],
+    ['Denmark', '+45'], ['Djibouti', '+253'], ['Dominican Republic', '+1'], ['DR Congo', '+243'],
+    ['Ecuador', '+593'], ['Egypt', '+20'], ['El Salvador', '+503'], ['Estonia', '+372'],
+    ['Eswatini', '+268'], ['Ethiopia', '+251'], ['Fiji', '+679'], ['Finland', '+358'],
+    ['France', '+33'], ['Gabon', '+241'], ['Gambia', '+220'], ['Georgia', '+995'],
+    ['Germany', '+49'], ['Ghana', '+233'], ['Greece', '+30'], ['Greenland', '+299'],
+    ['Guatemala', '+502'], ['Guinea', '+224'], ['Guyana', '+592'], ['Haiti', '+509'],
+    ['Honduras', '+504'], ['Hong Kong', '+852'], ['Hungary', '+36'], ['Iceland', '+354'],
+    ['India', '+91'], ['Indonesia', '+62'], ['Iran', '+98'], ['Iraq', '+964'],
+    ['Ireland', '+353'], ['Israel', '+972'], ['Italy', '+39'], ['Jamaica', '+1'],
+    ['Japan', '+81'], ['Jordan', '+962'], ['Kazakhstan', '+7'], ['Kenya', '+254'],
+    ['Kosovo', '+383'], ['Kuwait', '+965'], ['Kyrgyzstan', '+996'], ['Laos', '+856'],
+    ['Latvia', '+371'], ['Lebanon', '+961'], ['Lesotho', '+266'], ['Liberia', '+231'],
+    ['Libya', '+218'], ['Liechtenstein', '+423'], ['Lithuania', '+370'], ['Luxembourg', '+352'],
+    ['Macau', '+853'], ['Madagascar', '+261'], ['Malawi', '+265'], ['Malaysia', '+60'],
+    ['Maldives', '+960'], ['Mali', '+223'], ['Malta', '+356'], ['Mauritania', '+222'],
+    ['Mauritius', '+230'], ['Mexico', '+52'], ['Moldova', '+373'], ['Monaco', '+377'],
+    ['Mongolia', '+976'], ['Montenegro', '+382'], ['Morocco', '+212'], ['Mozambique', '+258'],
+    ['Myanmar', '+95'], ['Namibia', '+264'], ['Nepal', '+977'], ['Netherlands', '+31'],
+    ['New Zealand', '+64'], ['Nicaragua', '+505'], ['Niger', '+227'], ['Nigeria', '+234'],
+    ['North Korea', '+850'], ['North Macedonia', '+389'], ['Norway', '+47'], ['Oman', '+968'],
+    ['Pakistan', '+92'], ['Panama', '+507'], ['Papua New Guinea', '+675'], ['Paraguay', '+595'],
+    ['Peru', '+51'], ['Philippines', '+63'], ['Poland', '+48'], ['Portugal', '+351'],
+    ['Qatar', '+974'], ['Romania', '+40'], ['Russia', '+7'], ['Rwanda', '+250'],
+    ['Saudi Arabia', '+966'], ['Senegal', '+221'], ['Serbia', '+381'], ['Seychelles', '+248'],
+    ['Sierra Leone', '+232'], ['Singapore', '+65'], ['Slovakia', '+421'], ['Slovenia', '+386'],
+    ['Somalia', '+252'], ['South Africa', '+27'], ['South Korea', '+82'], ['South Sudan', '+211'],
+    ['Spain', '+34'], ['Sri Lanka', '+94'], ['Sudan', '+249'], ['Suriname', '+597'],
+    ['Sweden', '+46'], ['Switzerland', '+41'], ['Syria', '+963'], ['Taiwan', '+886'],
+    ['Tajikistan', '+992'], ['Tanzania', '+255'], ['Thailand', '+66'], ['Togo', '+228'],
+    ['Trinidad and Tobago', '+1'], ['Tunisia', '+216'], ['Turkey', '+90'], ['Turkmenistan', '+993'],
+    ['Uganda', '+256'], ['Ukraine', '+380'], ['United Arab Emirates', '+971'],
+    ['United Kingdom', '+44'], ['United States', '+1'], ['Uruguay', '+598'],
+    ['Uzbekistan', '+998'], ['Vanuatu', '+678'], ['Venezuela', '+58'], ['Vietnam', '+84'],
+    ['Yemen', '+967'], ['Zambia', '+260'], ['Zimbabwe', '+263']
+  ];
+
   const kitForm = document.getElementById('kit-email-form');
   const kitEmailInput = kitForm.querySelector('[name="email_address"]');
   const kitSubmitBtn = kitForm.querySelector('[data-element="submit"]');
+  const phoneCountryInput = document.getElementById('phone-country');
+  const phoneNumberInput = document.getElementById('phone-number');
+
+  const countryListEl = document.getElementById('country-list');
+  COUNTRY_CODES.forEach(([name, code]) => {
+    const opt = document.createElement('option');
+    opt.value = `${name} ${code}`;
+    countryListEl.appendChild(opt);
+  });
+  phoneCountryInput.value = 'Ireland +353';
+
+  // Pull the dial code back out of whatever the box currently holds:
+  // an exact "Name +Code" match, or just a trailing "+Code" the person typed.
+  function resolveDialCode() {
+    const v = (phoneCountryInput.value || '').trim();
+    const exact = COUNTRY_CODES.find(([name, code]) => `${name} ${code}` === v);
+    if (exact) return exact[1];
+    const m = v.match(/\+\d+\s*$/);
+    return m ? m[0].trim() : '';
+  }
+
+  function phoneDigits() { return (phoneNumberInput.value || '').replace(/\D/g, ''); }
 
   function updateKitSubmitState() {
-    kitSubmitBtn.disabled = !isValidEmail(kitEmailInput.value);
+    kitSubmitBtn.disabled = !isValidEmail(kitEmailInput.value) || phoneDigits().length < 5 || !resolveDialCode();
   }
   kitEmailInput.addEventListener('input', updateKitSubmitState);
+  phoneNumberInput.addEventListener('input', updateKitSubmitState);
+  phoneCountryInput.addEventListener('input', updateKitSubmitState);
   updateKitSubmitState();
 
   kitForm.addEventListener('submit', async (e) => {
@@ -2310,17 +2243,21 @@
     // depend on the externally-hosted ck.js script telling us it worked.
     e.preventDefault();
     if (kitSubmitBtn.hasAttribute('data-active')) return;
+    const dialCode = resolveDialCode();
+    if (phoneDigits().length < 5 || !dialCode) return;
     kitSubmitBtn.setAttribute('data-active', '');
     kitSubmitBtn.disabled = true;
 
     const email = kitEmailInput.value.trim();
+    const phone = dialCode + phoneDigits();
     state.answers.email = email;
+    state.answers.phone = phone;
     const firstName = firstNameOf(state.answers.name);
     recalcScores();
     const bottleneck = pickBottleneck();
     const profile = profiles[bottleneck];
 
-    await submitAll({ email, firstName, profile: profile.profileName, bottleneck: profile.bottleneckName });
+    await submitAll({ email, phone, firstName, profile: profile.profileName, bottleneck: profile.bottleneckName });
 
     state.stepIndex++;
     render();
