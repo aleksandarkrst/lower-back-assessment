@@ -982,9 +982,9 @@
       title: "Let's start with where you are.",
       hint: null,
       fields: [
-        { key: 'name', type: 'text', label: 'Your name', placeholder: 'First name is fine' },
-        { key: 'instagram', type: 'text', label: 'Instagram handle', placeholder: '@yourusername' },
-        { key: 'q1_pattern', type: 'options', label: 'The pattern you are most sick of', options: [
+        { key: 'name', type: 'text', label: 'Your name', placeholder: 'First name is fine', required: true },
+        { key: 'instagram', type: 'text', label: 'Instagram handle', placeholder: '@yourusername', required: true },
+        { key: 'q1_pattern', type: 'options', label: 'The pattern you are most sick of', required: true, options: [
           { label: 'It flares, I calm it down, I rebuild, it flares again' },
           { label: 'I get a few good weeks then something sets it off' },
           { label: 'It never fully clears, I just manage it around everything' },
@@ -992,7 +992,7 @@
           { label: 'It is fine until a busy or stressful stretch, then it goes' },
           { label: 'Different every time, I cannot predict it' }
         ] },
-        { key: 'q1_view', type: 'options', label: 'Right now, how do you see it?', options: [
+        { key: 'q1_view', type: 'options', label: 'Right now, how do you see it?', required: true, options: [
           { label: 'An exercise problem. I am doing the wrong movements.' },
           { label: 'A load problem. I am doing too much or progressing too fast.' },
           { label: 'A structural problem. Something is mechanically wrong.' },
@@ -1011,11 +1011,11 @@
       title: 'Three numbers.',
       hint: 'These shape everything that follows. Use the anchors under each scale.',
       fields: [
-        { key: 'q2_physical', type: 'scale', label: 'Physical state right now',
+        { key: 'q2_physical', type: 'scale', label: 'Physical state right now', required: true,
           anchors: ['1-4: pain or injury active', '5-7: functional but not where you want to be', '8-10: moving well, no significant limitations'] },
-        { key: 'q2_energy', type: 'scale', label: 'Energy and recovery',
+        { key: 'q2_energy', type: 'scale', label: 'Energy and recovery', required: true,
           anchors: ['1-4: running on empty', '5-7: managing but inconsistent', '8-10: genuinely restored'] },
-        { key: 'q2_stress', type: 'scale', label: 'Stress load right now',
+        { key: 'q2_stress', type: 'scale', label: 'Stress load right now', required: true,
           anchors: ['1-4: high stress, survival mode', '5-7: elevated but manageable', '8-10: genuinely settled'] }
       ]
     },
@@ -1029,7 +1029,7 @@
       title: 'What have you already tried?',
       hint: 'Select everything that has been part of your journey.',
       fields: [
-        { key: 'q3_tried', type: 'multi', options: TREATMENT_OPTIONS.map(o => ({ label: o })) }
+        { key: 'q3_tried', type: 'multi', required: true, options: TREATMENT_OPTIONS.map(o => ({ label: o })) }
       ]
     },
 
@@ -1042,14 +1042,14 @@
       title: 'So how did that go?',
       hint: null,
       fields: [
-        { key: 'q4_outcome', type: 'options', label: 'Across everything you have tried, what actually happened?', options: [
+        { key: 'q4_outcome', type: 'options', label: 'Across everything you have tried, what actually happened?', required: true, options: [
           { label: 'I got relief while I was seeing someone, but it came back within weeks of stopping' },
           { label: 'It helped a bit, but it never held' },
           { label: 'The exercises never progressed. I got stuck on the basics' },
           { label: 'Every practitioner had a different theory, so I never knew what to follow' },
           { label: 'Honestly, none of it gave me real relief' }
         ] },
-        { key: 'q4_relief', type: 'options', label: 'Longest stretch of real relief before it came back?', options: [
+        { key: 'q4_relief', type: 'options', label: 'Longest stretch of real relief before it came back?', required: true, options: [
           { label: 'Less than two weeks' },
           { label: 'Two weeks to three months' },
           { label: 'Three to twelve months' },
@@ -1068,7 +1068,7 @@
       title: 'What has anyone actually built into a plan for you?',
       hint: 'Not mentioned in passing. Actually addressed.',
       fields: [
-        { key: 'q5_addressed', type: 'multi', options: ADDRESSED_OPTIONS.map(o => ({ label: o })) }
+        { key: 'q5_addressed', type: 'multi', required: true, options: ADDRESSED_OPTIONS.map(o => ({ label: o })) }
       ]
     },
 
@@ -1081,19 +1081,19 @@
       title: 'Your training right now.',
       hint: null,
       fields: [
-        { key: 'q6_freq', type: 'options', label: 'How often do you train?', options: [
+        { key: 'q6_freq', type: 'options', label: 'How often do you train?', required: true, options: [
           { label: '5 or more times a week' },
           { label: '3 to 4 times a week' },
           { label: '1 to 2 times a week' },
           { label: 'Irregular, depends on the week' }
         ] },
-        { key: 'q6_structure', type: 'options', label: 'How is it actually structured?', options: [
+        { key: 'q6_structure', type: 'options', label: 'How is it actually structured?', required: true, options: [
           { label: 'A single progressive plan I follow' },
           { label: 'A mix of sources, whatever I feel like on the day' },
           { label: 'No real structure, I show up and see what happens' },
           { label: 'I combine old physio exercises with my main program' }
         ] },
-        { key: 'q6_intensity', type: 'options', label: 'How hard do the sessions go?', options: [
+        { key: 'q6_intensity', type: 'options', label: 'How hard do the sessions go?', required: true, options: [
           { label: 'Near max most sessions' },
           { label: 'Hard, but with something in the tank' },
           { label: 'Moderate and controlled' },
@@ -1111,7 +1111,7 @@
       title: 'Around a flare.',
       hint: null,
       fields: [
-        { key: 'q7_runup', type: 'multi', label: 'In the 2 to 4 weeks before your last flare, what was going on?', options: [
+        { key: 'q7_runup', type: 'multi', label: 'In the 2 to 4 weeks before your last flare, what was going on?', required: true, options: [
           { label: 'Volume or intensity had crept up' },
           { label: 'A run of bad sleep' },
           { label: 'High work or life stress' },
@@ -1120,7 +1120,7 @@
           { label: 'A small jump in load on one exercise' },
           { label: 'Nothing obvious changed' }
         ] },
-        { key: 'q7_ends', type: 'multi', label: 'When a good stretch of training ends, what usually ends it?', options: [
+        { key: 'q7_ends', type: 'multi', label: 'When a good stretch of training ends, what usually ends it?', required: true, options: [
           { label: 'A flare with no obvious cause' },
           { label: 'I pushed a PB or a hard session' },
           { label: 'Life got busy and I dropped off' },
@@ -1141,7 +1141,7 @@
       title: 'When a flare hits.',
       hint: null,
       fields: [
-        { key: 'q8_signs', type: 'multi', label: 'Which warning signs do you tend to get first?', options: [
+        { key: 'q8_signs', type: 'multi', label: 'Which warning signs do you tend to get first?', required: true, options: [
           { label: 'Tightness or stiffness building over a few days' },
           { label: 'Poor sleep' },
           { label: 'Motivation or mood drops' },
@@ -1149,14 +1149,14 @@
           { label: 'A small niggle that grows' },
           { label: 'None that I notice, it just hits' }
         ] },
-        { key: 'q8_do', type: 'options', label: 'When a flare-up hits, what do you actually do?', options: [
+        { key: 'q8_do', type: 'options', label: 'When a flare-up hits, what do you actually do?', required: true, options: [
           { label: 'I have a clear plan I follow and it settles in a few days' },
           { label: 'I have a rough idea, but I mostly guess' },
           { label: 'I stop everything and wait it out' },
           { label: 'I push through and hope it calms down' },
           { label: 'I panic a bit. I do not know what is safe.' }
         ] },
-        { key: 'q8_cost', type: 'options', label: 'What does a flare-up usually cost you?', options: [
+        { key: 'q8_cost', type: 'options', label: 'What does a flare-up usually cost you?', required: true, options: [
           { label: 'A day or two' },
           { label: 'Most of a week' },
           { label: 'One to two weeks' },
@@ -1174,13 +1174,13 @@
       title: 'How you run your training.',
       hint: null,
       fields: [
-        { key: 'q9_decide', type: 'options', label: 'How do you decide when to push and when to back off?', options: [
+        { key: 'q9_decide', type: 'options', label: 'How do you decide when to push and when to back off?', required: true, options: [
           { label: 'A framework I use every session. Readiness check, then decide.' },
           { label: 'RPE or similar. I go by how the reps feel.' },
           { label: 'Gut call on the morning.' },
           { label: 'Whatever the plan says that day.' }
         ] },
-        { key: 'q9_recovery', type: 'options', label: 'When did you last take a planned recovery week? Not forced by the back. Scheduled.', options: [
+        { key: 'q9_recovery', type: 'options', label: 'When did you last take a planned recovery week? Not forced by the back. Scheduled.', required: true, options: [
           { label: 'Every 4 to 6 weeks. It is built into my plan.' },
           { label: 'Sometimes. When I remember or feel wrecked.' },
           { label: 'Only when a flare or injury forces it.' },
@@ -1198,7 +1198,7 @@
       title: 'Where are you guilty?',
       hint: 'Any of these that you know you need to address.',
       fields: [
-        { key: 'q10_guilty', type: 'multi', options: [
+        { key: 'q10_guilty', type: 'multi', required: true, options: [
           { label: 'Following one plan instead of stitching sources together' },
           { label: 'Taking real recovery weeks' },
           { label: 'Starting lighter and building slower after a flare-up' },
@@ -1856,6 +1856,10 @@
     if (WEBHOOK_URL) {
       try {
         const payload = {
+          // Every individual question answer, flattened to its own key
+          // (name, instagram, q1_pattern, q2_physical, q3_tried, ...) so
+          // each can be mapped to its own column in Google Sheets/Zapier.
+          ...buildFullAnswersObject(),
           email, phone, first_name: firstName, profile, bottleneck,
           physical_score: a.q2_physical, energy_score: a.q2_energy, stress_score: a.q2_stress,
           pattern,
