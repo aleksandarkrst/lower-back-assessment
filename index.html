@@ -254,8 +254,6 @@
     border-color: var(--accent);
     box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 15%, transparent);
   }
-  .phone-field { flex: 1 1 260px; }
-
   .field-stack {
     display: flex;
     flex-direction: column;
@@ -367,38 +365,6 @@
     gap: 12px;
   }
 
-  /* Reflection transition ("Coach's Read") */
-  .transition-tag {
-    font-family: var(--sans);
-    font-size: 11px;
-    letter-spacing: 0.24em;
-    text-transform: uppercase;
-    color: var(--muted-fg);
-    font-weight: 600;
-    margin-bottom: 20px;
-  }
-  .transition-tag strong { color: var(--accent); font-weight: 700; }
-  .transition-title {
-    font-family: var(--serif);
-    font-weight: 800;
-    font-size: clamp(34px, 6vw, 52px);
-    line-height: 1.06;
-    letter-spacing: -0.012em;
-    margin: 0 0 20px;
-    color: var(--fg);
-    text-wrap: balance;
-  }
-  .transition-body {
-    font-family: var(--serif);
-    font-size: clamp(18px, 2.2vw, 20px);
-    line-height: 1.6;
-    color: var(--fg-soft);
-    max-width: 52ch;
-    margin: 0 0 32px;
-  }
-  .transition-body p { margin: 0 0 18px; }
-  .transition-body p:last-child { margin-bottom: 0; }
-  .transition-body strong { color: var(--fg); font-weight: 500; }
 
   /* Report */
   .report-hero {
@@ -862,6 +828,8 @@
   .formkit-form[data-uid="709ce44e7b"] [data-style="clean"]{width:100%;padding:0;}
   .formkit-form[data-uid="709ce44e7b"] .formkit-fields{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-wrap:wrap;-ms-flex-wrap:wrap;flex-wrap:wrap;margin:0 auto;gap:12px;align-items:flex-start;}
   .formkit-form[data-uid="709ce44e7b"] .formkit-field{margin:0;-webkit-flex:1 0 auto;-ms-flex:1 0 auto;flex:1 0 auto;}
+  .formkit-form[data-uid="709ce44e7b"] .formkit-fields{flex-direction:column;align-items:stretch;}
+  .formkit-form[data-uid="709ce44e7b"] .formkit-field{width:100%;}
   .formkit-form[data-uid="709ce44e7b"] .formkit-submit{margin:0;-webkit-flex:0 0 auto;-ms-flex:0 0 auto;flex:0 0 auto;position:static;}
   @media (max-width: 480px) {
     .formkit-form[data-uid="709ce44e7b"] .formkit-fields{flex-direction:column;}
@@ -903,6 +871,7 @@
           <ul class="formkit-alert formkit-alert-error" data-element="errors" data-group="alert"></ul>
           <div data-element="fields" data-stacked="false" class="seva-fields formkit-fields">
             <div class="formkit-field phone-field">
+              <label class="field-label" for="phone-number">Phone number</label>
               <div class="phone-row">
                 <select id="phone-country" aria-label="Country code">
                   <option value="+353" selected>+353 IE</option>
@@ -936,7 +905,8 @@
               </div>
             </div>
             <div class="formkit-field">
-              <input class="formkit-input" name="email_address" aria-label="Your email" placeholder="you@somewhere.com" required type="email" style="color: var(--fg); background: var(--card); border-color: var(--rule-color); border-radius: 2px; font-weight: 400;">
+              <label class="field-label" for="email-address-input">Email</label>
+              <input class="formkit-input" id="email-address-input" name="email_address" aria-label="Your email" placeholder="you@somewhere.com" required type="email" style="color: var(--fg); background: var(--card); border-color: var(--rule-color); border-radius: 2px; font-weight: 400;">
             </div>
             <input type="hidden" name="first_name" value="">
             <input type="hidden" name="fields[profile]" value="">
@@ -991,7 +961,6 @@
   //  ASSESSMENT DEFINITION
   //  Types:
   //    - question    : one input screen (10 numbered screens total)
-  //    - reflection  : the single optional "Coach's Read" interstitial
   //    - email       : contact capture (phone + email)
   //  Nothing is required on the 10 numbered screens. Only the contact
   //  step validates. Field keys match the build brief's naming
@@ -1123,13 +1092,6 @@
         { key: 'q5_addressed', type: 'multi', options: ADDRESSED_OPTIONS.map(o => ({ label: o })) }
       ]
     },
-
-    // ---- Optional read-back ----
-    { type: 'reflection', id: 'coach_read', build: (s) => ({
-        tag: "Coach's Read",
-        title: 'Here is what I already see.',
-        body: buildTriedReflection(s)
-    })},
 
     // ---- Screen 6 of 10 ----
     {
@@ -1287,22 +1249,6 @@
   function labelFor(key, idx) {
     const f = findField(key);
     return (f && typeof idx === 'number' && f.options && f.options[idx]) ? f.options[idx].label : '';
-  }
-
-  // ---------------------------------------------------------
-  //  DYNAMIC REFLECTION BUILDER (the one optional "Coach's Read")
-  // ---------------------------------------------------------
-  function buildTriedReflection(s) {
-    const tried = s.answers.q3_tried || [];
-    const addressed = s.answers.q5_addressed || [];
-    const reliefLabel = labelFor('q4_relief', s.answers.q4_relief).toLowerCase();
-    const realAddressed = addressed.filter(i => i !== 6).length;
-
-    const parts = [];
-    parts.push(`You have tried ${tried.length} different route${tried.length === 1 ? '' : 's'}. Your longest stretch of relief was ${reliefLabel || 'unclear'}.`);
-    parts.push(`Of the six things a real plan should cover, ${realAddressed === 0 ? 'none' : realAddressed} have been directly addressed for you. That is not a criticism of anyone you have seen. Physio treats the movement, chiro treats the joint, each treats a piece. None of it was built to treat the pattern.`);
-    parts.push('That is what the rest of this maps.');
-    return parts;
   }
 
   function interpretScore(kind, value) {
@@ -1568,37 +1514,7 @@
     }
     const step = steps[state.stepIndex];
     if (step.type === 'question') renderQuestion(step);
-    else if (step.type === 'reflection') renderReflection(step);
     else if (step.type === 'email') renderEmail();
-  }
-
-  function renderReflection(step) {
-    clearDynamic();
-    recalcScores();
-    const content = step.build(state);
-    const el = document.createElement('section');
-    el.className = 'step active';
-    el.dataset.step = step.id;
-    el.innerHTML = `
-      <p class="transition-tag"><strong>${escapeHTML(content.tag)}</strong></p>
-      <h2 class="transition-title"></h2>
-      <div class="transition-body"></div>
-      <div class="nav">
-        <button class="btn btn-ghost" data-action="back">Back</button>
-        <button class="btn" data-action="next">Continue <span class="btn-arrow">&rarr;</span></button>
-      </div>
-    `;
-    el.querySelector('.transition-title').textContent = content.title;
-    const bodyEl = el.querySelector('.transition-body');
-    content.body.forEach(p => {
-      const para = document.createElement('p');
-      para.textContent = p;
-      bodyEl.appendChild(para);
-    });
-    el.querySelector('[data-action="next"]').addEventListener('click', () => { state.stepIndex++; render(); });
-    el.querySelector('[data-action="back"]').addEventListener('click', () => { state.stepIndex--; render(); });
-    app.appendChild(el);
-    scrollTop();
   }
 
   function renderQuestion(step) {
