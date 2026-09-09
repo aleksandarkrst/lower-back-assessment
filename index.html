@@ -235,11 +235,11 @@
 
   .phone-row {
     display: grid;
-    grid-template-columns: 108px 1fr;
+    grid-template-columns: minmax(0, 150px) 1fr;
     gap: 10px;
     width: 100%;
   }
-  .phone-row select, .phone-row input[type=tel] {
+  .phone-row input {
     padding: 14px 12px;
     border: 2px solid var(--rule-color);
     border-radius: var(--radius);
@@ -248,11 +248,16 @@
     background: var(--card);
     color: var(--fg);
     transition: border-color .15s ease, box-shadow .15s ease;
+    min-width: 0;
   }
-  .phone-row select:focus, .phone-row input[type=tel]:focus {
+  #phone-country { text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
+  .phone-row input:focus {
     outline: none;
     border-color: var(--accent);
     box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 15%, transparent);
+  }
+  @media (max-width: 420px) {
+    .phone-row { grid-template-columns: 108px 1fr; }
   }
   .field-stack {
     display: flex;
@@ -873,34 +878,8 @@
             <div class="formkit-field phone-field">
               <label class="field-label" for="phone-number">Phone number</label>
               <div class="phone-row">
-                <select id="phone-country" aria-label="Country code">
-                  <option value="+353" selected>+353 IE</option>
-                  <option value="+44">+44 UK</option>
-                  <option value="+1">+1 US/CA</option>
-                  <option value="+61">+61 AU</option>
-                  <option value="+64">+64 NZ</option>
-                  <option value="+49">+49 DE</option>
-                  <option value="+33">+33 FR</option>
-                  <option value="+34">+34 ES</option>
-                  <option value="+39">+39 IT</option>
-                  <option value="+31">+31 NL</option>
-                  <option value="+32">+32 BE</option>
-                  <option value="+41">+41 CH</option>
-                  <option value="+43">+43 AT</option>
-                  <option value="+46">+46 SE</option>
-                  <option value="+47">+47 NO</option>
-                  <option value="+45">+45 DK</option>
-                  <option value="+351">+351 PT</option>
-                  <option value="+48">+48 PL</option>
-                  <option value="+971">+971 AE</option>
-                  <option value="+972">+972 IL</option>
-                  <option value="+27">+27 ZA</option>
-                  <option value="+65">+65 SG</option>
-                  <option value="+852">+852 HK</option>
-                  <option value="+91">+91 IN</option>
-                  <option value="+55">+55 BR</option>
-                  <option value="+52">+52 MX</option>
-                </select>
+                <input type="text" id="phone-country" list="country-list" autocomplete="off" aria-label="Country" placeholder="Country">
+                <datalist id="country-list"></datalist>
                 <input type="tel" id="phone-number" placeholder="87 123 4567" aria-label="Phone number">
               </div>
             </div>
@@ -2166,19 +2145,90 @@
     render();
   });
 
+  // Full country/dial-code list for the searchable country combobox
+  // (a <datalist>-backed text input, so it's typeable/filterable, unlike
+  // a plain <select>). Each option's visible text is "Name +Code", so
+  // typing either the country name or the digits of the code filters it.
+  const COUNTRY_CODES = [
+    ['Afghanistan', '+93'], ['Albania', '+355'], ['Algeria', '+213'], ['Andorra', '+376'],
+    ['Angola', '+244'], ['Argentina', '+54'], ['Armenia', '+374'], ['Australia', '+61'],
+    ['Austria', '+43'], ['Azerbaijan', '+994'], ['Bahamas', '+1'], ['Bahrain', '+973'],
+    ['Bangladesh', '+880'], ['Barbados', '+1'], ['Belarus', '+375'], ['Belgium', '+32'],
+    ['Belize', '+501'], ['Benin', '+229'], ['Bhutan', '+975'], ['Bolivia', '+591'],
+    ['Bosnia and Herzegovina', '+387'], ['Botswana', '+267'], ['Brazil', '+55'],
+    ['Brunei', '+673'], ['Bulgaria', '+359'], ['Burkina Faso', '+226'], ['Burundi', '+257'],
+    ['Cambodia', '+855'], ['Cameroon', '+237'], ['Canada', '+1'], ['Cape Verde', '+238'],
+    ['Central African Republic', '+236'], ['Chad', '+235'], ['Chile', '+56'], ['China', '+86'],
+    ['Colombia', '+57'], ['Comoros', '+269'], ['Congo', '+242'], ['Costa Rica', '+506'],
+    ['Croatia', '+385'], ['Cuba', '+53'], ['Cyprus', '+357'], ['Czech Republic', '+420'],
+    ['Denmark', '+45'], ['Djibouti', '+253'], ['Dominican Republic', '+1'], ['DR Congo', '+243'],
+    ['Ecuador', '+593'], ['Egypt', '+20'], ['El Salvador', '+503'], ['Estonia', '+372'],
+    ['Eswatini', '+268'], ['Ethiopia', '+251'], ['Fiji', '+679'], ['Finland', '+358'],
+    ['France', '+33'], ['Gabon', '+241'], ['Gambia', '+220'], ['Georgia', '+995'],
+    ['Germany', '+49'], ['Ghana', '+233'], ['Greece', '+30'], ['Greenland', '+299'],
+    ['Guatemala', '+502'], ['Guinea', '+224'], ['Guyana', '+592'], ['Haiti', '+509'],
+    ['Honduras', '+504'], ['Hong Kong', '+852'], ['Hungary', '+36'], ['Iceland', '+354'],
+    ['India', '+91'], ['Indonesia', '+62'], ['Iran', '+98'], ['Iraq', '+964'],
+    ['Ireland', '+353'], ['Israel', '+972'], ['Italy', '+39'], ['Jamaica', '+1'],
+    ['Japan', '+81'], ['Jordan', '+962'], ['Kazakhstan', '+7'], ['Kenya', '+254'],
+    ['Kosovo', '+383'], ['Kuwait', '+965'], ['Kyrgyzstan', '+996'], ['Laos', '+856'],
+    ['Latvia', '+371'], ['Lebanon', '+961'], ['Lesotho', '+266'], ['Liberia', '+231'],
+    ['Libya', '+218'], ['Liechtenstein', '+423'], ['Lithuania', '+370'], ['Luxembourg', '+352'],
+    ['Macau', '+853'], ['Madagascar', '+261'], ['Malawi', '+265'], ['Malaysia', '+60'],
+    ['Maldives', '+960'], ['Mali', '+223'], ['Malta', '+356'], ['Mauritania', '+222'],
+    ['Mauritius', '+230'], ['Mexico', '+52'], ['Moldova', '+373'], ['Monaco', '+377'],
+    ['Mongolia', '+976'], ['Montenegro', '+382'], ['Morocco', '+212'], ['Mozambique', '+258'],
+    ['Myanmar', '+95'], ['Namibia', '+264'], ['Nepal', '+977'], ['Netherlands', '+31'],
+    ['New Zealand', '+64'], ['Nicaragua', '+505'], ['Niger', '+227'], ['Nigeria', '+234'],
+    ['North Korea', '+850'], ['North Macedonia', '+389'], ['Norway', '+47'], ['Oman', '+968'],
+    ['Pakistan', '+92'], ['Panama', '+507'], ['Papua New Guinea', '+675'], ['Paraguay', '+595'],
+    ['Peru', '+51'], ['Philippines', '+63'], ['Poland', '+48'], ['Portugal', '+351'],
+    ['Qatar', '+974'], ['Romania', '+40'], ['Russia', '+7'], ['Rwanda', '+250'],
+    ['Saudi Arabia', '+966'], ['Senegal', '+221'], ['Serbia', '+381'], ['Seychelles', '+248'],
+    ['Sierra Leone', '+232'], ['Singapore', '+65'], ['Slovakia', '+421'], ['Slovenia', '+386'],
+    ['Somalia', '+252'], ['South Africa', '+27'], ['South Korea', '+82'], ['South Sudan', '+211'],
+    ['Spain', '+34'], ['Sri Lanka', '+94'], ['Sudan', '+249'], ['Suriname', '+597'],
+    ['Sweden', '+46'], ['Switzerland', '+41'], ['Syria', '+963'], ['Taiwan', '+886'],
+    ['Tajikistan', '+992'], ['Tanzania', '+255'], ['Thailand', '+66'], ['Togo', '+228'],
+    ['Trinidad and Tobago', '+1'], ['Tunisia', '+216'], ['Turkey', '+90'], ['Turkmenistan', '+993'],
+    ['Uganda', '+256'], ['Ukraine', '+380'], ['United Arab Emirates', '+971'],
+    ['United Kingdom', '+44'], ['United States', '+1'], ['Uruguay', '+598'],
+    ['Uzbekistan', '+998'], ['Vanuatu', '+678'], ['Venezuela', '+58'], ['Vietnam', '+84'],
+    ['Yemen', '+967'], ['Zambia', '+260'], ['Zimbabwe', '+263']
+  ];
+
   const kitForm = document.getElementById('kit-email-form');
   const kitEmailInput = kitForm.querySelector('[name="email_address"]');
   const kitSubmitBtn = kitForm.querySelector('[data-element="submit"]');
-  const phoneCountrySelect = document.getElementById('phone-country');
+  const phoneCountryInput = document.getElementById('phone-country');
   const phoneNumberInput = document.getElementById('phone-number');
+
+  const countryListEl = document.getElementById('country-list');
+  COUNTRY_CODES.forEach(([name, code]) => {
+    const opt = document.createElement('option');
+    opt.value = `${name} ${code}`;
+    countryListEl.appendChild(opt);
+  });
+  phoneCountryInput.value = 'Ireland +353';
+
+  // Pull the dial code back out of whatever the box currently holds:
+  // an exact "Name +Code" match, or just a trailing "+Code" the person typed.
+  function resolveDialCode() {
+    const v = (phoneCountryInput.value || '').trim();
+    const exact = COUNTRY_CODES.find(([name, code]) => `${name} ${code}` === v);
+    if (exact) return exact[1];
+    const m = v.match(/\+\d+\s*$/);
+    return m ? m[0].trim() : '';
+  }
 
   function phoneDigits() { return (phoneNumberInput.value || '').replace(/\D/g, ''); }
 
   function updateKitSubmitState() {
-    kitSubmitBtn.disabled = !isValidEmail(kitEmailInput.value) || phoneDigits().length < 5;
+    kitSubmitBtn.disabled = !isValidEmail(kitEmailInput.value) || phoneDigits().length < 5 || !resolveDialCode();
   }
   kitEmailInput.addEventListener('input', updateKitSubmitState);
   phoneNumberInput.addEventListener('input', updateKitSubmitState);
+  phoneCountryInput.addEventListener('input', updateKitSubmitState);
   updateKitSubmitState();
 
   kitForm.addEventListener('submit', async (e) => {
@@ -2189,12 +2239,13 @@
     // depend on the externally-hosted ck.js script telling us it worked.
     e.preventDefault();
     if (kitSubmitBtn.hasAttribute('data-active')) return;
-    if (phoneDigits().length < 5) return;
+    const dialCode = resolveDialCode();
+    if (phoneDigits().length < 5 || !dialCode) return;
     kitSubmitBtn.setAttribute('data-active', '');
     kitSubmitBtn.disabled = true;
 
     const email = kitEmailInput.value.trim();
-    const phone = phoneCountrySelect.value + phoneDigits();
+    const phone = dialCode + phoneDigits();
     state.answers.email = email;
     state.answers.phone = phone;
     const firstName = firstNameOf(state.answers.name);
