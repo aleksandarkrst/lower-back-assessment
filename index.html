@@ -4,6 +4,35 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Low Back Assessment · Conor O'Shea</title>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://conorosheafitness.com/#organization",
+      "name": "Conor O'Shea Fitness",
+      "url": "https://conorosheafitness.com/",
+      "logo": "https://conorosheafitness.com/images/conor-portrait.jpg",
+      "founder": {
+        "@type": "Person",
+        "name": "Conor O'Shea"
+      },
+      "sameAs": [
+        "https://instagram.com/conorosheafit"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://lowbackassessment.conorosheafitness.com/#website",
+      "name": "Low Back Assessment by Conor O'Shea",
+      "url": "https://lowbackassessment.conorosheafitness.com/",
+      "description": "A free 10-question assessment from Conor O'Shea that identifies the specific Foundation, Progression, or Resilience bottleneck driving a recurring low back pain cycle.",
+      "publisher": { "@id": "https://conorosheafitness.com/#organization" }
+    }
+  ]
+}
+</script>
 <style>
   :root {
     --bg: #0D0D0D;
@@ -94,17 +123,23 @@
     margin: 0 0 24px;
   }
   .lede + .lede { margin-top: -6px; }
+  .byline-heading {
+    font-family: var(--serif);
+    font-weight: 800;
+    font-size: 16px;
+    color: var(--fg);
+    margin: 40px 0 6px;
+    padding-top: 24px;
+    border-top: 1px solid var(--rule-color);
+  }
   .byline {
     font-family: var(--sans);
     font-size: 14px;
     line-height: 1.6;
     color: var(--muted-fg);
     max-width: 44ch;
-    margin: 40px 0 40px;
-    padding-top: 24px;
-    border-top: 1px solid var(--rule-color);
+    margin: 0 0 40px;
   }
-  .byline strong { color: var(--fg); font-weight: 500; }
 
   .btn {
     appearance: none;
@@ -852,11 +887,12 @@
   <main id="app">
     <section class="step active" data-step="intro">
       <p class="eyebrow"><strong>3 minute assessment.</strong> Tap only. Real report.</p>
-      <h1 class="display">Low Back Assessment.</h1>
+      <h1 class="display">Low Back Assessment from Conor O'Shea.</h1>
       <p class="lede">Right now you're managing your back pain, not resolving it. Some good weeks, then a flare-up that puts you back to the start.</p>
       <p class="lede">Picture knowing exactly which weak link is driving that cycle, so the work you put in actually holds. That's what this 10-question assessment finds for you in about three minutes.</p>
       <button class="btn btn-accent" id="start-btn" style="margin-top: 16px;">Begin the assessment <span class="btn-arrow">&rarr;</span></button>
-      <p class="byline"><strong>Coaching since 2011.</strong> Got out of a four-year L5-S1 disc bulge injury cycle. I built the system I wish I had. Now I run it with my clients.</p>
+      <h2 class="byline-heading">Conor O'Shea. Coaching since 2011.</h2>
+      <p class="byline">Got out of a four-year L5-S1 disc bulge injury cycle. I built the system I wish I had. Now I run it with my clients.</p>
     </section>
 
     <section class="step" data-step="email" id="email-step">
