@@ -3,6 +3,21 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Google tag (GA4) with Consent Mode v2: analytics cookies only after the visitor accepts -->
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('consent', 'default', {
+  analytics_storage: /(?:^|; )cof_consent=granted/.test(document.cookie) ? 'granted' : 'denied',
+  ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied',
+  wait_for_update: 500
+});
+gtag('js', new Date());
+gtag('config', 'G-XXXXXXXXXX');
+</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script src="https://conorosheafitness.com/tracking.js" defer></script>
+<!-- End Google tag -->
 <title>Low Back Assessment · Conor O'Shea</title>
 <script type="application/ld+json">
 {
@@ -1532,7 +1547,20 @@
     else if (step.type === 'email') renderEmail();
   }
 
+  // GA4 funnel tracking (no personal data is ever sent). gtag and the
+  // consent banner are loaded in <head>; if they are missing, this is a no-op.
+  const trackedSteps = new Set();
+  function track(name, params) {
+    try { if (typeof window.gtag === 'function') window.gtag('event', name, params || {}); } catch (_) {}
+  }
+
   function renderQuestion(step) {
+    if (!trackedSteps.has(step.id)) {
+      trackedSteps.add(step.id);
+      const n = progressBefore(state.stepIndex) + 1;
+      if (n === 1) track('assessment_start');
+      track('assessment_step', { step_number: n, step_id: step.id, steps_total: totalCount() });
+    }
     clearDynamic();
     const total = totalCount();
     const soFar = progressBefore(state.stepIndex);
@@ -1865,6 +1893,7 @@
     const fullAnswers = buildFullAnswers();
     const reportURL = buildReportURL();
     const pattern = labelFor('q1_pattern', a.q1_pattern);
+    track('generate_lead', { lead_source: 'low_back_assessment', assessment_profile: profile, assessment_bottleneck: bottleneck });
 
     // ---- Kit ----
     try {
