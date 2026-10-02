@@ -986,6 +986,7 @@ gtag('config', 'G-NEXS6YMK7H');
   const KIT_FORM_ID = '9539937';
   const WEBHOOK_URL = 'https://hooks.zapier.com/hooks/catch/13699978/44hc8lk/';
   const BOOK_CALL_URL = 'https://conorosheafitness.com/assessment-call.html';
+  const VSL_URL = 'https://conorosheafitness.com/back-pain-instagram.html?sent=1';
 
   // ---------------------------------------------------------
   //  ASSESSMENT DEFINITION
@@ -2325,8 +2326,10 @@ gtag('config', 'G-NEXS6YMK7H');
 
     await submitAll({ email, phone, firstName, profile: profile.profileName, bottleneck: profile.bottleneckName });
 
-    state.stepIndex++;
-    render();
+    // After submitting, send them to the VSL page. The report itself still
+    // goes out by email (Kit report_url), and that link still opens the
+    // full on-screen report via hydrateFromURL() below.
+    window.location.href = VSL_URL;
   });
 
   // If landed via a report URL (from Kit email), hydrate state and jump to report.
