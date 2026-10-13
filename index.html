@@ -972,10 +972,9 @@ gtag('config', 'G-NEXS6YMK7H');
 <script>
   // ---------------------------------------------------------
   //  CONFIG
-  //  Kit (formerly ConvertKit) form ID 9539937 is wired up below via
-  //  the official Kit embed snippet. Create these custom subscriber
-  //  fields in Kit (Settings -> Subscriber Fields) so the hidden
-  //  inputs on the form have somewhere to land, and so your
+  //  The official Kit embed snippet below handles contact submissions.
+  //  Create these custom subscriber fields in Kit (Settings -> Subscriber Fields)
+  //  so the hidden inputs on the form have somewhere to land, and so your
   //  automation can use them as merge tags:
   //    profile, bottleneck, physical_score, energy_score,
   //    stress_score, pattern, phone, instagram, full_answers, report_url
@@ -983,7 +982,6 @@ gtag('config', 'G-NEXS6YMK7H');
   //  there (use it if you want the raw data in a Google Sheet or
   //  Airtable, in addition to Kit).
   // ---------------------------------------------------------
-  const KIT_FORM_ID = '9539937';
   const WEBHOOK_URL = 'https://hooks.zapier.com/hooks/catch/13699978/44hc8lk/';
   const BOOK_CALL_URL = 'https://conorosheafitness.com/back-pain?sent=1';
 
@@ -1547,18 +1545,23 @@ gtag('config', 'G-NEXS6YMK7H');
     else if (step.type === 'email') renderEmail();
   }
 
-  // GA4 funnel tracking (no personal data is ever sent). gtag and the
-  // consent banner are loaded in <head>; if they are missing, this is a no-op.
+  // GA4 funnel events never include answers, contact details, or assessment outcomes.
   const trackedSteps = new Set();
+  const trackedEvents = new Set();
   function track(name, params) {
     try { if (typeof window.gtag === 'function') window.gtag('event', name, params || {}); } catch (_) {}
+  }
+  function trackOnce(name, params) {
+    if (trackedEvents.has(name)) return;
+    trackedEvents.add(name);
+    track(name, params);
   }
 
   function renderQuestion(step) {
     if (!trackedSteps.has(step.id)) {
       trackedSteps.add(step.id);
       const n = progressBefore(state.stepIndex) + 1;
-      if (n === 1) track('assessment_start');
+      if (n === 1) trackOnce('assessment_start');
       track('assessment_step', { step_number: n, step_id: step.id, steps_total: totalCount() });
     }
     clearDynamic();
@@ -1818,6 +1821,7 @@ gtag('config', 'G-NEXS6YMK7H');
   function renderEmail() {
     clearDynamic();
     recalcScores();
+    trackOnce('assessment_complete');
     const bottleneck = pickBottleneck();
     const profile = profiles[bottleneck];
     const firstName = firstNameOf(state.answers.name);
@@ -1884,63 +1888,36 @@ gtag('config', 'G-NEXS6YMK7H');
     return JSON.stringify(buildFullAnswersObject());
   }
 
-  // Submits straight to the Kit forms endpoint (same endpoint the embedded
-  // form's action attribute points to) so the app controls the app-flow
-  // (advancing to the report) itself, rather than depending on the
-  // externally-hosted ck.js script to signal success back to us.
-  async function submitAll({ email, phone, firstName, profile, bottleneck }) {
+  // The Kit embed submits the contact form; its success event gates the
+  // report transition, GA4 lead event, and optional webhook.
+  async function sendWebhookAfterKitSuccess({ email, phone, firstName, profile, bottleneck }) {
+    if (!WEBHOOK_URL) return;
     const a = state.answers;
     const fullAnswers = buildFullAnswers();
     const reportURL = buildReportURL();
     const pattern = labelFor('q1_pattern', a.q1_pattern);
-    track('generate_lead', { lead_source: 'low_back_assessment', assessment_profile: profile, assessment_bottleneck: bottleneck });
-
-    // ---- Kit ----
+    // ---- Optional webhook (structured JSON) ----
     try {
-      const fd = new FormData();
-      fd.append('email_address', email);
-      fd.append('first_name', firstName);
-      fd.append('fields[profile]', profile);
-      fd.append('fields[bottleneck]', bottleneck);
-      fd.append('fields[physical_score]', String(a.q2_physical ?? ''));
-      fd.append('fields[energy_score]', String(a.q2_energy ?? ''));
-      fd.append('fields[stress_score]', String(a.q2_stress ?? ''));
-      fd.append('fields[pattern]', pattern);
-      fd.append('fields[phone]', phone || '');
-      fd.append('fields[instagram]', a.instagram || '');
-      fd.append('fields[full_answers]', fullAnswers);
-      fd.append('fields[report_url]', reportURL);
-      await fetch(`https://app.kit.com/forms/${KIT_FORM_ID}/subscriptions`, {
+      const payload = {
+        // Every individual question answer, flattened to its own key
+        // (name, instagram, q1_pattern, q2_physical, q3_tried, ...) so
+        // each can be mapped to its own column in Google Sheets/Zapier.
+        ...buildFullAnswersObject(),
+        email, phone, first_name: firstName, profile, bottleneck,
+        physical_score: a.q2_physical, energy_score: a.q2_energy, stress_score: a.q2_stress,
+        pattern,
+        instagram: a.instagram || '',
+        full_answers: fullAnswers,
+        report_url: reportURL,
+        submitted_at: new Date().toISOString()
+      };
+      await fetch(WEBHOOK_URL, {
         method: 'POST',
-        body: fd,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
         mode: 'no-cors'
       });
-    } catch (e) { console.warn('Kit submission failed:', e); }
-
-    // ---- Optional webhook (structured JSON) ----
-    if (WEBHOOK_URL) {
-      try {
-        const payload = {
-          // Every individual question answer, flattened to its own key
-          // (name, instagram, q1_pattern, q2_physical, q3_tried, ...) so
-          // each can be mapped to its own column in Google Sheets/Zapier.
-          ...buildFullAnswersObject(),
-          email, phone, first_name: firstName, profile, bottleneck,
-          physical_score: a.q2_physical, energy_score: a.q2_energy, stress_score: a.q2_stress,
-          pattern,
-          instagram: a.instagram || '',
-          full_answers: fullAnswers,
-          report_url: reportURL,
-          submitted_at: new Date().toISOString()
-        };
-        await fetch(WEBHOOK_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
-          mode: 'no-cors'
-        });
-      } catch (e) { console.warn('Webhook failed:', e); }
-    }
+    } catch (e) { console.warn('Webhook failed:', e); }
   }
 
   // ---------------------------------------------------------
@@ -2188,16 +2165,14 @@ gtag('config', 'G-NEXS6YMK7H');
     profile.honestTruth.forEach(p => { const para = document.createElement('p'); para.textContent = p; truthEl.appendChild(para); });
 
     el.querySelector('[data-action="restart"]').addEventListener('click', () => {
-      state.stepIndex = -1;
-      state.answers = {};
-      state.scores = { foundation: 2, progression: 2, resilience: 2 };
-      state.vagueAdvice = false;
-      state.forcedBottleneck = null;
-      render();
+      const restartURL = new URL(window.location.href);
+      restartURL.searchParams.delete('r');
+      window.location.replace(restartURL.pathname + restartURL.search + restartURL.hash);
     });
 
     app.appendChild(el);
     scrollTop();
+    trackOnce('report_view');
   }
 
   document.getElementById('start-btn').addEventListener('click', () => {
@@ -2272,6 +2247,8 @@ gtag('config', 'G-NEXS6YMK7H');
   const kitSubmitBtn = kitForm.querySelector('[data-element="submit"]');
   const phoneCountryInput = document.getElementById('phone-country');
   const phoneNumberInput = document.getElementById('phone-number');
+  let pendingLeadSubmission = null;
+  let leadSubmissionHandled = false;
 
   const countryListEl = document.getElementById('country-list');
   COUNTRY_CODES.forEach(([name, code]) => {
@@ -2301,18 +2278,14 @@ gtag('config', 'G-NEXS6YMK7H');
   phoneCountryInput.addEventListener('input', updateKitSubmitState);
   updateKitSubmitState();
 
-  kitForm.addEventListener('submit', async (e) => {
-    // Native browser validation (required + type=email on the input) has
-    // already passed by the time this handler runs. We take over the
-    // actual submission ourselves (posting straight to the same Kit
-    // endpoint the form's action points to) so the app's flow doesn't
-    // depend on the externally-hosted ck.js script telling us it worked.
-    e.preventDefault();
-    if (kitSubmitBtn.hasAttribute('data-active')) return;
+  // Prepare fields before Kit's embed handles the native form submission.
+  kitForm.addEventListener('submit', (e) => {
     const dialCode = resolveDialCode();
-    if (phoneDigits().length < 5 || !dialCode) return;
-    kitSubmitBtn.setAttribute('data-active', '');
-    kitSubmitBtn.disabled = true;
+    if (phoneDigits().length < 5 || !dialCode) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      return;
+    }
 
     const email = kitEmailInput.value.trim();
     const phone = dialCode + phoneDigits();
@@ -2322,10 +2295,27 @@ gtag('config', 'G-NEXS6YMK7H');
     recalcScores();
     const bottleneck = pickBottleneck();
     const profile = profiles[bottleneck];
+    kitForm.querySelector('[name="fields[phone]"]').value = phone;
+    pendingLeadSubmission = {
+      email,
+      phone,
+      firstName,
+      profile: profile.profileName,
+      bottleneck: profile.bottleneckName
+    };
+  }, true);
 
-    await submitAll({ email, phone, firstName, profile: profile.profileName, bottleneck: profile.bottleneckName });
+  // Kit dispatches this event only after its form endpoint accepts the submission.
+  kitForm.addEventListener('ckjs:submission:complete', (e) => {
+    if (e.detail?.uid !== kitForm.dataset.uid || leadSubmissionHandled || !pendingLeadSubmission) return;
+    leadSubmissionHandled = true;
+    const lead = pendingLeadSubmission;
+    pendingLeadSubmission = null;
 
-    state.stepIndex++;
+    // Do not send assessment outcomes or contact details to GA4.
+    trackOnce('generate_lead', { lead_source: 'low_back_assessment' });
+    void sendWebhookAfterKitSuccess(lead).catch(err => console.warn('Webhook failed:', err));
+    state.stepIndex = steps.length;
     render();
   });
 
